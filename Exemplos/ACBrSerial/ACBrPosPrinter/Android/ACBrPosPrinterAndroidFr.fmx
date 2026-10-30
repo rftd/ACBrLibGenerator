@@ -1,0 +1,1305 @@
+object PosPrinterAndroidTesteForm: TPosPrinterAndroidTesteForm
+  Left = 0
+  Top = 0
+  Caption = 'ACBrPosPrinter Android Teste'
+  ClientHeight = 640
+  ClientWidth = 404
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnKeyUp = FormKeyUp
+  DesignerMasterStyle = 3
+  object tabsPrincipal: TTabControl
+    Touch.GestureManager = GestureManager1
+    OnGesture = GestureDone
+    Align = Client
+    FullSize = True
+    Size.Width = 404.000000000000000000
+    Size.Height = 640.000000000000000000
+    Size.PlatformDefault = False
+    TabHeight = 49.000000000000000000
+    TabIndex = 0
+    TabOrder = 0
+    TabPosition = Top
+    Sizes = (
+      404s
+      591s
+      404s
+      591s)
+    object tabConfig: TTabItem
+      CustomIcon = <
+        item
+        end>
+      TextSettings.Trimming = None
+      IsSelected = True
+      Size.Width = 202.000000000000000000
+      Size.Height = 49.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Configura'#231#227'o'
+      ExplicitSize.cx = 8.000000000000000000
+      ExplicitSize.cy = 8.000000000000000000
+      object ToolBar1: TToolBar
+        Size.Width = 404.000000000000000000
+        Size.Height = 48.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        object lblTituloConfig: TLabel
+          Align = Contents
+          StyledSettings = [Family, Size, Style]
+          Size.Width = 404.000000000000000000
+          Size.Height = 48.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = 'toollabel'
+          TextSettings.FontColor = claWhite
+          TextSettings.HorzAlign = Center
+          Text = 'Configura'#231#227'o'
+        end
+      end
+      object ListBox1: TListBox
+        Align = Client
+        Size.Width = 404.000000000000000000
+        Size.Height = 493.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        ShowScrollBars = False
+        DisableFocusEffect = True
+        DefaultItemStyles.ItemStyle = ''
+        DefaultItemStyles.GroupHeaderStyle = ''
+        DefaultItemStyles.GroupFooterStyle = ''
+        Viewport.Width = 404.000000000000000000
+        Viewport.Height = 493.000000000000000000
+        object ListBoxGroupHeader1: TListBoxGroupHeader
+          Selectable = False
+          StyledSettings = [Family, Size, Style, FontColor]
+          Size.Width = 404.000000000000000000
+          Size.Height = 30.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 3
+          Text = 'Classe de Impressora'
+        end
+        object ListBoxGroupHeader5: TListBoxGroupHeader
+          Selectable = False
+          TextSettings.HorzAlign = Center
+          StyledSettings = [Family, Size, Style, FontColor]
+          Margins.Left = 10.000000000000000000
+          Margins.Top = 2.000000000000000000
+          Margins.Right = 10.000000000000000000
+          Margins.Bottom = 2.000000000000000000
+          Position.X = 10.000000000000000000
+          Position.Y = 32.000000000000000000
+          Size.Width = 384.000000000000000000
+          Size.Height = 30.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 2
+          Text = 'Modelo da Impressora'
+        end
+        object lbiClasse: TListBoxItem
+          Selectable = False
+          Position.Y = 64.000000000000000000
+          Size.Width = 404.000000000000000000
+          Size.Height = 40.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 10
+          object GridPanelLayout6: TGridPanelLayout
+            Align = Client
+            Size.Width = 404.000000000000000000
+            Size.Height = 40.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+            ColumnCollection = <
+              item
+                Value = 50.000000000000000000
+              end
+              item
+                Value = 50.000000000000000000
+              end>
+            ControlCollection = <
+              item
+                Column = 0
+                Control = rbClasseInterna
+                Row = 0
+              end
+              item
+                Column = 1
+                Control = rbClasseExterna
+                Row = 0
+              end>
+            RowCollection = <
+              item
+                Value = 100.000000000000000000
+              end
+              item
+                SizeStyle = Auto
+              end>
+            object rbClasseInterna: TRadioButton
+              Align = Right
+              IsChecked = True
+              Position.X = 61.000000000000000000
+              Size.Width = 141.000000000000000000
+              Size.Height = 40.000000000000000000
+              Size.PlatformDefault = False
+              TabOrder = 1
+              Text = 'EscPos (interna)'
+              OnChange = rbMudaClasseImpressora
+            end
+            object rbClasseExterna: TRadioButton
+              Align = Right
+              Position.X = 271.000000000000000000
+              Size.Width = 133.000000000000000000
+              Size.Height = 40.000000000000000000
+              Size.PlatformDefault = False
+              TabOrder = 0
+              Text = 'Externa'
+            end
+          end
+        end
+        object lbModelos: TListBoxItem
+          Selectable = False
+          Position.Y = 104.000000000000000000
+          Size.Width = 404.000000000000000000
+          Size.Height = 52.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 1
+          object cbxModelo: TComboBox
+            Align = Client
+            Margins.Left = 8.000000000000000000
+            Margins.Top = 4.000000000000000000
+            Margins.Right = 8.000000000000000000
+            Margins.Bottom = 4.000000000000000000
+            Size.Width = 137.000000000000000000
+            Size.Height = 32.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+            OnChange = cbxModeloChange
+          end
+          object cbxPagCodigo: TComboBox
+            Align = Right
+            Hint = 'Pagina de c'#243'digo usada pela Impressora POS'
+            ItemHeight = 13.000000000000000000
+            Margins.Left = 8.000000000000000000
+            Margins.Top = 4.000000000000000000
+            Margins.Right = 8.000000000000000000
+            Margins.Bottom = 4.000000000000000000
+            Position.X = 161.000000000000000000
+            Position.Y = 10.000000000000000000
+            Size.Width = 85.000000000000000000
+            Size.Height = 32.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 2
+          end
+          object Layout2: TLayout
+            Align = Right
+            Position.X = 254.000000000000000000
+            Size.Width = 150.000000000000000000
+            Size.Height = 52.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 37
+            object cbControlePorta: TCheckBox
+              Align = Top
+              IsChecked = True
+              Margins.Left = 8.000000000000000000
+              Margins.Right = 8.000000000000000000
+              Position.X = 8.000000000000000000
+              Size.Width = 134.000000000000000000
+              Size.Height = 26.000000000000000000
+              Size.PlatformDefault = False
+              TabOrder = 2
+              Text = 'Controle Porta'
+              TextSettings.WordWrap = True
+            end
+            object cbSmartPOS: TCheckBox
+              Align = Client
+              IsChecked = True
+              Margins.Left = 8.000000000000000000
+              Margins.Right = 8.000000000000000000
+              Size.Width = 134.000000000000000000
+              Size.Height = 26.000000000000000000
+              Size.PlatformDefault = False
+              TabOrder = 1
+              Text = 'Smart POS ?'
+              TextSettings.WordWrap = True
+            end
+          end
+        end
+        object ListBoxGroupHeader2: TListBoxGroupHeader
+          Selectable = False
+          TextSettings.HorzAlign = Center
+          StyledSettings = [Family, Size, Style, FontColor]
+          Margins.Left = 10.000000000000000000
+          Margins.Top = 2.000000000000000000
+          Margins.Right = 10.000000000000000000
+          Margins.Bottom = 2.000000000000000000
+          Position.X = 10.000000000000000000
+          Position.Y = 158.000000000000000000
+          Size.Width = 384.000000000000000000
+          Size.Height = 30.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 4
+          Text = 'Impressoras BlueTooth'
+        end
+        object lbImpressoras: TListBoxItem
+          Selectable = False
+          Position.Y = 190.000000000000000000
+          Size.Width = 404.000000000000000000
+          Size.Height = 40.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
+          object cbxImpressorasBth: TComboBox
+            Align = Client
+            Margins.Left = 8.000000000000000000
+            Margins.Top = 4.000000000000000000
+            Margins.Right = 2.000000000000000000
+            Margins.Bottom = 4.000000000000000000
+            Size.Width = 192.000000000000000000
+            Size.Height = 32.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+          end
+          object btnProcurarBth: TCornerButton
+            Align = Right
+            Images = ImageList1
+            ImageIndex = 0
+            Margins.Left = 8.000000000000000000
+            Margins.Top = 4.000000000000000000
+            Margins.Right = 8.000000000000000000
+            Margins.Bottom = 4.000000000000000000
+            Position.X = 210.000000000000000000
+            Position.Y = 4.000000000000000000
+            Sides = [Top, Left, Bottom, Right]
+            Size.Width = 109.000000000000000000
+            Size.Height = 32.000000000000000000
+            Size.PlatformDefault = False
+            StyleLookup = 'cornerbuttonstyle'
+            TabOrder = 1
+            Text = 'Procurar'
+            TextSettings.Trimming = None
+            XRadius = 3.000000000000000000
+            YRadius = 3.000000000000000000
+            OnClick = btnProcurarBthClick
+          end
+          object chbTodasBth: TCheckBox
+            Align = Right
+            IsChecked = True
+            Position.X = 327.000000000000000000
+            Size.Width = 77.000000000000000000
+            Size.Height = 40.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 3
+            Text = 'Todas'
+          end
+        end
+        object ListBoxGroupHeader3: TListBoxGroupHeader
+          Selectable = False
+          Margins.Left = 10.000000000000000000
+          Margins.Top = 2.000000000000000000
+          Margins.Right = 10.000000000000000000
+          Margins.Bottom = 2.000000000000000000
+          Position.X = 10.000000000000000000
+          Position.Y = 232.000000000000000000
+          Size.Width = 384.000000000000000000
+          Size.Height = 30.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 5
+          Text = 'Largura e Espacejamento '
+        end
+        object lbLarguraEspacejamento: TListBoxItem
+          Selectable = False
+          Position.Y = 264.000000000000000000
+          Size.Width = 404.000000000000000000
+          Size.Height = 74.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 6
+          object GridPanelLayout1: TGridPanelLayout
+            Align = Client
+            Size.Width = 404.000000000000000000
+            Size.Height = 74.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+            ColumnCollection = <
+              item
+                Value = 33.333333333333340000
+              end
+              item
+                Value = 33.333333333333340000
+              end
+              item
+                Value = 33.333333333333340000
+              end>
+            ControlCollection = <
+              item
+                Column = 0
+                Control = Label2
+                Row = 0
+              end
+              item
+                Column = 1
+                Control = Label3
+                Row = 0
+              end
+              item
+                Column = 2
+                Control = Label7
+                Row = 0
+              end
+              item
+                Column = 0
+                Control = seColunas
+                Row = 1
+              end
+              item
+                Column = 1
+                Control = seEspLinhas
+                Row = 1
+              end
+              item
+                Column = 2
+                Control = seLinhasPular
+                Row = 1
+              end>
+            RowCollection = <
+              item
+                Value = 50.000000000000000000
+              end
+              item
+                Value = 50.000000000000000000
+              end
+              item
+                SizeStyle = Auto
+              end>
+            object Label2: TLabel
+              Align = Client
+              AutoSize = True
+              Size.Width = 134.666671752929700000
+              Size.Height = 37.000000000000000000
+              Size.PlatformDefault = False
+              TextSettings.HorzAlign = Center
+              TextSettings.WordWrap = False
+              Text = 'Colunas'
+              TabOrder = 3
+            end
+            object Label3: TLabel
+              Align = Client
+              AutoSize = True
+              Size.Width = 134.666671752929700000
+              Size.Height = 37.000000000000000000
+              Size.PlatformDefault = False
+              TextSettings.HorzAlign = Center
+              TextSettings.WordWrap = False
+              Text = 'Espa'#231'os'
+              TabOrder = 4
+            end
+            object Label7: TLabel
+              Align = Client
+              AutoSize = True
+              Size.Width = 134.666656494140600000
+              Size.Height = 37.000000000000000000
+              Size.PlatformDefault = False
+              TextSettings.HorzAlign = Center
+              TextSettings.WordWrap = False
+              Text = 'Linhas Pulo'
+              TabOrder = 5
+            end
+            object seColunas: TSpinBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 0
+              Cursor = crIBeam
+              Value = 32.000000000000000000
+              Margins.Left = 4.000000000000000000
+              Margins.Top = 4.000000000000000000
+              Margins.Right = 4.000000000000000000
+              Margins.Bottom = 4.000000000000000000
+              Size.Width = 126.666671752929700000
+              Size.Height = 32.000000000000000000
+              Size.PlatformDefault = False
+            end
+            object seEspLinhas: TSpinBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 1
+              Cursor = crIBeam
+              Margins.Left = 4.000000000000000000
+              Margins.Top = 4.000000000000000000
+              Margins.Right = 4.000000000000000000
+              Margins.Bottom = 4.000000000000000000
+              Size.Width = 126.666671752929700000
+              Size.Height = 32.000000000000000000
+              Size.PlatformDefault = False
+            end
+            object seLinhasPular: TSpinBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 2
+              Cursor = crIBeam
+              Value = 4.000000000000000000
+              Margins.Left = 4.000000000000000000
+              Margins.Top = 4.000000000000000000
+              Margins.Right = 4.000000000000000000
+              Margins.Bottom = 4.000000000000000000
+              Size.Width = 126.666656494140600000
+              Size.Height = 32.000000000000000000
+              Size.PlatformDefault = False
+            end
+          end
+        end
+        object ListBoxGroupHeader4: TListBoxGroupHeader
+          Selectable = False
+          Margins.Left = 10.000000000000000000
+          Margins.Top = 2.000000000000000000
+          Margins.Right = 10.000000000000000000
+          Margins.Bottom = 2.000000000000000000
+          Position.X = 10.000000000000000000
+          Position.Y = 340.000000000000000000
+          Size.Width = 384.000000000000000000
+          Size.Height = 30.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 8
+          Text = 'C'#243'digos de Barras'
+        end
+        object lbCodBarras: TListBoxItem
+          Selectable = False
+          Position.Y = 372.000000000000000000
+          Size.Width = 404.000000000000000000
+          Size.Height = 74.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 9
+          object GridPanelLayout5: TGridPanelLayout
+            Align = Client
+            Size.Width = 404.000000000000000000
+            Size.Height = 74.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+            ColumnCollection = <
+              item
+                Value = 33.333333333333340000
+              end
+              item
+                Value = 33.333333333333340000
+              end
+              item
+                Value = 33.333333333333340000
+              end>
+            ControlCollection = <
+              item
+                Column = 0
+                Control = Label1
+                Row = 0
+              end
+              item
+                Column = 1
+                Control = Label4
+                Row = 0
+              end
+              item
+                Column = 2
+                Control = cbHRI
+                Row = 0
+              end
+              item
+                Column = 0
+                Control = seBarrasLargura
+                Row = 1
+              end
+              item
+                Column = 1
+                Control = seBarrasAltura
+                Row = 1
+              end
+              item
+                Column = 2
+                Control = cbSuportaBMP
+                Row = 1
+              end>
+            RowCollection = <
+              item
+                Value = 50.000000000000000000
+              end
+              item
+                Value = 50.000000000000000000
+              end
+              item
+                SizeStyle = Auto
+              end>
+            object Label1: TLabel
+              Align = Client
+              AutoSize = True
+              Size.Width = 134.666671752929700000
+              Size.Height = 37.000000000000000000
+              Size.PlatformDefault = False
+              TextSettings.HorzAlign = Center
+              TextSettings.WordWrap = False
+              Text = 'Largura'
+              TabOrder = 4
+            end
+            object Label4: TLabel
+              Align = Client
+              AutoSize = True
+              Size.Width = 134.666671752929700000
+              Size.Height = 37.000000000000000000
+              Size.PlatformDefault = False
+              TextSettings.HorzAlign = Center
+              TextSettings.WordWrap = False
+              Text = 'Altura'
+              TabOrder = 5
+            end
+            object cbHRI: TCheckBox
+              Align = Client
+              Margins.Left = 8.000000000000000000
+              Margins.Right = 8.000000000000000000
+              Size.Width = 118.666656494140600000
+              Size.Height = 37.000000000000000000
+              Size.PlatformDefault = False
+              TabOrder = 3
+              Text = 'Exibe Numero'
+              TextSettings.WordWrap = True
+            end
+            object seBarrasLargura: TSpinBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 0
+              Cursor = crIBeam
+              Value = 1.000000000000000000
+              Margins.Left = 4.000000000000000000
+              Margins.Top = 4.000000000000000000
+              Margins.Right = 4.000000000000000000
+              Margins.Bottom = 4.000000000000000000
+              Size.Width = 126.666671752929700000
+              Size.Height = 32.000000000000000000
+              Size.PlatformDefault = False
+            end
+            object seBarrasAltura: TSpinBox
+              Touch.InteractiveGestures = [LongTap, DoubleTap]
+              Align = Client
+              TabOrder = 1
+              Cursor = crIBeam
+              Margins.Left = 4.000000000000000000
+              Margins.Top = 4.000000000000000000
+              Margins.Right = 4.000000000000000000
+              Margins.Bottom = 4.000000000000000000
+              Size.Width = 126.666671752929700000
+              Size.Height = 32.000000000000000000
+              Size.PlatformDefault = False
+            end
+            object cbSuportaBMP: TCheckBox
+              Align = Client
+              IsChecked = True
+              Margins.Left = 8.000000000000000000
+              Margins.Right = 8.000000000000000000
+              Size.Width = 118.666656494140600000
+              Size.Height = 37.000000000000000000
+              Size.PlatformDefault = False
+              TabOrder = 2
+              Text = 'Suporta BMP'
+              TextSettings.WordWrap = True
+            end
+          end
+        end
+        object lbBotoes: TListBoxItem
+          Selectable = False
+          Position.Y = 446.000000000000000000
+          Size.Width = 404.000000000000000000
+          Size.Height = 50.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 7
+          object GridPanelLayout2: TGridPanelLayout
+            Align = Client
+            Size.Width = 404.000000000000000000
+            Size.Height = 50.000000000000000000
+            Size.PlatformDefault = False
+            TabOrder = 0
+            ColumnCollection = <
+              item
+                Value = 50.000000000000000000
+              end
+              item
+                Value = 50.000000000000000000
+              end>
+            ControlCollection = <
+              item
+                Column = 0
+                Control = btLerConfig
+                Row = 0
+              end
+              item
+                Column = 1
+                Control = btSalvarConfig
+                Row = 0
+              end>
+            RowCollection = <
+              item
+                Value = 100.000000000000000000
+              end
+              item
+                SizeStyle = Auto
+              end>
+            object btLerConfig: TCornerButton
+              Align = Client
+              Images = ImageList1
+              ImageIndex = 3
+              Margins.Left = 5.000000000000000000
+              Margins.Top = 5.000000000000000000
+              Margins.Right = 5.000000000000000000
+              Margins.Bottom = 5.000000000000000000
+              Sides = [Top, Left, Bottom, Right]
+              Size.Width = 192.000000000000000000
+              Size.Height = 40.000000000000000000
+              Size.PlatformDefault = False
+              TabOrder = 0
+              Text = 'Ler'
+              TextSettings.Trimming = None
+              XRadius = 3.000000000000000000
+              YRadius = 3.000000000000000000
+              OnClick = btLerConfigClick
+            end
+            object btSalvarConfig: TCornerButton
+              Align = Client
+              Images = ImageList1
+              ImageIndex = 2
+              Margins.Left = 5.000000000000000000
+              Margins.Top = 5.000000000000000000
+              Margins.Right = 5.000000000000000000
+              Margins.Bottom = 5.000000000000000000
+              Sides = [Top, Left, Bottom, Right]
+              Size.Width = 192.000000000000000000
+              Size.Height = 40.000000000000000000
+              Size.PlatformDefault = False
+              TabOrder = 1
+              Text = 'Salvar'
+              TextSettings.Trimming = None
+              XRadius = 3.000000000000000000
+              YRadius = 3.000000000000000000
+              OnClick = btSalvarConfigClick
+            end
+          end
+        end
+      end
+      object Layout1: TLayout
+        Align = Bottom
+        Position.Y = 541.000000000000000000
+        Size.Width = 404.000000000000000000
+        Size.Height = 50.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 2
+        object SpeedButton1: TSpeedButton
+          Align = Right
+          Position.X = 356.000000000000000000
+          Position.Y = 1.000000000000000000
+          Size.Width = 48.000000000000000000
+          Size.Height = 48.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = 'nexttoolbutton'
+          Text = 'SpeedButton1'
+          TextSettings.Trimming = None
+        end
+        object btnAtivar: TCornerButton
+          Align = Contents
+          CornerType = InnerRound
+          Images = ImageList1
+          ImageIndex = 1
+          Margins.Left = 2.000000000000000000
+          Margins.Top = 2.000000000000000000
+          Margins.Right = 2.000000000000000000
+          Margins.Bottom = 2.000000000000000000
+          Sides = [Top, Left, Bottom, Right]
+          Size.Width = 400.000000000000000000
+          Size.Height = 46.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 1
+          Text = 'Ativar'
+          TextSettings.Trimming = None
+          XRadius = 3.000000000000000000
+          YRadius = 3.000000000000000000
+          OnClick = btnAtivarClick
+        end
+      end
+    end
+    object tabTeste: TTabItem
+      CustomIcon = <
+        item
+        end>
+      TextSettings.Trimming = None
+      IsSelected = False
+      Size.Width = 202.000000000000000000
+      Size.Height = 49.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Testes'
+      ExplicitSize.cx = 8.000000000000000000
+      ExplicitSize.cy = 8.000000000000000000
+      object ToolBar2: TToolBar
+        Size.Width = 404.000000000000000000
+        Size.Height = 48.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        object lblTituloTestes: TLabel
+          Align = Contents
+          StyledSettings = [Family, Size, Style]
+          Size.Width = 404.000000000000000000
+          Size.Height = 48.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = 'toollabel'
+          TextSettings.FontColor = claWhite
+          TextSettings.HorzAlign = Center
+          Text = 'Testes'
+        end
+        object btnBack: TSpeedButton
+          Align = Left
+          IconTintColor = claWhite
+          Margins.Left = 5.000000000000000000
+          Position.X = 5.000000000000000000
+          Size.Width = 48.000000000000000000
+          Size.Height = 48.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = 'arrowlefttoolbutton'
+          TextSettings.Trimming = None
+          OnClick = btnBackClick
+        end
+      end
+      object GridPanelLayout3: TGridPanelLayout
+        Align = Bottom
+        Position.Y = 353.000000000000000000
+        Size.Width = 404.000000000000000000
+        Size.Height = 184.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        ColumnCollection = <
+          item
+            Value = 50.000000000000000000
+          end
+          item
+            Value = 50.000000000000000000
+          end>
+        ControlCollection = <
+          item
+            Column = 0
+            Control = btnTiposLetra
+            Row = 0
+          end
+          item
+            Column = 1
+            Control = btAlinhamento
+            Row = 0
+          end
+          item
+            Column = 0
+            Control = btnBarras
+            Row = 1
+          end
+          item
+            Column = 1
+            Control = btQRCode
+            Row = 1
+          end
+          item
+            Column = 0
+            Control = btAcentos
+            Row = 2
+          end
+          item
+            Column = 0
+            Control = btnLerStatus
+            Row = 4
+          end
+          item
+            Column = 1
+            Control = btnLerInfo
+            Row = 4
+          end
+          item
+            Column = 0
+            Control = btBeep
+            Row = 3
+          end
+          item
+            Column = 1
+            Control = btnAbrirGaveta
+            Row = 3
+          end
+          item
+            Column = 1
+            Control = btnCortarPapel
+            Row = 2
+          end>
+        RowCollection = <
+          item
+            Value = 20.000000000000000000
+          end
+          item
+            Value = 20.000000000000000000
+          end
+          item
+            Value = 20.000000000000000000
+          end
+          item
+            Value = 20.000000000000000000
+          end
+          item
+            Value = 20.000000000000000000
+          end>
+        object btnTiposLetra: TButton
+          Align = Client
+          Margins.Left = 8.000000000000000000
+          Margins.Top = 4.000000000000000000
+          Margins.Right = 4.000000000000000000
+          Margins.Bottom = 4.000000000000000000
+          Size.Width = 190.000000000000000000
+          Size.Height = 28.799999237060550000
+          Size.PlatformDefault = False
+          TabOrder = 0
+          Text = 'Tipos Letras'
+          TextSettings.Trimming = None
+          OnClick = btnTiposLetraClick
+        end
+        object btAlinhamento: TButton
+          Align = Client
+          Margins.Left = 4.000000000000000000
+          Margins.Top = 4.000000000000000000
+          Margins.Right = 8.000000000000000000
+          Margins.Bottom = 4.000000000000000000
+          Size.Width = 190.000000000000000000
+          Size.Height = 28.799999237060550000
+          Size.PlatformDefault = False
+          TabOrder = 1
+          Text = 'Alinhamento'
+          TextSettings.Trimming = None
+          OnClick = btAlinhamentoClick
+        end
+        object btnBarras: TButton
+          Align = Client
+          Margins.Left = 8.000000000000000000
+          Margins.Top = 4.000000000000000000
+          Margins.Right = 4.000000000000000000
+          Margins.Bottom = 4.000000000000000000
+          Size.Width = 190.000000000000000000
+          Size.Height = 28.799999237060550000
+          Size.PlatformDefault = False
+          TabOrder = 2
+          Text = 'Cod.Barras'
+          TextSettings.Trimming = None
+          OnClick = btnBarrasClick
+        end
+        object btQRCode: TButton
+          Align = Client
+          Margins.Left = 4.000000000000000000
+          Margins.Top = 4.000000000000000000
+          Margins.Right = 8.000000000000000000
+          Margins.Bottom = 4.000000000000000000
+          Size.Width = 190.000000000000000000
+          Size.Height = 28.799999237060550000
+          Size.PlatformDefault = False
+          TabOrder = 3
+          Text = 'QR Code'
+          TextSettings.Trimming = None
+          OnClick = btQRCodeClick
+        end
+        object btAcentos: TButton
+          Align = Client
+          Margins.Left = 8.000000000000000000
+          Margins.Top = 4.000000000000000000
+          Margins.Right = 4.000000000000000000
+          Margins.Bottom = 4.000000000000000000
+          Size.Width = 190.000000000000000000
+          Size.Height = 28.799995422363280000
+          Size.PlatformDefault = False
+          TabOrder = 6
+          Text = 'Acentos'
+          TextSettings.Trimming = None
+          OnClick = btAcentosClick
+        end
+        object btnLerStatus: TButton
+          Align = Client
+          Margins.Left = 8.000000000000000000
+          Margins.Top = 4.000000000000000000
+          Margins.Right = 4.000000000000000000
+          Margins.Bottom = 4.000000000000000000
+          Size.Width = 190.000000000000000000
+          Size.Height = 28.800003051757810000
+          Size.PlatformDefault = False
+          TabOrder = 8
+          Text = 'Ler Status'
+          TextSettings.Trimming = None
+          OnClick = btnLerStatusClick
+        end
+        object btnLerInfo: TButton
+          Align = Client
+          Margins.Left = 4.000000000000000000
+          Margins.Top = 4.000000000000000000
+          Margins.Right = 8.000000000000000000
+          Margins.Bottom = 4.000000000000000000
+          Size.Width = 190.000000000000000000
+          Size.Height = 28.800003051757810000
+          Size.PlatformDefault = False
+          TabOrder = 9
+          Text = 'Ler Info'
+          TextSettings.Trimming = None
+          OnClick = btnLerInfoClick
+        end
+        object btBeep: TButton
+          Align = Client
+          Margins.Left = 4.000000000000000000
+          Margins.Top = 4.000000000000000000
+          Margins.Right = 8.000000000000000000
+          Margins.Bottom = 4.000000000000000000
+          Size.Width = 190.000000000000000000
+          Size.Height = 28.800003051757810000
+          Size.PlatformDefault = False
+          TabOrder = 7
+          Text = 'Beep'
+          TextSettings.Trimming = None
+          OnClick = btBeepClick
+        end
+        object btnAbrirGaveta: TButton
+          Align = Client
+          Margins.Left = 4.000000000000000000
+          Margins.Top = 4.000000000000000000
+          Margins.Right = 8.000000000000000000
+          Margins.Bottom = 4.000000000000000000
+          Size.Width = 190.000000000000000000
+          Size.Height = 28.800003051757810000
+          Size.PlatformDefault = False
+          TabOrder = 5
+          Text = 'Abrir Gaveta'
+          TextSettings.Trimming = None
+          OnClick = btnAbrirGavetaClick
+        end
+        object btnCortarPapel: TButton
+          Align = Client
+          Margins.Left = 4.000000000000000000
+          Margins.Top = 4.000000000000000000
+          Margins.Right = 8.000000000000000000
+          Margins.Bottom = 4.000000000000000000
+          Size.Width = 190.000000000000000000
+          Size.Height = 28.799995422363280000
+          Size.PlatformDefault = False
+          TabOrder = 4
+          Text = 'Cortar Papel'
+          TextSettings.Trimming = None
+          OnClick = btnCortarPapelClick
+        end
+      end
+      object mImp: TMemo
+        Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+        DataDetectorTypes = []
+        Align = Client
+        Size.Width = 404.000000000000000000
+        Size.Height = 305.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 2
+        Viewport.Width = 404.000000000000000000
+        Viewport.Height = 305.000000000000000000
+      end
+      object GridPanelLayout4: TGridPanelLayout
+        Align = Bottom
+        Position.Y = 537.000000000000000000
+        Size.Width = 404.000000000000000000
+        Size.Height = 54.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 3
+        ColumnCollection = <
+          item
+            Value = 32.822786510815530000
+          end
+          item
+            Value = 67.177213489184470000
+          end>
+        ControlCollection = <
+          item
+            Column = 1
+            Control = btnImprimir
+            Row = 0
+          end
+          item
+            Column = 0
+            Control = btnLimpar
+            Row = 0
+          end>
+        RowCollection = <
+          item
+            Value = 100.000000000000000000
+          end
+          item
+            SizeStyle = Auto
+          end>
+        object btnImprimir: TCornerButton
+          Align = Client
+          CornerType = InnerRound
+          Images = ImageList1
+          ImageIndex = 4
+          Margins.Left = 4.000000000000000000
+          Margins.Top = 4.000000000000000000
+          Margins.Right = 4.000000000000000000
+          Margins.Bottom = 4.000000000000000000
+          Sides = [Top, Left, Bottom, Right]
+          Size.Width = 263.395935058593800000
+          Size.Height = 46.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = 'btnImprimirStyle1'
+          TabOrder = 1
+          Text = 'Imprimir'
+          TextSettings.Trimming = None
+          XRadius = 3.000000000000000000
+          YRadius = 3.000000000000000000
+          OnClick = btnImprimirClick
+        end
+        object btnLimpar: TCornerButton
+          Align = Client
+          CornerType = InnerRound
+          Images = ImageList1
+          ImageIndex = 5
+          Margins.Left = 4.000000000000000000
+          Margins.Top = 4.000000000000000000
+          Margins.Right = 4.000000000000000000
+          Margins.Bottom = 4.000000000000000000
+          Sides = [Top, Left, Bottom, Right]
+          Size.Width = 124.604064941406300000
+          Size.Height = 46.000000000000000000
+          Size.PlatformDefault = False
+          TabOrder = 0
+          Text = 'Limpar'
+          TextSettings.Trimming = None
+          XRadius = 3.000000000000000000
+          YRadius = 3.000000000000000000
+          OnClick = btnLimparClick
+        end
+      end
+    end
+  end
+  object GestureManager1: TGestureManager
+    Sensitivity = 80.000000000000000000
+    Left = 222
+    Top = 51
+  end
+  object ACBrPosPrinter1: TACBrPosPrinter
+    Device.Baud = 19200
+    ConfigBarras.MostrarCodigo = False
+    ConfigBarras.LarguraLinha = 0
+    ConfigBarras.Altura = 0
+    ConfigBarras.Margem = 0
+    ConfigQRCode.Tipo = 2
+    ConfigQRCode.LarguraModulo = 4
+    ConfigQRCode.ErrorLevel = 0
+    LinhasEntreCupons = 0
+    Left = 352
+  end
+  object ImageList1: TImageList
+    Source = <
+      item
+        MultiResBitmap.Height = 36
+        MultiResBitmap.Width = 36
+        MultiResBitmap.LoadSize = 0
+        MultiResBitmap = <
+          item
+            Width = 36
+            Height = 36
+            PNG = {
+              89504E470D0A1A0A0000000D4948445200000024000000240806000000E10098
+              980000000473424954080808087C086488000001F1494441545885EDD7AB4E03
+              411406E0ED4554545420FA062011084405AEA2A2A2128140201BC203ACA844B4
+              EF804020103C00828740603681646D933221CDEECC8F60B6399C9DBD754F05A1
+              47ED4E67CE7C3BD7D4F3F6F11F02808F9F984AE76ED66CBF9046D505799E304A
+              02E47982A84C1080E38AB9C4A78F62A6798B962C6A044110E177C8A2008C8A3A
+              A020ADF56D1CC72F3B4301681B631EF23AA020FBDC2D8B02300070298AE2205B
+              D65DAFD7216B33E218A5D4CAD6EB88A15C20ADF59C56B46DDB2CE79454A9364A
+              79280EE218ADF51DC7D87CBDE572F965C1CF954159A8288A5E93673E4D5AEB39
+              6BDFA7EFC6984760B33BBB6228573830475114BD03E891B21BD2E4742B501994
+              0B43466F48CA87A4D9C5D6A03C5401E657C700CE4879EA68A87497351A8D18C0
+              472A49B319B0A2C3300C0FC87B6A81DBF8ACD27F2AF86E62C10FCF09B95646A4
+              9C4ED9F9AE3045A83E29A36751D50BDC8DA1EB4329B52A409DB05CF70060CFA3
+              ACA92C8FB1EF3E799FF185AEB59EB97201E8241F608C7912C1D8C43E29F6E1D8
+              7D7CE7D97657A4CA4404E302255FEFB85CC70C34504AADE2387EAB345D79983A
+              2394A0383437008C4B0CBD4F7E77AD212766EB484628E72B3720BECBC431A4D3
+              CC616553B67B4C51B840521891FF65C69845ABD5BA96C8551B2489F1BC9A2069
+              CC3EFE647C036A8E0D3D2B18E38E0000000049454E44AE426082}
+            FileName = 'C:\temp\Logos\outline_bluetooth_searching_white_18dp.png'
+          end>
+        Name = 'outline_bluetooth_searching_white_18dp'
+      end
+      item
+        MultiResBitmap.Height = 36
+        MultiResBitmap.Width = 36
+        MultiResBitmap.LoadSize = 0
+        MultiResBitmap = <
+          item
+            Width = 36
+            Height = 36
+            PNG = {
+              89504E470D0A1A0A0000000D4948445200000024000000240806000000E10098
+              980000000473424954080808087C08648800000184494441545885EDD73B6EC2
+              401006E0B54D918282922350E61E141C05E504149429CC1D52A6C82172809469
+              5D44CA012217963DF3A7C822AD877D1833268AC2DFD8ACECD90FF6258CB9E5BF
+              05C00E3FD96AD4CB358AD81C34509A20631450DA20632E440D0201B83FB3AECA
+              F08530DBD8A4752635AAAA6AD18F2E0AC03AD5810B22A2C7AEEB5E2743019831
+              F373AC031764EFE7BF8A9220DB366F9AE653BCB3BE0ACA0722A2D27DD0BE3B53
+              03C55012243144F4A48E89A1DAB67D3FDECB6122A252B3F32533BF0058A650BE
+              F830A19A8330C76F6EAF67A1429858CD4118312C8350294CACA631FEA363C1CC
+              0BB7C17EEEB56559D601F8382998E7D5D89AC100581D27A8BDAEE433723589F8
+              76F464CD248A88DE4660A2A850CDD1911877A9D775FD9542A9C6B3E995E81FAE
+              7B39D189687F358C31DEC3F564F5A96E90318C0F64DBEE3C87EB66728C0F34E9
+              2F0460932A8CF41C9A66B842855D905C65EA18A7D3E0F88B219B1E938A0F7409
+              46FD7F19331F8AA27818FBBE2AE8528C318A200DCC2D7F32DF4C37A6192CD882
+              B10000000049454E44AE426082}
+            FileName = 'C:\temp\Logos\outline_bluetooth_connected_white_18dp.png'
+          end>
+        Name = 'outline_bluetooth_connected_white_18dp'
+      end
+      item
+        MultiResBitmap.Height = 36
+        MultiResBitmap.Width = 36
+        MultiResBitmap.LoadSize = 0
+        MultiResBitmap = <
+          item
+            Width = 36
+            Height = 36
+            PNG = {
+              89504E470D0A1A0A0000000D4948445200000024000000240806000000E10098
+              980000000473424954080808087C086488000001CF494441545885ED97314B1C
+              411886DFCF5D583984B3B00C9CE515828208164A4C1148B04879F901F6FA0FEE
+              2F2816A904C12A602782E92EC4228590409A083607FE803D385606E6BBD76691
+              E5BC3926B37B17917BBA9D6FF69D67866166179831A31CE22A90DC02B00E60B1
+              8271FE8AC8D7E0B755F50BAB673F4886E4F20464BCA5E2116DAD825C47443A41
+              33CB51D50F51146DE68F8724212247DE0124DB8519B5CBC8E4790BD6DA1FBE2B
+              35E7191A421B0044A41F45D14755BD2E441EBAA4BC84CA3246AA35DC772A4243
+              523F0BCDCDFF26043C495D8DEB3355211F5E9CD0A873E81922E2BC62AAE6C5AD
+              D0EB1222D954D53355FDA3AABFF24BF94D994CAF3DE490D9EDF57AE7F57A7DBE
+              D0BC668CF94CF2BD88DC84E406AD10C92563CCE9900C00204992456BED19C967
+              B5890901789B24C992AB18C77113C0CA34857C065B0D090E15BAF3E8731B121C
+              2AF43DCBB2BEAB68ADBD07F07B6A4222725FABD50E46D5BADDAE8DE3784F449C
+              C2950BE5522700DEA9EA7596657D634C4AF2AAD1686C88C8B7D0DCE0732897EA
+              00D82E9331CC5821923B24AB1C0F24770A7775EAF3422BF01BFA9F48D3F481A4
+              F32C2B0AC583C1E062D242AA7A3C6AFC71BFD22B003EA1E43E737023229713C8
+              9D31038FB7C978C8B9D7507A0000000049454E44AE426082}
+            FileName = 'C:\temp\Logos\outline_save_white_18dp.png'
+          end>
+        Name = 'outline_save_white_18dp'
+      end
+      item
+        MultiResBitmap.Height = 36
+        MultiResBitmap.Width = 36
+        MultiResBitmap.LoadSize = 0
+        MultiResBitmap = <
+          item
+            Width = 36
+            Height = 36
+            PNG = {
+              89504E470D0A1A0A0000000D4948445200000024000000240806000000E10098
+              980000000473424954080808087C0864880000014B494441545885EDD4214EC4
+              4014C6F19976E58A4A040740AC40201124288240F6001C01C10138000281D803
+              203802860408024B82406C130424352348769A796F3E0413529ACEA69D365948
+              E6EF9AA6AFBF4E3323442C168BC5FE5100A6EB36FC8A88EED68D92F50B0060E6
+              FB344D0FA4949FBE871CFAC85ABB0B602684D8ACDDFE9052164992DC0A211EA4
+              94CFC13AB87C2B05609B99AF94524B748C881E01E40026C1A0260A40C6CCF3AE
+              080FEC09C04E30A886DA33C6BCAD7A99D6BA24A205112D56AD5E511406C04930
+              C897526AC9CC97000EE1F9B5004E89E8B5ED7966BE180DE4201B3D3E32AFAAEA
+              BD65CED918A0E3AE90C6DCCC5A7BD3322F1F0432C6BCF4599DC6EC89B5F6BA3E
+              4F6B5D02C8824123A0A66EB7FDC4CCF341A0115033B7DB007C6F10EFACAEA0A1
+              28663E6F8C6B3F0AFA8086A0006C69AD4B77D8EE23E4148FC562B158EC8FF605
+              B03D59574372ECD20000000049454E44AE426082}
+            FileName = 'C:\temp\Logos\outline_undo_white_18dp.png'
+          end>
+        Name = 'outline_undo_white_18dp'
+      end
+      item
+        MultiResBitmap.Height = 36
+        MultiResBitmap.Width = 36
+        MultiResBitmap.LoadSize = 0
+        MultiResBitmap = <
+          item
+            Width = 36
+            Height = 36
+            PNG = {
+              89504E470D0A1A0A0000000D4948445200000024000000240806000000E10098
+              980000000473424954080808087C08648800000136494441545885ED97314EC4
+              301045ED28C51694145B70080A6EC20138C21E61B327E01008718015150587E0
+              18142920D2349E47C322B3C8B19D3828855F19CDCCFFF23893893195CA3C6C4A
+              10B02F2266ED211A93520860BE1D63ACB551BDA6845049DA0939DD92F1D92D4B
+              39F639B9AB6B593514E38F21A00576AAFA2222FDF92B4F26E7B922D2ABEA11B8
+              8BBA035A557DCD159D8A73EE216668FF5F663CC227E59C7BF3DCDF0397D1634D
+              04B80036C0D639F774D251D5E35892CFA6A0999B61183E44E41DB802B6271111
+              E9930C9532F35D77E795BE1DD39AF2E998C2A3AA5E1B633E9BA6791E0BFC35CA
+              7DB7FE986781F523A4956AA8F8FA11D25ADDA40EDEA1913675991A3FF129AD0F
+              B62C983063FD48A9B9FA967581B8D0F35CA275EAC618237B52971A9221EA7F59
+              8CD496754B9AA8544AF205369B065FC024546E0000000049454E44AE426082}
+            FileName = 'C:\temp\Logos\outline_local_printshop_white_18dp.png'
+          end>
+        Name = 'outline_local_printshop_white_18dp'
+      end
+      item
+        MultiResBitmap.Height = 36
+        MultiResBitmap.Width = 36
+        MultiResBitmap.LoadSize = 0
+        MultiResBitmap = <
+          item
+            Width = 36
+            Height = 36
+            PNG = {
+              89504E470D0A1A0A0000000D4948445200000024000000240806000000E10098
+              980000000473424954080808087C086488000000D0494441545885EDD64D0E82
+              301040E1423890F760E1C28370941EC44B75E12D74782EB489C2A230D31663FA
+              F69D7CE167C0B956ABD55A079C7E61461C34F16AD2CE10111F42B803172B66E4
+              BBDD2811F1F1F01BA5BF52C030CFF3558BFAC40088885763ACA822182DAA2866
+              2FAA0A662BAA2A26853A0493401D8349A1AC985E7BB0EBBA07705B0DECFB6001
+              A95B3E33A9B7AF2A4644BC65A367C73867FFCC64C5C4AAA2B6EE992AA8BD4BAF
+              284ABB818BA080B3069340D97E65E315D26EE0052ACF6D03CEC6F3033066C1B4
+              5AAD7FEB099797D5FD702189A50000000049454E44AE426082}
+            FileName = 'C:\temp\Logos\outline_clear_white_18dp.png'
+          end>
+        Name = 'outline_clear_white_18dp'
+      end>
+    Destination = <
+      item
+        Layers = <
+          item
+            Name = 'outline_bluetooth_searching_white_18dp'
+            SourceRect.Right = 36.000000000000000000
+            SourceRect.Bottom = 36.000000000000000000
+          end>
+      end
+      item
+        Layers = <
+          item
+            Name = 'outline_bluetooth_connected_white_18dp'
+            SourceRect.Right = 36.000000000000000000
+            SourceRect.Bottom = 36.000000000000000000
+          end>
+      end
+      item
+        Layers = <
+          item
+            Name = 'outline_save_white_18dp'
+            SourceRect.Right = 36.000000000000000000
+            SourceRect.Bottom = 36.000000000000000000
+          end>
+      end
+      item
+        Layers = <
+          item
+            Name = 'outline_undo_white_18dp'
+            SourceRect.Right = 36.000000000000000000
+            SourceRect.Bottom = 36.000000000000000000
+          end>
+      end
+      item
+        Layers = <
+          item
+            Name = 'outline_local_printshop_white_18dp'
+            SourceRect.Right = 36.000000000000000000
+            SourceRect.Bottom = 36.000000000000000000
+          end>
+      end
+      item
+        Layers = <
+          item
+            Name = 'outline_clear_white_18dp'
+            SourceRect.Right = 36.000000000000000000
+            SourceRect.Bottom = 36.000000000000000000
+          end>
+      end>
+    Left = 16
+    Top = 9
+  end
+end

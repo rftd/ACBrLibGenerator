@@ -1,0 +1,71 @@
+﻿using System.ComponentModel;
+
+namespace ACBrLib.Core.PIXCD
+{
+    /// <summary>
+    /// Enumera os provedores de serviço de pagamento (PSP) suportados pelo PIXCD.
+    /// <para>Veja mais em: https://acbr.sourceforge.io/ACBrLib/ConfiguracoesdaBiblioteca23.html</para>
+    /// </summary>
+    public enum PSP
+    {
+        [Description("Bradesco")]
+        pspBradesco = 0,
+
+        [Description("Itaú")]
+        pspItau = 1,
+
+        [Description("Banco do Brasil")]
+        pspBancoBrasil = 2,
+
+        [Description("Santander")]
+        pspSantander = 3,
+
+        [Description("Shipay")]
+        pspShipay = 4,
+
+        [Description("Sicredi")]
+        pspSicredi = 5,
+
+        [Description("Sicoob")]
+        pspSicoob = 6,
+
+        [Description("PagSeguro")]
+        pspPagSeguro = 7,
+
+        [Description("GerenciaNet")]
+        pspGerenciaNet = 8,
+
+        [Description("PixPDV")]
+        pspPixPDV = 9,
+
+        [Description("Inter")]
+        pspInter = 10,
+
+        [Description("Ailos")]
+        pspAilos = 11,
+
+        [Description("Matera")]
+        pspMatera = 12,
+
+        [Description("Cielo")]
+        pspCielo = 13,
+
+        [Description("Mercado Pago")]
+        pspMercadoPago = 14,
+
+        [Description("Gate2All")]
+        pspGate2All = 15,
+
+        [Description("Banrisul")]
+        pspBanrisul = 16,
+
+        [Description("C6Bank")]
+        pspC6Bank = 17,
+
+        [Description("AppLess")]
+        pspAppLess = 18,
+
+        [Description("QQPag")]
+        pspQQPag = 19,
+    }
+}

@@ -1,0 +1,47 @@
+object frmResposta: TfrmResposta
+  Left = 0
+  Height = 462
+  Top = 0
+  Width = 708
+  Caption = 'Resposta'
+  ClientHeight = 462
+  ClientWidth = 708
+  Color = clBtnFace
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Position = poMainFormCenter
+  LCLVersion = '3.8.0.0'
+  object Panel1: TPanel
+    Left = 0
+    Height = 41
+    Top = 0
+    Width = 708
+    Align = alTop
+    BevelOuter = bvNone
+    Caption = 'Retorno de Envio'
+    Color = clBlack
+    Font.Color = clWhite
+    Font.Height = -21
+    Font.Name = 'Segoe UI'
+    ParentBackground = False
+    ParentColor = False
+    ParentFont = False
+    TabOrder = 0
+  end
+  object Memo1: TMemo
+    Left = 0
+    Height = 421
+    Top = 41
+    Width = 708
+    Align = alClient
+    Font.CharSet = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -12
+    Font.Name = 'Courier New'
+    ParentFont = False
+    ReadOnly = True
+    ScrollBars = ssBoth
+    TabOrder = 1
+  end
+end

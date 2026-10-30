@@ -1,0 +1,19 @@
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xsd:element name="EmailNFSeTomadorResposta">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element type="xsd:string" name="NumeroNfse"/>
+        <xsd:element type="xsd:string" name="Emails"/>
+        <xsd:element type="xsd:string" name="Msg"/>
+                           <xsd:element name="Msg" maxOccurs="unbounded" minOccurs="1">
+                              <xsd:complexType>
+                                 <xsd:sequence>
+                                    <xsd:element type="xsd:int" name="Erro"/>
+                                    <xsd:element type="xsd:string" name="Status"/>
+                                 </xsd:sequence>
+                              </xsd:complexType>
+                           </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

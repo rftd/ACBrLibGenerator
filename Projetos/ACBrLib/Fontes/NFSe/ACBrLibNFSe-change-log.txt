@@ -1,0 +1,340 @@
+{******************************************************************************}
+{ Projeto: Componentes ACBr                                                    }
+{  Biblioteca multiplataforma de componentes Delphi para interação com equipa- }
+{ mentos de Automação Comercial utilizados no Brasil                           }
+{                                                                              }
+{  Você pode obter a última versão desse arquivo na pagina do  Projeto ACBr    }
+{ Componentes localizado em      http://www.sourceforge.net/projects/acbr      }
+{                                                                              }
+{  Esta biblioteca é software livre; você pode redistribuí-la e/ou modificá-la }
+{ sob os termos da Licença Pública Geral Menor do GNU conforme publicada pela  }
+{ Free Software Foundation; tanto a versão 2.1 da Licença, ou (a seu critério) }
+{ qualquer versão posterior.                                                   }
+{                                                                              }
+{  Esta biblioteca é distribuída na expectativa de que seja útil, porém, SEM   }
+{ NENHUMA GARANTIA; nem mesmo a garantia implícita de COMERCIABILIDADE OU      }
+{ ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA. Consulte a Licença Pública Geral Menor}
+{ do GNU para mais detalhes. (Arquivo LICENÇA.TXT ou LICENSE.TXT)              }
+{                                                                              }
+{  Você deve ter recebido uma cópia da Licença Pública Geral Menor do GNU junto}
+{ com esta biblioteca; se não, escreva para a Free Software Foundation, Inc.,  }
+{ no endereço 59 Temple Street, Suite 330, Boston, MA 02111-1307 USA.          }
+{ Você também pode obter uma copia da licença em:                              }
+{ http://www.opensource.org/licenses/lgpl-license.php                          }
+{                                                                              }
+{ Daniel Simões de Almeida - daniel@projetoacbr.com.br - www.projetoacbr.com.br}
+{       Rua Coronel Aureliano de Camargo, 963 - Tatuí - SP - 18270-170         }
+{******************************************************************************}
+Agradecimentos:
+
+* Administradores:
+- Daniel Simões de Almeida
+
+{******************************************************************************
+|* ACBrLibNFSe
+|*
+|* PROPÓSITO: Registro de Alterações
+******************************************************************************}
+
+Símbolo : Significado
+
+[+]     : Novo recurso
+[*]     : Recurso modificado/melhorado
+[-]     : Correção de Bug (assim esperamos)
+
+19/10/2026
+-- ACBrLibNFSeBase,ACBrLibNFSeConsts,ACBrLibNFSeMT,ACBrLibNFSeST,ACBrLibRespostas,ACBrLibNFSE.lpr --
+[+] Adiciona informações no Log e um novo método NFSE_ObterURLsProvedor
+   Por: Diego Folieni
+   Veja: https://www.projetoacbr.com.br/forum/topic/95301-d%C3%BAvidas-na-configura%C3%A7%C3%A3o-e-rejei%C3%A7%C3%B5es-de-nfs-e-de-sorocaba/#comment-624503 
+
+14/07/2026
+-- ACBrLibNFSeConfig --
+[*] Declara ACBrDFe.Conversao no uses para usar EnumeradoToStr/StrToEnumerado dela.
+   Por: Diego Folieni
+
+11/06/2026
+-- ACBrLibNFSeConsoleMT.lpi, ACBrLibConsoleMTDemo.lpi --
+[+] Adiciona modo de compilação para Win64/MT
+[*] Relacionado a tarefa ACBr-9381
+[*] Para ser usada em ambiente Windows sem interface gráfica.
+    Por: doszapro 
+
+14/05/2026
+---  ACBrLibNFSeBase, ACBrLibNFSeRespostas --
+[-] ACBr-9255 Corrige retorno de geração de lote quando há erro de validação de Schemas
+[+] Refatora TLibNFSeServiceRespostas aplicando princípio do SOLID, adicionando métodos 'ListarErros','ListarAlertas' e'ListarRespostas'
+[*] Agora, quando houver falha na validação de schemas será propagado para a lib.
+  Por: doszapro
+  
+09/04/2026
+-- ACBrNFSeBase.php, ACBrNFSeMT.h, ACBrNFSeMT.php, ACBrNFSeServicosMT.php, ACBrNFSeServicosST.php, ACBrNFSeST.h, ACBrNFSeST.php --
+[+] ACBR-9244 - Adicionada combo VersaoDF no programa de exemplo em PHP para situações especiais em provedores com mais de uma versão ativa
+   Por: Renato Rubinho
+
+06/04/2026
+-- ACBrNFSeBase.php --
+[+] Adicionado lnfsPadraoNacionalv101 para seleção do LayoutNFSe
+   Por: Renato Rubinho
+
+20/03/2026
+-- ACBrLibNFSeBase/ACBrLibNFSeMT/ACBrLibNFSeST --
+[+] ACBR-8944 - Adiciona um novo método NFSe_SetVersaoDF
+   Por: Diego Folieni
+   Veja: https://www.projetoacbr.com.br/forum/topic/90107-isssaopaulo-orienta%C3%A7%C3%B5es-e-particularidades/
+
+16/03/2026
+-- ACBrLibNFSeRespostas --
+[+] ACBR-9061 - Adiciona informação DescSituacao na resposta da Lib.
+   Por: Eric Bortoleto / Diego Folieni
+
+06/03/2026
+-- ACBrLibNFSeRespostas --
+[*] ACBR-8729 - Ajuste visando atualizar a resposta do ObterInformacoesProvedor para os provedores de API Propria.
+   Por: Diego Folieni 
+
+02/03/2026
+-- ACBrLibNFSeConsts/ACBrLibNFSeConfig --
+[*] ACBR-9062 - Adiciona configuração LogoNFSe para o DANFSe.
+   Por: Diego Folieni
+   Veja: https://www.projetoacbr.com.br/forum/topic/90726-boas-novas-para-quem-emite-nfs-e/ 
+
+26/02/2026
+-- ACBrLibNFSeRespostas --
+[*] ACBR-8927 - Adiciona mais informações na resposta da consulta e do envio de evento.
+   Por: marcoprodata
+   Veja: https://www.projetoacbr.com.br/forum/topic/90086-acbr-8927-nfse-pronim-parou-de-retornar-a-tag-situacao-na-consulta-por-chave/?&_rid=124795#findComment-588058 
+
+22/12/2025
+-- ACBrLibNFSeBase, ACBrLibNFSeRespostas --
+[-] ACBr-8299 - Corrige resposta do ObterDANFSE e melhora resposta do ConsultarLoteRPS
+   Por: Diego Folieni
+
+13/11/2025
+-- ACBrLibNFSeBase --
+[-] ACBr-8300 - Ajuste visando correta devolução das informações no buffer de resposta do enviar evento.
+   Por: Diego Folieni
+
+09/10/2025
+-- ACBrLibNFSeConsoleMT.lpi, ACBrLibNFSeConsoleMTDemo.lpi --
+[+] TK-7487 - Habilita 16KB de alinhamento nos LPI console da ACBrLibNFSe, obs: para ndk <=r22b
+   Adiciona flags de linker -k-z" common-page-size=16384" e -k-z" max-page-size=16384" 
+   no perfil de compilação android-arm64-v8a para resolver problemas de alinhamento de página e compatibilizar com Android 15+.
+   
+   Por: doszapro
+
+22/07/2025
+-- ACBrLibNFSeConfig.pas, ACBrLibNFSeConsts.pas --
+[+] Expoe a propriedade DataCompetenciaCompleta na ACBrLib
+    Por: doszapro
+
+14/07/2025
+-- ACBrNFSeBase.php,ACBrNFSeMT.h,ACBrNFSeMT.php,ACBrNFSeServicosMT.php,ACBrNFSeST.h,ACBrNFSeST.php --
+[*] #TK-7345 - Corrigida assinatura do método NFSE_Emitir alterando o parâmetro aImprimir de char para long.
+    Por: Renato Rubinho
+
+10/07/2025
+-- ACBrLibNFSeBase, ACBrLibNFSeConsts --
+[*] #TK-7323 - Não carrega as RPS - função NFSE_CarregarLoteXML
+    Por: Antonio Carlos Junior
+
+17/06/2025
+-- ACBrLibNFSeRespostas --
+[*] #TK-7204: Adiciona no retorno do ConsultarNFSePorRps os campos: NumeroNota e Data (Data de emissão da nota).
+   Por: Italo Giurizzato Junior
+
+08/05/2025
+-- ACBrLibNFSe.lpr, ACBrLibNFSeBase, ACBrLibNFSeMT, ACBrLibNFSeST, ACBrLibNFSeStaticImport, ACBrLibNFSeStaticImportMT --
+[+] #TK-7027: Adiciona novo método NFSE_ObterXMLRps
+   Por: Diego Folieni
+
+05/03/2025
+-- ACBrLibNFSe.lpi, ACBrLibNFSeDemo.lpi, ACBrLibNFSeConsoleMT.lpi e ACBrLibNFSeConsoleMTDemo.lpi--
+[*] Realizado ajustes nos paths para compilação com os novos scripts do Jenkins.
+    Por: Antonio Carlos Junior
+
+25/02/2025
+-- ACBrLibNFSeConsoleMT.lpi, ACBrLibNFSeConsoleMTDemo.lpi --
+[+] Adicionado novo Projeto, 100% CONSOLE e MT versão Pro e Demonstração.
+[+] Compatível com compilação em Linux 64 e Android 32 e 64
+    Por: Antonio Carlos Junior / Elton Barbosa / Victor Gonzales
+
+16/10/2024
+-- Diversos --
+[+] #TK-4956-2: Implementados programas de exemplo em PHP da NFSe ST e MT.
+-- ACBrComum.php --
+[*] Implementadas funcões para identificar se arquivo é xml ou ini, conversão de Data de texto para double e setar path das dependências 
+-- ACBrLibNFSeBase --
+[*] #TK-4956-2: Codificado em base64 o retorno do método ObterDANFSE do padrão nacional
+   Por: Renato Rubinho 
+
+23/09/2024
+-- ACBrLibNFSeRespostas --
+[*] #TK-4228: Adiciona chamada ao ACBrStr para mostrar corretamente o modo envio na resposta.
+   Por: Diego Folieni 
+
+14/08/2024
+--- ACBrLibNFSeBase, ACBrLibNFSeST, ACBrLibNFSeMT,
+    ACBrLibNFSeStaticImportST, ACBrLibNFSeStaticImportMT, ACBrLibNFSeRespostas ---
+[*] Ajustes para usar 'PAnsiChar' no lugar de 'PChar' e 'Integer' ao inves de 'LongInt'
+[*] Ajustes para usar 'ConverterStringEntrada' e 'ConverterStringSaida'
+    Por: Antonio Carlos Junior
+
+15/07/2024
+-- ACBrLibNFSeRespostas --
+[*] Remove a Data das informações de identificação que foram adicionadas.
+    Por: Diego Folieni
+[*] Adiciona Numero da nota e mais algumas informações de identificação na resposta que recebe as informações do resumo.
+    Por: Diego Folieni
+
+31/05/2024
+-- ACBrLibNFSeRespostas --
+[*] Melhora a resposta do Cancelamento e do ObterInformacoesProvedor.
+    Por: Diego Folieni
+
+21/05/2024
+--- ACBrLibNFSeConfig ---
+[+] Implementado conversor para visar a correção da propriedade Produção na seção DANFSE - #TK-5453 
+    Por: Antonio Carlos Junior, Diego Folieni
+
+13/03/2024
+--- Diversos ---
+[+] Implementa o método NFSE_CarregarLoteXML
+    Por: Diego Folieni
+
+06/03/2024
+--- Diversos ---
+[+] Implementado método NFSE_ConsultarLinkNFSe e configurada chamada nos programas de exemplo em c# e java.
+    Por: Renato Rubinho
+--- ACBrLib.NFSeMT.csproj, ACBrLib.NFSe.csproj ---
+[*] Publicados novos pacotes nugets.
+    Por: Renato Rubinho
+
+07/02/2024
+--- ACBrLibNFSeStaticImport ---
+[*] Correção nome do método NFSE_ConsultaNFSePorFaixa para NFSE_ConsultarNFSePorFaixa
+    Por: Antonio Carlos Junior
+
+15/12/2023
+-- Diversos --
+[+] Adiciona o método NFSe_ObterInformacoesProvedor
+   Por: Diego Folieni
+
+27/11/2023
+-- ACBrNFSeLibConfig --
+[*] Corrige informação Tomador.Endereco da seção [DANFSe] que estava sendo salva incorretamente.
+    Por: Diego Folieni
+
+22/11/2023
+--- ACBrLibNFSeRespostas ---
+[*] Adicionado Lista de Resumos - #TK-4758
+    Por: Antonio Carlos Junior
+
+14/11/2023
+--- ACBrLibNFSeBase, ACBrLibNFSeST, ACBrLibNFSeMT, ACBrLibNFSeStaticImport, ACBrLibNFSeStaticImportMT ---
+[+] Inclusão novo método: NFSE_SalvarPDF
+    Por: Antonio Carlos Junior
+
+23/06/2023
+--- ACBrLibNFSeST, ACBrLibNFSeMT ---
+[*] Correção parametros dos métodos
+    Por: Antonio Carlos Junior
+
+21/06/2023
+--- ACBrLibNFSeConfig, ACBrLibNFSeDataModule ---
+[*] Correção da Procedure LerParams, removido da unit ACBrLibNFSeConfig e passado para o DataModule
+    Por: Antonio Carlos Junior / Elton Barbosa
+
+19/06/2023
+--- ACBrLibNFSeStaticImportMT ---
+[*] Ajuste unit ACBrLibNFSeStaticImportMT
+    Por: Antonio Carlos Junior
+
+14/06/2023
+--- ACBrLibNFSeBase, ACBrLibNFSeRespostas ---
+[*] Correção no método e resposta NFSE_GerarLote
+    Por: Antonio Carlos Junior
+
+12/06/2023
+--- ACBrLibNFSeBase, ACBrLibNFSeConsts, ACBrLibNFSeRespostas, ACBrLibNFSeStaticImport, ACBrLibNFSeStaticImportMT, ACBrLibNFSeST, ACBrLibNFSeMT ---
+[+] Novos métodos ACBrLibNFSe para uso do Layout no Padrão Nacional
+    Por: Antonio Carlos Junior
+
+31/05/2023
+--- ACBrLibNFSeBase, ACBrLibNFSeResposta ---
+[*] Ajuste no método NFSE_LinkNFSe para retornar um LinkNFSe
+[*] Novos campos para retornar Erros e Alertas TLibNFSeServiceResposta
+    Contribuição: Emerson Teixeira / Revisão: Diego Foliene, Antonio Carlos Junior
+
+30/02/2023
+--- ACBrLibNFSeDataModule ---
+[*] Correção nas Procedures ConfigurarImpressao e FinalizarImpressao para evitar de ocorrer Access Violation
+    Por: Antonio Carlos Junior
+
+25/05/2023
+--- ACBrLibNFSeRespostas ---
+[*] Novos campos na resposta para o método Emitir
+    https://www.projetoacbr.com.br/forum/topic/72328-ajuste-no-retorno-da-resposta-ao-emitir-uma-nfse-pela-lib-acbrlibnfse/
+    Contribuição: Emerson Teixeira / Revisão: Antonio Carlos Junior
+
+24/05/2023
+--- ACBrLibNFSeBase ---
+[*] Correção dos métodos ConsultarNFSeServicoPrestadoPorNumero e ConsultarNFSeServicoTomadoPorPeriodo
+    Por: Antonio Carlos Junior
+
+02/05/2023
+--- ACBrLibNFSeDemo.lpi ---
+[+] Criação versão Demonstração ACBrLibNFSe
+    Por: Antonio Carlos Junior
+
+25/04/2023
+--- ACBrLibNFSeBase ---
+[*] Correção parametro TipoPeriodo dos métodos de Consulta ACBrLibNFSe.
+    Por: Antonio Carlos Junior
+
+18/04/2023
+--- ACBrLibNFSeBase ---
+[*] Correção variaveis que não estavam sendo utilizadas.
+    Por: Antonio Carlos Junior
+
+17/04/2023
+--- ACBrLibNFSeBase ---
+[*] Remoção da variavel Response dos métodos para correção de A.V
+    Por: Antonio Carlos Junior e Elton Barbosa
+
+12/04/2023
+--- ACBrLibNFSe, ACBrLibNFSeConsts, ACBrLibNFSeStaticImport, ACBrLibNFSeStaticImportMT ---
+[*] Inclusão métodos que estavam faltando na unit ACBrLibNFSe, ACBrLibNFSeStaticImport e ACBrLibNFSeStaticImportMT
+    Por: Antonio Carlos Junior
+
+23/03/2023
+--- ACBrLibNFSeBase, ACBrLibNFSeConsts, ACBrLibNFSeStaticImport, ACBrLibNFSeStaticImportMT ---
+[*] Ajustes para realização dos testes unitários
+    Por: Antonio Carlos Junior 
+
+03/03/2023
+--- ACBrLibNFSeBase, ACBrLibNFSeResposta, ACBrLibNFSeConsts, ACBrLibNFSeST, ACBrLibNFSeMT, ACBrLibNFSeStaticImport, ACBrLibNFSeStaticImportMT ---
+[*] Novos métodos implementados e correções na unit ACBrLibNFSeBase
+    Por: Antonio Carlos Junior
+
+10/02/2023
+--- ACBrLibNFSeBase, ACBrLibNFSeRespostas ---
+[*] Novos métodos implementados e adicionado classes bases de Resposta para métodos NFSe.
+    Por: Antonio Carlos Junior
+
+24/01/2023
+--- ACBrLibNFSe ---
+[*] Ajustes ACBrLibNFSe
+    Por: Antonio Carlos Junior
+
+11/01/2023
+--- ACBrLibNFSeBase ---
+[-] Correção para conversão das respostas com Erros, em ANSI, se assim estiver configurado
+	Por: Antonio Carlos Junior
+
+16/03/2021
+--- ACBrLiNFSeResposta, ACBrLibNFSeConsts ---
+[+] Adicionado classes bases de Resposta para métodos NFSe.
+    Por: José M S Junior
+
+

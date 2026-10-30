@@ -1,0 +1,136 @@
+{******************************************************************************}
+{ Projeto: Componentes ACBr                                                    }
+{  Biblioteca multiplataforma de componentes Delphi para intera��o com equipa- }
+{ mentos de Automa��o Comercial utilizados no Brasil                           }
+{                                                                              }
+{  Voc� pode obter a �ltima vers�o desse arquivo na pagina do  Projeto ACBr    }
+{ Componentes localizado em      http://www.sourceforge.net/projects/acbr      }
+{                                                                              }
+{  Esta biblioteca � software livre; voc� pode redistribu�-la e/ou modific�-la }
+{ sob os termos da Licen�a P�blica Geral Menor do GNU conforme publicada pela  }
+{ Free Software Foundation; tanto a vers�o 2.1 da Licen�a, ou (a seu crit�rio) }
+{ qualquer vers�o posterior.                                                   }
+{                                                                              }
+{  Esta biblioteca � distribu�da na expectativa de que seja �til, por�m, SEM   }
+{ NENHUMA GARANTIA; nem mesmo a garantia impl�cita de COMERCIABILIDADE OU      }
+{ ADEQUA��O A UMA FINALIDADE ESPEC�FICA. Consulte a Licen�a P�blica Geral Menor}
+{ do GNU para mais detalhes. (Arquivo LICEN�A.TXT ou LICENSE.TXT)              }
+{                                                                              }
+{  Voc� deve ter recebido uma c�pia da Licen�a P�blica Geral Menor do GNU junto}
+{ com esta biblioteca; se n�o, escreva para a Free Software Foundation, Inc.,  }
+{ no endere�o 59 Temple Street, Suite 330, Boston, MA 02111-1307 USA.          }
+{ Voc� tamb�m pode obter uma copia da licen�a em:                              }
+{ http://www.opensource.org/licenses/lgpl-license.php                          }
+{                                                                              }
+{ Daniel Sim�es de Almeida - daniel@projetoacbr.com.br - www.projetoacbr.com.br}
+{       Rua Coronel Aureliano de Camargo, 963 - Tatu� - SP - 18270-170         }
+{******************************************************************************}
+Agradecimentos:
+
+* Administradores:
+- Daniel Sim�es de Almeida
+
+{******************************************************************************
+|* ACBrLibETQ
+|*
+|* PROP�SITO: Registro de Altera��es
+******************************************************************************}
+
+S�mbolo : Significado
+
+[+]     : Novo recurso
+[*]     : Recurso modificado/melhorado
+[-]     : Corre��o de Bug (assim esperamos)
+
+09/10/2025
+-- ACBrLibETQConsoleMT.lpi, ACBrLibETQConsoleMTDemo.lpi --
+[+] TK-7487 - Habilita 16KB de alinhamento nos LPI console da ACBrLibETQ, obs: para ndk <=r22b
+   Adiciona flags de linker -k-z" common-page-size=16384" e -k-z" max-page-size=16384" 
+   no perfil de compilação android-arm64-v8a para resolver problemas de alinhamento de página e compatibilizar com Android 15+.
+   
+   Por: doszapro
+
+13/08/2024
+--- ACBrLibETQBase, ACBrLibETQST, ACBrLibETQMT,
+    ACBrLibETQStaticImportST, ACBrLibETQStaticImportMT ---
+[*] Ajustes para usar 'PAnsiChar' no lugar de 'PChar' e 'Integer' ao inves de 'LongInt'
+[*] Ajustes para usar 'ConverterStringEntrada' e 'ConverterStringSaida'
+[*] Remo��o de Units n�o utilizadas
+    Por: Antonio Carlos Junior
+
+10/05/2024
+--- ACBrLibETQStaticImport, ACBrLibETQStaticImportMT, ACBrLibETQMT, ACBrLibETQBase, ACBrLibETQ   --
+[*] TK-5390 - Ajustado o nome do novo metodo ETQ_GerarStreamBase64
+https://www.projetoacbr.com.br/forum/topic/77507-implementa%C3%A7%C3%A3o-do-retorno-da-etiqueta-em-base64-na-acbrlibetq/
+Por: Daniel Morais Infocotidiano
+
+
+10/05/2024
+--- ACBrLibETQStaticImport, ACBrLibETQStaticImportMT, ACBrLibETQMT, ACBrLibETQBase, ACBrLibETQ   --
+[+] TK-5390 - Criado o metodo ETQ_GerarStream
+https://www.projetoacbr.com.br/forum/topic/77507-implementa%C3%A7%C3%A3o-do-retorno-da-etiqueta-em-base64-na-acbrlibetq/
+Por: Daniel Morais Infocotidiano
+
+13/03/2024
+--- ACBrLibETQBase, ACBrLibETQDataModule --
+[*] Adicionado uses ACBrUtil.filesIO
+Por: Daniel Morais Infocotidiano
+
+11/01/2023
+--- ACBrLibETQBase ---
+[-] Corre��o para convers�o das respostas com Erros, em ANSI, se assim estiver configurado
+	Por: Antonio Carlos Junior
+
+20/07/2022
+--- ACBrLibETQ ---
+[*] Remo��o de Warning @deprecated ref. ACBrUtils
+
+22/03/2022
+--- ACBrLibETQBase, ACBrLibETQConfig ---
+[*] Ajuste de classes de Enumerados, adicionado classe ACBrETQClass no uses
+    (Por: Jos� Junior)
+
+05/08/2021
+--- ACBrLibETQBase ---
+[+] Adicionado os metodos para trabalhar com RFID no ACBrLibETQ.
+    (Por: Rafael Dias)
+
+26/11/2020
+--- ACBrLibETQDataModule ---
+[+] Corre��o do na passagem das configura��es para o componente estava lendo as configura��es do PosPrinter.
+    (Por: Rafael Dias)
+
+19/10/2020
+--- ACBrLibETQBase, ACBrLibETQDataModule ---
+[-] Corrigindo retornos da ACBrLibETQ.
+    (Por: Rafael Dias)
+
+07/09/2020
+--- ACBrLibETQMT, ACBrLibETQST ---
+[+] Removido o metodo ETQ_ConfigImportar.
+   Por: Rafael Dias
+[+] Removido o metodo ETQ_ConfigExportar.
+   Por: Rafael Dias
+[-] Removido o metodo ETQ_ImportarConfig.
+   Por: Rafael Dias
+
+24/04/2020
+--- ACBrLibETQClass ---
+[+] Adicionado o metodo ETQ_ImprimirQRCode.
+   Por: Rafael Dias
+[*] Adicionado tratamento das strings para n�o tem problemas com acentua��o.
+   Por: Rafael Dias
+   
+--- ACBrLibETQConfig ---
+[+] Adicionado nova propriedade PaginaDeCodigo.
+   Por: Rafael Dias
+
+03/01/2020
+--- ACBrLibETQClass ---
+[+] Adicionado o metodo ETQ_ImportarConfig.
+   Por: Rafael Dias
+
+16/08/2018
+--- ACBrLibETQ ---
+[+] Inicio do projeto.
+   Por: Italo Jurisato Junior

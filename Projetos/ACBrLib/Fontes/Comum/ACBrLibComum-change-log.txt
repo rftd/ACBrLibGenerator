@@ -1,0 +1,378 @@
+{******************************************************************************}
+{ Projeto: Componentes ACBr                                                    }
+{  Biblioteca multiplataforma de componentes Delphi para interação com equipa- }
+{ mentos de Automação Comercial utilizados no Brasil                           }
+{                                                                              }
+{  Você pode obter a última versão desse arquivo na pagina do  Projeto ACBr    }
+{ Componentes localizado em      http://www.sourceforge.net/projects/acbr      }
+{                                                                              }
+{  Esta biblioteca é software livre; você pode redistribuí-la e/ou modificá-la }
+{ sob os termos da Licença Pública Geral Menor do GNU conforme publicada pela  }
+{ Free Software Foundation; tanto a versão 2.1 da Licença, ou (a seu critério) }
+{ qualquer versão posterior.                                                   }
+{                                                                              }
+{  Esta biblioteca é distribuída na expectativa de que seja útil, porém, SEM   }
+{ NENHUMA GARANTIA; nem mesmo a garantia implícita de COMERCIABILIDADE OU      }
+{ ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA. Consulte a Licença Pública Geral Menor}
+{ do GNU para mais detalhes. (Arquivo LICENÇA.TXT ou LICENSE.TXT)              }
+{                                                                              }
+{  Você deve ter recebido uma cópia da Licença Pública Geral Menor do GNU junto}
+{ com esta biblioteca; se não, escreva para a Free Software Foundation, Inc.,  }
+{ no endereço 59 Temple Street, Suite 330, Boston, MA 02111-1307 USA.          }
+{ Você também pode obter uma copia da licença em:                              }
+{ http://www.opensource.org/licenses/lgpl-license.php                          }
+{                                                                              }
+{ Daniel Simões de Almeida - daniel@projetoacbr.com.br - www.projetoacbr.com.br}
+{       Rua Coronel Aureliano de Camargo, 963 - Tatuí - SP - 18270-170         }
+{******************************************************************************}
+Agradecimentos:
+
+* Administradores:
+- Daniel Simões de Almeida
+
+{******************************************************************************
+|* ACBrLibNFe
+|*
+|* PROPÓSITO: Registro de Alterações
+******************************************************************************}
+
+Símbolo : Significado
+
+[+]     : Novo recurso
+[*]     : Recurso modificado/melhorado
+[-]     : Correção de Bug (assim esperamos)
+
+05/10/2026
+-- ACBrLibComum --
+[+] Adiciona informação do PID (Process ID) no log da ACBrLib
+  Por: doszapro
+
+04/09/2026
+-- ACBrLibConsReciDFe --
+[-] Substitui chamada de pcnRetConsReciDFe para ACBrDFeComum.RetConsReciDFe
+   Por: Diego Folieni
+
+10/08/2026
+-- ACBrLibComum --
+[-] Corrige informaçoes de ambiente gráfico usando as diretivas da LCL
+[*] [ACBr-9705] Objetivo: diferenciar libs Console MT de GUI MT
+ Por: doszapro
+
+05/08/2026
+-- ACBrLibComum --
+[+] Adiciona informações sobre o Ambiente gráfico (Console ou GUI) usado no log da lib.
+[*] [ACBr-9705] Objetivo: diferenciar libs Console MT de GUI MT
+ Por: doszapro
+
+19/05/2026
+-- ACBrLibComum --
+[-] Corrige possível Access Violation em falha de inicialização.
+[*] Em caso de falha de inicialização pLibHandle apontava para uma região de memória inválida.
+  Por: doszapro
+  
+14/04/2026
+-- ACBrLibComum --
+[+] Adiciona o endereço de pLibHandle no log da lib em versões MT da lib.
+[*] Visa melhorar a depuração de erros na lib MT.
+ Por: doszapro.
+
+10/04/2026
+-- ACBrLibComum --
+[+] Adiciona a informação de ThreadID no método TACBRLib.GravarLog para versões MT da ACBrLib.
+[*] Essa informação visa facilitar o Debug em ambiente Multi-Thread
+ Por: doszapro
+
+02/02/2026
+
+-- ACBrLibComum --
+[-] Previne a inicialização da biblioteca quando a exceção EACBrConversaoEnumeradoException for lançada
+[*] Esse erro indica que há configuração de enumerado inválidas no ACBrLib.ini 
+  Por:doszapro
+  
+07/01/2026
+-- ACBrLibComum --
+[-] Previne vazamento de tamanho da eChaveCrypt no log da lib.
+ Por: doszapro
+
+29/09/2025
+-- ACBrLibDistribuicaoDFe --
+[*] Alteração visando usar as novas units do DistribuicaoDFe.
+ Por: Italo Giurizzato Junior
+
+15/09/2025
+-- ACBrLibComum --
+[+] Adiciona funções para obter informações de compilação sobre o sistema operacional e arquitetura (informações relevantes para Log).
+[*] Refatora TACBrLib.GetInformacaoAdicional para mostrar essas informações.
+
+ Por: doszapro
+ 
+25/08/2025
+-- ACBrLibComum --
+[+] Adiciona LIB_FinalizarLiberar para liberar memória do ponteiro handle apontando para NULL
+[+] Adiciona TACBrLib.GetInformacaoAdicional para mostrar no Log informações ST/MT STDCALL/cdecl
+
+  Por: doszapro
+  
+06/05/2025
+-- ACBrLibConfig, ACBrLibConsts --
+[*] #TK-6998: Formata mensagem para exibir chave/seção inexistente de forma explícita.
+    Por: Julio Cavalcanti \ Rev: Diego Folieni
+
+23/04/2025
+--- ACBrLibConfig.pas, ACBrLibConsts.pas ---
+[*] Controle para zerar configurações SSL desativadas para não levantar exceção.
+    Por: Renato Rubinho
+
+11/04/2025
+--- ACBrLibComum.pas ---
+[-] Corrige erro de compilação na lib pro
+    Por: doszapro
+
+10/04/2025
+--- ACBrLibComum.pas ---
+[-] Corrige AV do FPDemo, previne múltiplas liberações de memória na variável FPDemo
+    Por: doszapro
+
+10/03/2025
+-- ACBrComum.php --
+[*] #TK-6733 - Controle para localizar a lib na pasta padrão de bibliotecas do linux
+   Por: Renato Rubinho
+
+24/02/2025
+-- ACBrLibConfig, ACBrLibConsts --
+[*] Criptografia da propriedade CSRT - #TK-6625
+   Por: Antonio Carlos Junior
+
+06/02/2025
+-- ACBrComum.php --
+[*] Sem TK: Removida trava da CarregaContents() quando não for identificado ambiente gráfico
+  Por: Renato Rubinho
+
+10/12/2024
+-- ACBrConsultaCNPJ.php, ACBrConsultaCNPJ.php --
+[*] #TK-6342: Correção na composição do caminho da lib para usar somente DIRECTORY_SEPARATOR
+  Por: Renato Rubinho
+
+09/12/2024
+-- ACBrComum.php --
+[*] Sem TK: Ajuste na função para identificar ambiente gráfico ou emulado e comando no php para funcionar lib com gráfico emulado
+  Por: Renato Rubinho
+
+29/11/2024
+-- ACBrComum.php --
+[*] Sem TK: Corrigida composição do caminho da Lib no linux
+  Por: Renato Rubinho
+
+05/11/2024
+-- ACBrComum.php --
+[+] #TK-6148: Função para identificar ambiente gráfico ou emulado e comando no php para funcionar lib com gráfico emulado
+  Por: Renato Rubinho
+
+29/08/2024
+--- ACBrLibResposta ---
+[-] Correção da função GerarResposta - #TK-5915 https://www.projetoacbr.com.br/forum/topic/79415-boleto_enviarboleto-sresposta-vazio/#comment-513525
+    Por: Antonio Carlos Junior
+
+19/08/2024
+-- ACBrLibComum --
+[-] Correção na função GetNome() com a diretiva "{$IFDEF Demo}"
+    por: Elias César
+
+15/08/2024
+-- ACBrLibConsReciDFe --
+[*] #TK-5833: Adiciona propriedade NomeArq
+   Por: Diego Folieni
+
+10/08/2024
+-- ACBrLibComum --
+[+] Adicionada compatibilidade com Compilador Delphi
+[*] Método 'MoverStringParaPChar', ajustado para usar AnsiString
+[*] Método 'ConverterAnsiParaUTF8' modificado para 'ConverterStringEntrada',
+    para considerar se o compilador utilizado usa ANSI ou UTF8
+[*] Método 'ConverterUTF8ParaAnsi' modificado para 'ConverterStringSaida',
+    para considerar se o compilador utilizado usa ANSI ou UTF8
+[*] Métodos que usam PChar, modificados para usar PAnsiChar, para compatibilizar
+    com Delphi
+[*] Métodos que usam e retornam LongInt, modificados para usar Integer para
+    compatibilizar com Delphi e POSIX 64
+[*] Tipo 'TLibHandle' renomeado para 'TACBrLibHandle', para nao confundir com
+    tipo interno do Delphi e FPC
+[*] Adicionada mais entradas de Log, como por exemplo 'GetOpenSSLInfo'
+[*] Melhorias no Log para Android, inserindo a "Tag", com o nome da ACBrLib
+[*] Ajuste em 'MoverStringParaPChar', para não tentar mover Strings vazias e
+    evitar crash em Delphi
+[*] Melhorias nos métodos da Externo da ACBrLibComum, para usar 'ConverterStringSaida'
+    no conteúdo do retorno, e 'ConverterStringSaida', nos parâmetros de Entrada
+[+] Adicionadas as Unit functions
+    - ConverterStringEntradaParaNativa(AData: AnsiString; CodificacaoEntrada: TACBrLibCodificacao): AnsiString;
+    - ConverterStringNativaParaSaida(AData: AnsiString; CodificacaoSaida: TACBrLibCodificacao): AnsiString;
+    que consideram se o compilador utilizado usa ANSI ou UTF8
+
+-- ACBrLibConfig --
+[*] Tipos movidos de 'ACBrLibResposta' para 'ACBrLibConfig'
+    - TACBrLibRespostaTipo = (resINI, resXML, resJSON);
+    - TACBrLibCodificacao = (codUTF8, codANSI);
+[+] Adicionada propriedade 'TimeOut: Integer' em 'TSocketConfig'
+[*] Propriedade TLibConfig.ChaveCrypt modificada para usar 'AnsiString'
+[*] Método 'TLogConfig.DefinirValoresPadroes' assume 'logParanoico' para Android
+    para enviar mais informações ao 'Logcat' do Android
+[*] Ajuste em 'TLibConfig.Ler', em Android, para detetar se Arquivo informado é
+    na verdade um Diretório. Se for, adiciona nome padrão do arq.Config no NomeArq
+
+-- ACBrLibConsts --
+[+] Adicionada o Erro:
+    SErrNaoDisponivelEmModoConsole = 'Recurso não disponível em modo CONSOLE';
+
+-- ACBrLibHelpers, ACBrLibHelpersIni --
+[*] Classe 'TACBrMemIniFileHelper' movida para 'ACBrLibHelpersIni'
+
+-- ACBrLibResposta, ACBrObjectSerializerDelphi, ACBrObjectSerializerFPC -
+[*] Tipos movidos para 'ACBrLibConfig'
+    - TACBrLibRespostaTipo = (resINI, resXML, resJSON);
+    - TACBrLibCodificacao = (codUTF8, codANSI);
+[*] Classe 'TACBrLibRespostaBase' refatorada para melhor tratamento dos parâmetros
+    de Conversão do Formato da resposta de Saida em ANSI e UTF8 e de acordo com
+    o compilador utilizado
+    - A Resposta sempre será gerada no formato correto para a Saida, não
+      necessitando novas conversões das classes que a criaram
+[*] Classe 'TACBrObjectSerializer', refatorada, para permitir implementação em
+    Lazarus e Delphi
+
+
+11/07/2024
+-- ACBrLibConfig, ACBrLibConsts --
+[+] Adicionada seção de configuração para "ACBrSocket"
+    (por: DSA)
+
+20/05/2024
+-- ACBrLib.NFSe.csproj, ACBrLib.Core.csproj, ACBrLibHandle.cs --
+[*] Correção no Core do C# para não sobrescrever a variável PATH do usuário/sistema
+  Por: gostartlab
+
+16/05/2024
+-- ACBrLibHandle.cs --
+[*] Correção na localização das dependências distribuídas na estrutura dos pacotes nuget quando houver mais de um nuget na mesma aplicação
+  Por: Renato Rubinho
+
+13/05/2024
+-- ACBrLibHandle.cs --
+[*] Buscar dependências distribuídas na estrutura dos pacotes nuget e exibir na exceção o caminho previsto quando não for encontrado
+  Por: Renato Rubinho
+
+09/05/2024
+-- build.cake --
+[*] Adicionada informação no final dos scripts para identificar quando foram executados com sucesso
+  Por: Renato Rubinho
+
+30/04/2024
+-- ACBrLibHandle.cs --
+[*] TK-5375 - Compatibilização da LibraryPath da ACBrLib.Core com pacote self-contained
+  Por: gostartlab, Renato Rubinho
+
+03/04/2024
+-- Diversos --
+[+] Implementado método LIB_OpenSSLInfo
+  Por: Renato Rubinho
+
+21/02/2024
+-- ACBrLib.hnd, Diversos inis --
+[+] Enviados arquivos ini da versão 1.2 do e-Social com correção do Encoding e configurado help da Lib
+  Por: Renato Rubinho
+
+19/02/2024
+-- ACBrLibConfig, ACBrLibConsts--
+[*] TK-5014 Ajustado para criptografar Usuario e Senha do Provedor ConsultaCNPJ
+  Por: Daniel Morais InfoCotidiano
+-- Diversos --
+[+] Scripts para compilação dos nugets para c# com cake
+  Por: Renato Rubinho
+
+14/02/2024
+-- Diversos --
+[+] Renomeados os imports de todos os projetos MT para diferenciar os pacotes nugets gerados
+  Por: Renato Rubinho
+
+12/02/2024
+-- ACBrLibConsultaCadastro --
+[*] Substitui pcnRetConsCad por ACBrDFeComum.RetConsCad visando compatibilização com o processo de remoção da pcn.
+  Por: Diego Folieni
+
+06/02/2022
+--- ACBrLibComum ---
+[+] Adicionado o método 'ConverterUTF8ParaAnsi', converter a resposta de UTF8
+    para ANSI, se assim estiver configurado na Lib
+    (por: DSA)
+
+20/07/2022
+--- ACBrLibComum ---
+[*] Remoção de Warning @deprecated ref. ACBrUtils
+
+14/06/2022
+---DFeReportConfig---
+[-] Remoção do campo FAX da classe DFeReportConfig da lib, compatibilizando com o componente DFeReport
+
+21/12/2021
+--- ACBrLibComum ---
+[*] Melhoria em "LIB_Inicializar", e para evitar A.V. em "LiberarLib" caso a Lib
+    não consiga ser criada
+
+--- ACBrLibDataModule ---
+[-] Adicionado .LFM, para permitir que Lazarus faça a herança visual de formulárip
+    (por: DSA)
+
+26/03/2020
+--- ACBrLibRespostas--
+[*] Ajuste na geração de Respostas tipo data e hora
+
+26/02/2020
+--- ACBrLibRespostas--
+[-] Correção na geração XML Retorno com subitens de objetos 
+
+22/06/2020
+--- ACBrLibCertUtils ---
+[*] Ajuste para obter dados do certificado utilizando OpenSSL
+
+17/03/2020
+--- ACBrLibConfig ---
+[*] Ajuste para que os métodos TLibConfig.GravarValor e TLibConfig.LerValor,
+    verifique se houve modificações no arquivo de Configuração no Disco, antes
+    de processar o novo valor
+
+[-] Ajuste em TLibConfig.SetNomeArquivo, para que o Novo arquivo seja carregado
+    na memória, após atribuido
+    (por: DSA)
+
+--- ACBrLibDeviceUtils ---
+[+] Adicionado Classe para funções utilitárias do Componente ACBrDevice.
+Por: José M S Junior
+
+16/01/2020
+--- ACBrLibConsultaCadastro
+[-] Ajuste na formatação de retorno do campo CEP
+   Por: José M S Junior
+
+16/01/2020
+--- ACBrLibCTeClass, ACBrLibConsultaCadastro, ACBrLibDistribuicaoDFe, ACBrLibConsReciDFe ---
+[-] Correção nos métodos Respostas da LibDFe devido alteração na nomenclatura do Retorno de Consulta
+   Por: José M S Junior
+
+27/06/2019
+--- ACBrLibComum ---
+[+] Adicionado validação para campo DateTime na geração da Resposta, para evitar problema de gerar o campo com data inicial do Sistema
+
+12/02/2019
+--- ACBrLibConfig ---
+[-] Modificado comportamento enviado anteriormente que gravava o arquivo de log no diretório
+	da DLL, evitando possíveis erros de escrita em diretórios do sistema do Windows.
+[+] Adicionada propriedade TipoCorte
+
+--- ACBrLibConsts ---
+[+] Adicionadas novas constantes.
+
+30/01/2019
+--- ACBrLibComum ---
+[+] Modificada inicialização da lib, informando um path válido, onde o arquivo de
+	configuração será automaticamente criado caso não exista.  Por: (Celso Marigo Junior)
+[*] Na inicialização do arquivo de logs, caso path do arquivo não exista, será
+	utilizado path da aplicação.  Por: (Celso Marigo Junior)
+

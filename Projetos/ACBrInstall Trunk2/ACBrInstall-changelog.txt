@@ -1,0 +1,322 @@
+{******************************************************************************}
+{******************************************************************************}
+{ Projeto: Componentes ACBr                                                    }
+{  Biblioteca multiplataforma de componentes Delphi para interação com equipa- }
+{ mentos de Automação Comercial utilizados no Brasil                           }
+{																			   }
+{  Você pode obter a última versão desse arquivo na pagina do  Projeto ACBr    }
+{ Componentes localizado em      http://www.sourceforge.net/projects/acbr      }
+{                                                                              }
+{  Esta biblioteca é software livre; você pode redistribuí-la e/ou modificá-la }
+{ sob os termos da Licença Pública Geral Menor do GNU conforme publicada pela  }
+{ Free Software Foundation; tanto a versão 2.1 da Licença, ou (a seu critério) }
+{ qualquer versão posterior.                                                   }
+{                                                                              }
+{  Esta biblioteca é distribuída na expectativa de que seja útil, porém, SEM   }
+{ NENHUMA GARANTIA; nem mesmo a garantia implícita de COMERCIABILIDADE OU      }
+{ ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA. Consulte a Licença Pública Geral Menor}
+{ do GNU para mais detalhes. (Arquivo LICENÇA.TXT ou LICENSE.TXT)              }
+{                                                                              }
+{  Você deve ter recebido uma cópia da Licença Pública Geral Menor do GNU junto}
+{ com esta biblioteca; se não, escreva para a Free Software Foundation, Inc.,  }
+{ no endereço 59 Temple Street, Suite 330, Boston, MA 02111-1307 USA.          }
+{ Você também pode obter uma copia da licença em:                              }
+{ http://www.opensource.org/licenses/lgpl-license.php                          }
+{                                                                              }
+{ Daniel Simões de Almeida - daniel@projetoacbr.com.br - www.projetoacbr.com.br}
+{       Rua Coronel Aureliano de Camargo, 963 - Tatuí - SP - 18270-170         }
+{******************************************************************************}
+
+{******************************************************************************
+|* ACBr
+|*
+|* PROPÓSITO: Registro de Alterações
+******************************************************************************}
+
+Símbolo : Significado
+
+[+]     : Novo recurso
+[*]     : Recurso modificado/melhorado
+[-]     : Correção de Bug (assim esperamos)
+
+
+22/09/2026
+[-] O aviso sobre versoes antigas do Delphi aparecia sozinho ao abrir o
+    instalador, antes de a janela existir. Ele estava no OnClick das caixas de
+    selecao de IDE, e o "Checked := True" que restaura a selecao gravada no ini
+    tambem dispara o OnClick -- ou seja, quem tivesse um Delphi antigo na
+    selecao salva levava um modal em toda abertura, ainda dentro do FormCreate.
+    O aviso passou para o botao "Proximo" da pagina de selecao: sai uma unica
+    vez, depois que o usuario conclui a escolha, listando todas as IDEs antigas
+    marcadas. A legenda da caixa tambem estava errada -- era "Erro." com icone
+    de aviso, para um texto que e conselho e nao erro; agora e "Atencao".
+[*] As caixas "Compilar Release" e "Compilar Debug" sairam da tela. Os modos
+    passaram a decorrer de "Deixar somente a pasta LibXX no Library Path":
+
+      marcada   -> Release e Debug. Os projetos do usuario compilam contra os
+                   .dcu prontos, entao precisam do Release para o build normal
+                   e do Debug para quem marca "use debug .dcus".
+
+      desmarcada-> somente Release. Os fontes ficam no Library Path e cada
+                   projeto recompila o ACBr com as opcoes dele, ignorando os
+                   .dcu daqui. Sobra como consumidor so a IDE, que carrega os
+                   BPL de Release. Compilar Debug nesse caso era dobrar o tempo
+                   de instalacao para gerar algo que ninguem abre.
+
+    Eram duas escolhas independentes que podiam ser combinadas de um jeito sem
+    sentido (Debug sem ninguem para consumir, ou so Debug com a IDE precisando
+    do Release). TACBrInstallOpcoes.ModosCompilacao virou propriedade derivada,
+    entao as duas nao tem mais como sair de sincronia.
+[-] "Deixar somente a pasta LibXX" nao valia para Win64: o bpWin64 estava
+    comentado dentro do set da condicao, em InstalarOutrosRequisitos. Na pratica
+    os fontes nunca saiam do Library Path do Win64, e os .dcr/.res/.dfm/.ini/.inc
+    nao eram copiados para a pasta Lib dele. Agora Win32 e Win64 se comportam
+    igual. As demais plataformas continuam de fora, porque os pacotes delas nem
+    chegam a ser compilados.
+[-] Modo Release passou a ser realmente Release. As chaves do compilador eram
+    as mesmas nos dois modos: o ramo do Release mandava -$O- (otimizacao
+    desligada) e -$W+ (stack frames ligados), exatamente como o Debug. Agora o
+    Release usa -$O+ -$W- -$D- -$L- -$Y- -$C- e o Debug -$O- -$W+ -$D+ -$L+
+    -$Y+ -$C+. Todas as chaves sao informadas explicitamente nos dois modos,
+    para o resultado nao depender do padrao do dcc32 nem do que estiver escrito
+    dentro do .dpk. Q (overflow) e R (range) continuam desligados nos dois
+    modos: liga-los faria as rotinas de CRC/hash do ACBr, que contam com o
+    estouro de inteiro, passarem a levantar excecao.
+[-] -B e -M eram enviados juntos ao compilador, e um anula o outro: com o -B o
+    compilador refaz tudo e o -M perde o efeito. Ficou so o -B, que e o que ja
+    valia na pratica. Nao virou opcao de tela porque o -M nao seria seguro aqui:
+    na compilacao Debug o -U inclui a pasta do Release, e o -M poderia dar por
+    bom um .dcu da outra configuracao em vez de gerar o de Debug.
+[*] Quando um alvo falha, a instalacao continua parando na hora (um alvo com
+    erro quase sempre indica um problema que se repetiria nos demais), mas a
+    mensagem passou a dizer QUAL alvo interrompeu a fila, em vez de so avisar
+    que ocorreram erros.
+[-] A leitura da revisao do SVN, usada so para montar o cabecalho do log,
+    esperava o processo terminar sem prazo nenhum (WaitForSingleObject com
+    INFINITE, alem de um ReadFile bloqueante). Se o svn ficasse pendurado por
+    rede, credencial ou working copy travada, o instalador travava junto. Agora
+    ha limite de 10 segundos, o processo e encerrado se estourar, e o handle de
+    escrita do pipe nao vaza mais quando o CreateProcess falha.
+[-] Os alvos (IDE + plataforma) nunca eram liberados: a lista e um TList, que
+    nao e dono dos itens, e o destrutor so liberava a lista de instalacoes da
+    JCL.
+[*] GeraListaPlataformasAlvos foi reescrita. A montagem dos alvos de uma
+    instalacao virou uma rotina propria, sem a repeticao de
+    "InstalacaoAlvo := Result.FoACBr.Installations[i]" a cada plataforma.
+[+] Suporte a perfis de IDE (bds.exe -r <Perfil>), desligado por padrao. Com o
+    perfil, o Delphi guarda toda a configuracao em
+    HKCU\Software\Embarcadero\<Perfil>\<versao> -- Library Path, Known
+    Packages, Known Packages x64, Environment Variables e Package Cache --
+    enquanto RootDir e as personalidades continuam no HKLM, na chave real da
+    instalacao. A JCL usa a MESMA chave para os dois hives, entao um perfil e
+    descartado por ficar sem RootDir. O ajuste necessario esta em
+    Terceiros\JclIDEUtils-PerfisIDE.patch (tres pontos alterados, nenhuma
+    assinatura existente quebrada). Depois de aplicar o patch e recompilar a
+    JCL, ligue {$DEFINE ACBR_JCL_COM_PERFIS} em ACBr.PlataformaInstalacaoAlvo.
+    Os perfis aparecem na lista como "Delphi 12 [MeuPerfil] Win32". O
+    instalador nao cria perfil: quem cria e a IDE, na primeira execucao com -r.
+[*] O nome do alvo e o nome do arquivo de log passaram a incluir o perfil.
+    Sem isso, dois perfis da mesma IDE ficariam indistinguiveis na tela e
+    gravariam no mesmo log.
+[*] Terceiros\Leiame.txt reescrito: passou a descrever cada ajuste da JCL
+    separadamente e a avisar que a JCL oficial ja evoluiu alem da revisao 9823
+    usada como base do JclIDEUtils.pas que esta na pasta -- substituir o
+    arquivo de uma JCL recente por aquele seria voltar atras.
+
+21/09/2026
+[-] Corrigido o erro "Can't load package ... DCLACBr_*.bpl" ao abrir a IDE.
+    A limpeza dos pacotes registrados era feita apenas para a combinação
+    (IDE + plataforma) que estava sendo instalada, enquanto a remoção de
+    arquivos varria todos os discos. Qualquer IDE/plataforma/configuração fora
+    da execução atual ficava com registros apontando para BPLs inexistentes.
+    Agora a limpeza cobre as duas listas da IDE (32 e 64 bits), acontece uma
+    única vez por IDE em cada execução, e uma varredura inicial remove
+    registros órfãos de TODAS as IDEs detectadas, inclusive as não marcadas.
+[*] Cada combinação passa a ter a sua própria pasta de artefatos:
+    Lib\Delphi\LibD<versao>\<Plataforma>\<Configuração>. Antes o Release ficava
+    solto na pasta da plataforma e só o Debug tinha subpasta, o que fazia a
+    troca de configuração mudar o caminho do BPL e deixar o registro anterior
+    apontando para o lugar errado.
+[+] Conferência das dependências: ao registrar um pacote de design, o
+    instalador avisa se algum BPL de runtime do ACBr exigido por ele não
+    estiver na MESMA pasta (mesma versão do Delphi, plataforma e configuração).
+[*] Velocidade: os diretórios do Library/Browsing Path passaram a ser gravados
+    de uma vez só (a JCL regravava o EnvOptions.proj a cada diretório), a
+    localização dos .dpk usa um índice montado uma única vez no lugar de uma
+    busca recursiva por pacote, o ACBr.inc só é regravado quando muda, e a
+    instalação na IDE registra o BPL já compilado em vez de recompilar tudo.
+
+21/09/2026
+[+] Compilação dos pacotes nos modos Release e Debug (opções "Compilar Release" e
+    "Compilar Debug"). Os binários de Debug ficam na subpasta "Debug" da pasta Lib
+    da versão/plataforma e são registrados no Debug DCU Path da IDE.
+[+] Compilação dos pacotes também para Win64 (antes somente Win32).
+[+] Instalação dos pacotes na IDE de 64 bits do Delphi (Known Packages x64), quando a
+    versão instalada possuir bin64ds.exe e designide para Win64 (Delphi 12.3 em
+    diante). Opção "Instalar também na IDE 64 bits (se houver suporte)".
+[-] Corrigido "Can't load package" nas IDEs de 32 e 64 bits: a pasta dos BPLs voltou
+    a ser informada no PATH da IDE, agora para as DUAS plataformas. É por ali que a
+    IDE localiza os BPLs de runtime exigidos pelos pacotes de design; o Package
+    Search Path serve aos projetos e não ao carregamento dos pacotes da IDE.
+    Não há conflito entre Win32 e Win64 de mesmo nome: o loader do Windows ignora a
+    DLL de arquitetura errada e continua procurando nas pastas seguintes (é o que a
+    própria Delphi faz ao deixar Bpl e Bpl\Win64 juntos no PATH do sistema).
+    A limpeza das entradas antigas passou a ocorrer uma vez por IDE, e a inclusão
+    não duplica entradas.
+
+11/02/2020
+[-] - Acertos para funcionar corretamente a exclusão de arquivos.
+    - Acertos para funcionar corretamente a alteração da variavel PATH do Delphi
+
+24/01/2018
+[+] Adicionados os pacotes do eSocial e reinf a lista de pacotes para instalação
+    por Regys.Silveira
+
+30/05/2017
+[+] Adicionadas opções para desligar a capicom, openssl, carga tardia de dll e cast de strings
+    por Regys.Silveira
+
+22/03/2017
+[+] Suporte a Delphi 10.2 Tokyo
+	por (Isaque Pinheiro)
+
+07/11/2013
+[+] Adicionado o ACBr_MTER para o instalador e suas dependências
+	por (Juliomar Marchetti)
+	
+30/04/2016 
+[*] Adicionado recurso de selecionar quais versões do delphi, o ACBrInstall deve executar a 
+    instalação, podendo assim fazer instalação em várias versões sem ter que ficar voltando
+    e selecionando versão por versão.
+    por (Isaque Pinheiro)
+
+01/02/2016 
+[*] Retorno da opção do ACBrGNRE somente ele por enquanto as guias ainda não estão prontas
+
+23/11/2015
+[-] Acerto no ACBrInstall para encontar o diretório de pacotes corretamente
+[+] Adicionadas algumas linhas de log para facilitar encontrar problemas com diretórios e arquivos.
+
+23/10/2015
+[+] Adicionada limpeza de diretorios (browse path, library path e dcu debug) antes 
+    instalar os novos, evitando problemas de diretórios antigos no path.
+[+] Adicionada remoção de pacotes que contenham ACBR no nome, evitando que fiquem 
+    pacotes acbr antigos carregados no delphi.
+[+] Remoção de arquivos desnecessários e configuração da execução com previlegios 
+    de administrador.
+    por: regys.silveira
+
+16/10/2015
+[-] adicionada a diretiva de compilação utilizando o UAC.res para forçar a 
+    abertura em modo administrador
+[-] Acertos nas descriçoes dos links e também no manifesto de compatibilidade
+    de versões de sistema operacional
+    por: regys.silveira.
+
+22/12/2014
+[-] Correção de bug adicionando novamente processos removidos pois a compilação dos pacotes não consegue 
+		encontrar sem os mesmos
+		por: Juliomar Marchetti
+
+18/12/2014
+[*] Adição de funcionalidades para desmarcar opções e descrições
+	  http://www.projetoacbr.com.br/forum/index.php?/topic/19198-altera%C3%A7%C3%B5es-no-acbrinstall/
+		
+21/11/2014
+[*] Modificado para adicionar ao Library path somente o diretorio dcu e 
+    adicionado corretamente do browser path o caminho das unit
+	por: Juliomar Marchetti
+
+02/10/2014
+----------
+[+] Adicionado novo componente para impressão do DANFSe em Rave Report para compilar
+
+20/06/2012
+----------
+[*] Alterado para usar o novo repositório SVN
+    por: Régys Silveira
+
+20/06/2012
+----------
+[*] Implementado para compilar e instalar no Delphi XE4.
+    por: Isaque Pinheiro
+
+04/04/2013
+----------
+[+] Implementado instalação da Suite ACbr no Delphi 6
+    (por Isaque Pinheiro)
+
+27/03/2013
+----------
+[+] Implementado instalação do pacote ACBr_LFD.dpk
+    (por Isaque Pinheiro)
+
+23/03/2013
+----------
+[+] Implementado em modo experimental instalação para C++ Builder
+    Obs: A Suite ACBr não é 100% compativel com C++ Builder, por este motivo
+    Está experimental, para possíveis ajustes de compatibilidade futura.
+    (por Isaque Pinheiro)
+
+06/02/2013
+----------
+[+] Implementado instalação do pacote ACBr_MDFe.dpk
+    (por Isaque Pinheiro)
+
+30/01/2013
+----------
+[*] Revisão das alterações implementadas conforme post:
+    http://www.projetoacbr.com.br/forum/index.php?/topic/5676-instalando-o-acbr-no-delphi-7-e-xe2
+[-] correção de identação do código
+[-] Limpeza do código para remoção de comentários desnecessários
+[*] melhoria na forma de tratamento do log da cópia de dlls e outros
+    por: Regys Silveira
+
+18/01/2013
+----------
+[+] Implementada opção para instalar as "OUtras" DLL´s
+    Implementado recurso para escolha do destino dos arquivos DLL que serão instalados.
+[-] Corrigido problema de cópia das DLL´s durante a instalação.
+    Diretorio do Windows ou Diretório personalizado
+    por : João Ishiwatari
+
+24/10/2012
+----------
+[*] Adicionada opção para instalar o ACBrNFSe
+    por: Régys Silveira
+
+20/06/2012
+----------
+[*] Acertos para compilar e instalar no Delphi XE3.
+    por: Régys Silveira
+
+20/06/2012
+----------
+[+] Implementado recurso para instalar os pacotes de Danfe do Rave
+    pelo próprio instalador.
+    por: Isaque Pinheiro
+
+16/06/2012
+----------
+[-] Correções para instação dos pacotes do Fast-Report, nas versões do Delphi
+    versões testadas: D7, D2005, D2006, D2007, D2009, D2010, XE e XE2
+    por: Isaque Pinheiro
+
+09/06/2012
+----------
+[+] Implementado recurso para instalar os pacotes de Danfe, Dactes e Boletos do
+    FastReport pelo próprio instalador.
+    por: Isaque Pinheiro
+
+13/04/2012
+----------
+  [-] Corrigido bug, quando tem versões anteriores a do Delphi 7 instalada na 
+      maquina o ACBrInstall, estava selecionando a versão errada por não mostrar
+      todas versões do delphi no combo.
+      por: Isaque Pinheiro
+
+04/04/2012
+----------
+  [+] Adicionado a opção de instalar a CAPICOM ao final da instalação.
+  [+] Adicionado a opção de instalar a OPENSSL ao final da instalação.
+      por: Régys Silveira

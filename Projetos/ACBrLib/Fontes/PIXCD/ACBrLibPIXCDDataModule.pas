@@ -1,0 +1,590 @@
+{******************************************************************************}
+{ Projeto: Componentes ACBr                                                    }
+{  Biblioteca multiplataforma de componentes Delphi para interação com equipa- }
+{ mentos de Automação Comercial utilizados no Brasil                           }
+{                                                                              }
+{ Direitos Autorais Reservados (c) 2020 Daniel Simoes de Almeida               }
+{                                                                              }
+{ Colaboradores nesse arquivo: Antonio Carlos Junior                           }
+{                                                                              }
+{  Você pode obter a última versão desse arquivo na pagina do  Projeto ACBr    }
+{ Componentes localizado em      http://www.sourceforge.net/projects/acbr      }
+{                                                                              }
+{  Esta biblioteca é software livre; você pode redistribuí-la e/ou modificá-la }
+{ sob os termos da Licença Pública Geral Menor do GNU conforme publicada pela  }
+{ Free Software Foundation; tanto a versão 2.1 da Licença, ou (a seu critério) }
+{ qualquer versão posterior.                                                   }
+{                                                                              }
+{  Esta biblioteca é distribuída na expectativa de que seja útil, porém, SEM   }
+{ NENHUMA GARANTIA; nem mesmo a garantia implícita de COMERCIABILIDADE OU      }
+{ ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA. Consulte a Licença Pública Geral Menor}
+{ do GNU para mais detalhes. (Arquivo LICENÇA.TXT ou LICENSE.TXT)              }
+{                                                                              }
+{  Você deve ter recebido uma cópia da Licença Pública Geral Menor do GNU junto}
+{ com esta biblioteca; se não, escreva para a Free Software Foundation, Inc.,  }
+{ no endereço 59 Temple Street, Suite 330, Boston, MA 02111-1307 USA.          }
+{ Você também pode obter uma copia da licença em:                              }
+{ http://www.opensource.org/licenses/lgpl-license.php                          }
+{                                                                              }
+{ Daniel Simões de Almeida - daniel@projetoacbr.com.br - www.projetoacbr.com.br}
+{       Rua Coronel Aureliano de Camargo, 963 - Tatuí - SP - 18270-170         }
+{******************************************************************************}
+                            
+{$I ACBr.inc}
+
+unit ACBrLibPIXCDDataModule;
+
+interface
+
+uses
+  Classes, SysUtils, FileUtil, ACBrLibComum, ACBrLibDataModule, ACBrPIXCD,
+  ACBrJSON, ACBrPIXPSPBradesco, ACBrPIXPSPItau, ACBrPIXPSPBancoDoBrasil,
+  ACBrPIXPSPSantander, ACBrPIXPSPShipay, ACBrPIXPSPSicredi, ACBrPIXPSPSicoob,
+  ACBrPIXPSPPagSeguro, ACBrPIXPSPGerenciaNet, ACBrPIXPSPPixPDV, ACBrPIXPSPInter,
+  ACBrPIXPSPAilos, ACBrPIXPSPMatera, ACBrPIXPSPCielo, ACBrPIXPSPMercadoPago,
+  ACBrPIXPSPBanrisul, ACBrPIXPSPGate2All, ACBrPIXPSPC6Bank, ACBrPIXPSPAppLess,
+  ACBrPIXPSPQQPag, ACBrPIXPSPCrediSIS;
+
+type
+
+  TACBrPIXPSP = (Bradesco,
+                 Itau,
+                 BancoDoBrasil,
+                 Santander,
+                 Shipay,
+                 Sicredi,
+                 Sicoob,
+                 PagSeguro,
+                 GerenciaNet,
+                 PixPDV,
+                 Inter,
+                 Ailos,
+                 Matera,
+                 Cielo,
+                 MercadoPago,
+                 Gate2All,
+                 Banrisul,
+                 C6Bank,
+                 AppLess,
+                 QQPag,
+                 CrediSIS);
+
+  { TLibPIXCDDM }
+
+  TLibPIXCDDM = class(TLibDataModule)
+    ACBrPixCD1: TACBrPixCD;
+    ACBrPSPAppLess1: TACBrPSPAppLess;
+    ACBrPSPBanrisul1: TACBrPSPBanrisul;
+    ACBrPSPBradesco1: TACBrPSPBradesco;
+    ACBrPSPAilos1: TACBrPSPAilos;
+    ACBrPSPBancoDoBrasil1: TACBrPSPBancoDoBrasil;
+    ACBrPSPC6Bank1: TACBrPSPC6Bank;
+    ACBrPSPCielo1: TACBrPSPCielo;
+    ACBrPSPCrediSIS1: TACBrPSPCrediSIS;
+    ACBrPSPGate2All1: TACBrPSPGate2All;
+    ACBrPSPGerenciaNet1: TACBrPSPGerenciaNet;
+    ACBrPSPInter1: TACBrPSPInter;
+    ACBrPSPItau1: TACBrPSPItau;
+    ACBrPSPMatera1: TACBrPSPMatera;
+    ACBrPSPMercadoPago1: TACBrPSPMercadoPago;
+    ACBrPSPPagSeguro1: TACBrPSPPagSeguro;
+    ACBrPSPPixPDV1: TACBrPSPPixPDV;
+    ACBrPSPQQPag1: TACBrPSPQQPag;
+    ACBrPSPSantander1: TACBrPSPSantander;
+    ACBrPSPShipay1: TACBrPSPShipay;
+    ACBrPSPSicoob1: TACBrPSPSicoob;
+    ACBrPSPSicredi1: TACBrPSPSicredi;
+    procedure ACBrPixCD1QuandoAlterarPSP(Sender: TObject);
+    procedure ACBrPSPBancoDoBrasil1QuandoReceberRespostaHttp(
+      const AURL: String; const AMethod: String; RespHeaders: TStrings;
+      var AResultCode: Integer; var RespostaHttp: AnsiString);
+    procedure ACBrPSPSicoob1QuandoReceberRespostaHttp(const AURL: String;
+      const AMethod: String; RespHeaders: TStrings; var AResultCode: Integer;
+      var RespostaHttp: AnsiString);
+  private
+    fToken: String;
+    fValidadeToken: TDateTime;
+
+    procedure DoPrecisaAutenticar(var AToken: String; var AValidadeToken: TDateTime);
+    procedure DoAntesAutenticar(var AToken: String; var AValidadeToken: TDateTime);
+
+  protected
+    procedure DoCreate; override;
+  public
+    procedure AplicarConfiguracoes; override;
+    procedure InformarToken(const aToken: String; const aValidadeToken: TDateTime);
+  end;
+
+implementation
+
+uses
+  ACBrUtil.Base,
+  ACBrLibPIXCDConfig,
+  ACBrUtil.FilesIO;
+
+{$R *.lfm}
+
+{ TLibPIXCDDM }
+
+procedure TLibPIXCDDM.ACBrPSPBancoDoBrasil1QuandoReceberRespostaHttp(
+  const AURL: String; const AMethod: String; RespHeaders: TStrings;
+  var AResultCode: Integer; var RespostaHttp: AnsiString);
+var
+  jsRet, js: TACBrJSONObject;
+  ja, jsArr: TACBrJSONArray;
+  I: Integer;
+
+  function GetDetalhesPagador(aJson: TACBrJSONObject): String;
+  var
+    jPag: TACBrJSONObject;
+  begin
+    jPag := aJson.AsJSONObject['pagador'];
+    if Assigned(jPag) then
+      Result := aJson.AsString['infoPagador'] + ' ' + jPag.AsString['cpf'] +
+        jPag.AsString['cnpj'] + ' - ' + jPag.AsString['nome'];
+  end;
+
+begin
+  if (AMethod = ChttpMethodGET) and (AResultCode = HTTP_OK) and (Pos(cEndPointPix, AURL) > 0) then
+  begin
+    jsRet := TACBrJSONObject.Parse(String(RespostaHttp));
+    jsArr :=  jsRet.AsJSONArray['pix'];
+    try
+      if Assigned(jsArr) and (jsArr.Count > 0) then
+      begin
+        ja := TACBrJSONArray.Create;
+
+        for i := 0 to jsArr.Count - 1 do
+        begin
+          js := jsArr.ItemAsJSONObject[i];
+          js.AddPair('infoPagador', GetDetalhesPagador(js));
+          ja.AddElementJSONString(js.ToJSON);
+        end;
+        jsRet.AddPair('pix', ja);
+      end
+      else
+        jsRet.AddPair('infoPagador', GetDetalhesPagador(jsRet));
+
+      RespostaHttp := jsRet.ToJSON;
+    finally
+      jsRet.Free;
+    end;
+  end;
+end;
+
+procedure TLibPIXCDDM.ACBrPixCD1QuandoAlterarPSP(Sender: TObject);
+begin
+  fToken := EmptyStr;
+  fValidadeToken := 0;
+  GravarLog('DoQuandoAlterarPSP | Token: ' + fToken + sLineBreak + ' Validade: '+ DateTimeToStr(fValidadeToken), logCompleto, True);
+  if Assigned(ACBrPixCD1.PSP) then
+  begin
+    ACBrPixCD1.PSP.OnAntesAutenticar := DoAntesAutenticar;
+    ACBrPixCD1.PSP.OnPrecisaAutenticar := Nil;
+  end;
+end;
+
+procedure TLibPIXCDDM.ACBrPSPSicoob1QuandoReceberRespostaHttp(
+  const AURL: String; const AMethod: String; RespHeaders: TStrings;
+  var AResultCode: Integer; var RespostaHttp: AnsiString);
+var
+  jsRet, js: TACBrJSONObject;
+  ja, jsArr: TACBrJSONArray;
+  I: Integer;
+
+  function GetDetalhesPagador(aJson: TACBrJSONObject): String;
+  var
+    jPag: TACBrJSONObject;
+  begin
+    jPag := aJson.AsJSONObject['pagador'];
+    if Assigned(jPag) then
+      Result := aJson.AsString['infoPagador'] + ' ' + jPag.AsString['cpf'] +
+        jPag.AsString['cnpj'] + ' - ' + jPag.AsString['nome'];
+  end;
+
+begin
+  if (AMethod = ChttpMethodGET) and (AResultCode = HTTP_OK) and (Pos(cEndPointPix, AURL) > 0) then
+  begin
+    jsRet := TACBrJSONObject.Parse(String(RespostaHttp));
+    jsArr :=  jsRet.AsJSONArray['pix'];
+    try
+      if Assigned(jsArr) and (jsArr.Count > 0) then
+      begin
+        ja := TACBrJSONArray.Create;
+
+        for i := 0 to jsArr.Count - 1 do
+        begin
+          js := jsArr.ItemAsJSONObject[i];
+          js.AddPair('infoPagador', GetDetalhesPagador(js));
+          ja.AddElementJSONString(js.ToJSON);
+        end;
+        jsRet.AddPair('pix', ja);
+      end
+      else
+        jsRet.AddPair('infoPagador', GetDetalhesPagador(jsRet));
+
+      RespostaHttp := jsRet.ToJSON;
+    finally
+      jsRet.Free;
+    end;
+  end;
+end;
+
+procedure TLibPIXCDDM.DoPrecisaAutenticar(var AToken: String; var AValidadeToken: TDateTime);
+begin
+  // Não implementado, para forçar erro de Autenticação
+  GravarLog('DoPrecisaAutenticar | Não implementado', logCompleto, True);
+end;
+
+procedure TLibPIXCDDM.DoAntesAutenticar(var AToken: String; var AValidadeToken: TDateTime);
+begin
+  if NaoEstaVazio(fToken) then
+  begin
+    aToken := FToken;
+    aValidadeToken := fValidadeToken;
+  end;
+  GravarLog('DoAntesAutenticar | Token: ' + AToken + sLineBreak + ' Validade: '+ DateTimeToStr(AValidadeToken), logCompleto, True);
+end;
+
+procedure TLibPIXCDDM.DoCreate;
+begin
+  inherited DoCreate;
+
+  fToken := EmptyStr;
+  fValidadeToken := 0;
+end;
+
+procedure TLibPIXCDDM.AplicarConfiguracoes;
+var
+  pLibPIXCDConfig: TLibPIXCDConfig;
+begin
+    pLibPIXCDConfig := TLibPIXCDConfig(Lib.Config);
+
+    case TACBrPIXPSP(pLibPIXCDConfig.PIXCDConfig.PSP) of
+      Bradesco: ACBrPixCD1.PSP := ACBrPSPBradesco1;
+      Itau: ACBrPixCD1.PSP := ACBrPSPItau1;
+      BancoDoBrasil: ACBrPixCD1.PSP := ACBrPSPBancoDoBrasil1;
+      Santander: ACBrPixCD1.PSP := ACBrPSPSantander1;
+      Shipay: ACBrPixCD1.PSP := ACBrPSPShipay1;
+      Sicredi: ACBrPixCD1.PSP := ACBrPSPSicredi1;
+      Sicoob: ACBrPixCD1.PSP := ACBrPSPSicoob1;
+      PagSeguro: ACBrPixCD1.PSP := ACBrPSPPagSeguro1;
+      GerenciaNet: ACBrPixCD1.PSP := ACBrPSPGerenciaNet1;
+      PixPDV: ACBrPixCD1.PSP := ACBrPSPPixPDV1;
+      Inter: ACBrPixCD1.PSP := ACBrPSPInter1;
+      Ailos: ACBrPixCD1.PSP := ACBrPSPAilos1;
+      Matera: ACBrPixCD1.PSP := ACBrPSPMatera1;
+      Cielo: ACBrPixCD1.PSP := ACBrPSPCielo1;
+      MercadoPago: ACBrPixCD1.PSP := ACBrPSPMercadoPago1;
+      Gate2All: ACBrPixCD1.PSP := ACBrPSPGate2All1;
+      Banrisul: ACBrPixCD1.PSP := ACBrPSPBanrisul1;
+      C6Bank: ACBrPixCD1.PSP := ACBrPSPC6Bank1;
+      AppLess: ACBrPixCD1.PSP := ACBrPSPAppLess1;
+      QQPag: ACBrPixCD1.PSP := ACBrPSPQQPag1;
+      CrediSIS: ACBrPixCD1.PSP := ACBrPSPCrediSIS1;
+    end;
+
+    with ACBrPixCD1 do
+    begin
+      Ambiente := pLibPIXCDConfig.PIXCDConfig.Ambiente;
+      ArqLOG   := pLibPIXCDConfig.PIXCDConfig.ArqLog;
+      NivelLog := pLibPIXCDConfig.PIXCDConfig.NivelLog;
+      TimeOut  := pLibPIXCDConfig.PIXCDConfig.TimeOut;
+      ValidarCopiaECola := pLibPIXCDConfig.PIXCDConfig.ValidarCopiaECola;
+    end;
+
+    with ACBrPixCD1.PSP do
+    begin
+      TipoChave := pLibPIXCDConfig.PIXCDConfig.TipoChave;
+    end;
+
+    with ACBrPixCD1.DadosAutomacao do
+    begin
+      CNPJSoftwareHouse := pLibPIXCDConfig.PIXCDConfig.DadosAutomacao.CNPJSoftwareHouse;
+      NomeAplicacao     := pLibPIXCDConfig.PIXCDConfig.DadosAutomacao.NomeAplicacao;
+      NomeSoftwareHouse := pLibPIXCDConfig.PIXCDConfig.DadosAutomacao.NomeSoftwareHouse;
+      VersaoAplicacao   := pLibPIXCDConfig.PIXCDConfig.DadosAutomacao.VersaoAplicacao;
+    end;
+
+    with ACBrPixCD1.Proxy do
+    begin
+      Host := pLibPIXCDConfig.PIXCDConfig.Proxy.Host;
+      Pass := pLibPIXCDConfig.PIXCDConfig.Proxy.Pass;
+      Port := pLibPIXCDConfig.PIXCDConfig.Proxy.Port;
+      User := pLibPIXCDConfig.PIXCDConfig.Proxy.User;
+    end;
+
+    with ACBrPixCD1.Recebedor do
+    begin
+      CodCategoriaComerciante := pLibPIXCDConfig.PIXCDConfig.Recebedor.CodCategoriaComerciante;
+      CEP                     := pLibPIXCDConfig.PIXCDConfig.Recebedor.CEP;
+      Cidade                  := pLibPIXCDConfig.PIXCDConfig.Recebedor.Cidade;
+      Nome                    := pLibPIXCDConfig.PIXCDConfig.Recebedor.Nome;
+      UF                      := pLibPIXCDConfig.PIXCDConfig.Recebedor.UF;
+    end;
+
+    with ACBrPSPBradesco1 do
+    begin
+      ChavePIX            := pLibPIXCDConfig.PIXCDBradesco.ChavePIX;
+      ClientID            := pLibPIXCDConfig.PIXCDBradesco.ClientID;
+      ClientSecret        := pLibPIXCDConfig.PIXCDBradesco.ClientSecret;
+      ArquivoPFX          := pLibPIXCDConfig.PIXCDBradesco.ArqPFX;
+      SenhaPFX            := pLibPIXCDConfig.PIXCDBradesco.SenhaPFX;
+      ArquivoChavePrivada := pLibPIXCDConfig.PIXCDBradesco.ArqChavePrivada;
+      ArquivoCertificado  := pLibPIXCDConfig.PIXCDBradesco.ArqCertificado;
+      APIVersao           := pLibPIXCDConfig.PIXCDBradesco.APIVersao;
+      Scopes              := pLibPIXCDConfig.PIXCDBradesco.Scopes;
+      URLProducao         := pLibPIXCDConfig.PIXCDBradesco.URLProducao;
+      URLSandbox          := pLibPIXCDConfig.PIXCDBradesco.URLSandBox;
+    end;
+
+    with ACBrPSPSicredi1 do
+    begin
+      ChavePIX            := pLibPIXCDConfig.PIXCDSicredi.ChavePIX;
+      ClientID            := pLibPIXCDConfig.PIXCDSicredi.ClientID;
+      ClientSecret        := pLibPIXCDConfig.PIXCDSicredi.ClientSecret;
+      ArquivoChavePrivada := pLibPIXCDConfig.PIXCDSicredi.ArqChavePrivada;
+      ArquivoCertificado  := pLibPIXCDConfig.PIXCDSicredi.ArqCertificado;
+      Scopes              := pLibPIXCDConfig.PIXCDSicredi.Scopes;
+      URLProducao         := pLibPIXCDConfig.PIXCDSicredi.URLProducao;
+      URLSandbox          := pLibPIXCDConfig.PIXCDSicredi.URLSandBox;
+    end;
+
+    with ACBrPSPSicoob1 do
+    begin
+      ChavePIX            := pLibPIXCDConfig.PIXCDSiccob.ChavePIX;
+      ClientID            := pLibPIXCDConfig.PIXCDSiccob.ClientID;
+      TokenSandbox        := pLibPIXCDConfig.PIXCDSiccob.TokenSandbox;
+      ArquivoChavePrivada := pLibPIXCDConfig.PIXCDSiccob.ArqChavePrivada;
+      ArquivoCertificado  := pLibPIXCDConfig.PIXCDSiccob.ArqCertificado;
+      Scopes              := pLibPIXCDConfig.PIXCDSiccob.Scopes;
+      URLProducao         := pLibPIXCDConfig.PIXCDSiccob.URLProducao;
+      URLSandbox          := pLibPIXCDConfig.PIXCDSiccob.URLSandBox;
+    end;
+
+    with ACBrPSPShipay1 do
+    begin
+      ClientID  := pLibPIXCDConfig.PIXCDShipay.ClientID;
+      SecretKey := pLibPIXCDConfig.PIXCDShipay.SecretKey;
+      AccessKey := pLibPIXCDConfig.PIXCDShipay.AccessKey;
+      Scopes    := pLibPIXCDConfig.PIXCDShipay.Scopes;
+      URLProducao := pLibPIXCDConfig.PIXCDShipay.URLProducao;
+      URLSandbox  := pLibPIXCDConfig.PIXCDShipay.URLSandBox;
+    end;
+
+    with ACBrPSPSantander1 do
+    begin
+      ChavePIX           := pLibPIXCDConfig.PIXCDSantander.ChavePIX;
+      ConsumerKey        := pLibPIXCDConfig.PIXCDSantander.ConsumerKey;
+      ConsumerSecret     := pLibPIXCDConfig.PIXCDSantander.ConsumerSecret;
+      ArquivoPFX         := pLibPIXCDConfig.PIXCDSantander.ArqCertificadoPFX;
+      SenhaPFX           := pLibPIXCDConfig.PIXCDSantander.SenhaCertificadoPFX;
+      Scopes             := pLibPIXCDConfig.PIXCDSantander.Scopes;
+      URLProducao        := pLibPIXCDConfig.PIXCDSantander.URLProducao;
+      URLSandbox         := pLibPIXCDConfig.PIXCDSantander.URLSandBox;
+    end;
+
+    with ACBrPSPPixPDV1 do
+    begin
+      CNPJ         := pLibPIXCDConfig.PIXCDPixPDV.CNPJ;
+      Token        := pLibPIXCDConfig.PIXCDPixPDV.Token;
+      APIVersao    := pLibPIXCDConfig.PIXCDPixPDV.PixPDVAPIVersao;
+      ClientSecret := pLibPIXCDConfig.PIXCDPixPDV.SecretKey;
+      Scopes       := pLibPIXCDConfig.PIXCDPixPDV.Scopes;
+      URLProducao  := pLibPIXCDConfig.PIXCDPixPDV.URLProducao;
+      URLSandbox   := pLibPIXCDConfig.PIXCDPixPDV.URLSandBox;
+    end;
+
+    with ACBrPSPPagSeguro1 do
+    begin
+      ChavePIX            := pLibPIXCDConfig.PIXCDPagSeguro.ChavePIX;
+      ClientID            := pLibPIXCDConfig.PIXCDPagSeguro.ClientID;
+      ClientSecret        := pLibPIXCDConfig.PIXCDPagSeguro.ClientSecret;
+      ArquivoChavePrivada := pLibPIXCDConfig.PIXCDPagSeguro.ArqChavePrivada;
+      ArquivoCertificado  := pLibPIXCDConfig.PIXCDPagSeguro.ArqCertificado;
+      Scopes              := pLibPIXCDConfig.PIXCDPagSeguro.Scopes;
+      URLProducao         := pLibPIXCDConfig.PIXCDPagSeguro.URLProducao;
+      URLSandbox          := pLibPIXCDConfig.PIXCDPagSeguro.URLSandBox;
+    end;
+
+    with ACBrPSPItau1 do
+    begin
+      ChavePIX            := pLibPIXCDConfig.PIXCDItau.ChavePIX;
+      ClientID            := pLibPIXCDConfig.PIXCDItau.ClientID;
+      ClientSecret        := pLibPIXCDConfig.PIXCDItau.ClientSecret;
+      ArquivoChavePrivada := pLibPIXCDConfig.PIXCDItau.ArqChavePrivada;
+      ArquivoCertificado  := pLibPIXCDConfig.PIXCDItau.ArqCertificado;
+      Scopes              := pLibPIXCDConfig.PIXCDItau.Scopes;
+      URLProducao         := pLibPIXCDConfig.PIXCDItau.URLProducao;
+      URLSandbox          := pLibPIXCDConfig.PIXCDItau.URLSandBox;
+    end;
+
+    with ACBrPSPInter1 do
+    begin
+      ChavePIX            := pLibPIXCDConfig.PIXCDInter.ChavePIX;
+      ClientID            := pLibPIXCDConfig.PIXCDInter.ClientID;
+      ClientSecret        := pLibPIXCDConfig.PIXCDInter.ClientSecret;
+      ArquivoChavePrivada := pLibPIXCDConfig.PIXCDInter.ArqChavePrivada;
+      ArquivoCertificado  := pLibPIXCDConfig.PIXCDInter.ArqCertificado;
+      Scopes              := pLibPIXCDConfig.PIXCDInter.Scopes;
+      URLProducao         := pLibPIXCDConfig.PIXCDInter.URLProducao;
+      URLSandbox          := pLibPIXCDConfig.PIXCDInter.URLSandBox;
+    end;
+
+    with ACBrPSPGerenciaNet1 do
+    begin
+      ChavePIX            := pLibPIXCDConfig.PIXCDGerenciaNet.ChavePIX;
+      ClientID            := pLibPIXCDConfig.PIXCDGerenciaNet.ClientID;
+      ClientSecret        := pLibPIXCDConfig.PIXCDGerenciaNet.ClientSecret;
+      ArquivoPFX          := pLibPIXCDConfig.PIXCDGerenciaNet.ArqPFX;
+      Scopes              := pLibPIXCDConfig.PIXCDGerenciaNet.Scopes;
+      URLProducao         := pLibPIXCDConfig.PIXCDGerenciaNet.URLProducao;
+      URLSandbox          := pLibPIXCDConfig.PIXCDGerenciaNet.URLSandBox;
+    end;
+
+    with ACBrPSPBancoDoBrasil1 do
+    begin
+      ChavePIX                := pLibPIXCDConfig.PIXCDBancoDoBrasil.ChavePIX;
+      ClientID                := pLibPIXCDConfig.PIXCDBancoDoBrasil.ClientID;
+      ClientSecret            := pLibPIXCDConfig.PIXCDBancoDoBrasil.ClientSecret;
+      DeveloperApplicationKey := pLibPIXCDConfig.PIXCDBancoDoBrasil.DeveloperApplicationKey;
+      ArquivoChavePrivada     := pLibPIXCDConfig.PIXCDBancoDoBrasil.ArqChavePrivada;
+      ArquivoCertificado      := pLibPIXCDConfig.PIXCDBancoDoBrasil.ArqCertificado;
+      ArquivoPFX              := pLibPIXCDConfig.PIXCDBancoDoBrasil.ArqPFX;
+      SenhaPFX                := pLibPIXCDConfig.PIXCDBancoDoBrasil.SenhaPFX;
+      BBAPIVersao             := pLibPIXCDConfig.PIXCDBancoDoBrasil.BBAPIVersao;
+      Scopes                  := pLibPIXCDConfig.PIXCDBancoDoBrasil.Scopes;
+      URLProducao             := pLibPIXCDConfig.PIXCDBancoDoBrasil.URLProducao;
+      URLSandbox              := pLibPIXCDConfig.PIXCDBancoDoBrasil.URLSandBox;
+    end;
+
+    with ACBrPSPAilos1 do
+    begin
+      ChavePIX                := pLibPIXCDConfig.PIXCDAilos.ChavePIX;
+      ClientID                := pLibPIXCDConfig.PIXCDAilos.ClientID;
+      ClientSecret            := pLibPIXCDConfig.PIXCDAilos.ClientSecret;
+      ArquivoChavePrivada     := pLibPIXCDConfig.PIXCDAilos.ArqChavePrivada;
+      ArquivoCertificado      := pLibPIXCDConfig.PIXCDAilos.ArqCertificado;
+      RootCrt                 := pLibPIXCDConfig.PIXCDAilos.ArqCertificadoRoot;
+      Scopes                  := pLibPIXCDConfig.PIXCDAilos.Scopes;
+      URLProducao             := pLibPIXCDConfig.PIXCDAilos.URLProducao;
+      URLSandbox              := pLibPIXCDConfig.PIXCDAilos.URLSandBox;
+    end;
+
+    with ACBrPSPMatera1 do
+    begin
+      ChavePIX            := pLibPIXCDConfig.PIXCDMatera.ChavePIX;
+      ClientID            := pLibPIXCDConfig.PIXCDMatera.ClientID;
+      SecretKey           := pLibPIXCDConfig.PIXCDMatera.SecretKey;
+      ClientSecret        := pLibPIXCDConfig.PIXCDMatera.ClientSecret;
+      ArquivoCertificado  := pLibPIXCDConfig.PIXCDMatera.ArqCertificado;
+      ArquivoChavePrivada := pLibPIXCDConfig.PIXCDMatera.ArqChavePrivada;
+      AccountId           := pLibPIXCDConfig.PIXCDMatera.AccountID;
+      MediatorFee         := pLibPIXCDConfig.PIXCDMatera.MediatorFee;
+      Scopes              := pLibPIXCDConfig.PIXCDMatera.Scopes;
+      URLProducao         := pLibPIXCDConfig.PIXCDMatera.URLProducao;
+      URLSandbox          := pLibPIXCDConfig.PIXCDMatera.URLSandBox;
+    end;
+
+    with ACBrPSPCielo1 do
+    begin
+      ChavePIX            := pLibPIXCDConfig.PIXCDCielo.ChavePIX;
+      ClientID            := pLibPIXCDConfig.PIXCDCielo.ClientID;
+      ClientSecret        := pLibPIXCDConfig.PIXCDCielo.ClientSecret;
+      ArquivoChavePrivada := pLibPIXCDConfig.PIXCDCielo.ArqChavePrivada;
+      ArquivoCertificado  := pLibPIXCDConfig.PIXCDCielo.ArqCertificado;
+      Scopes              := pLibPIXCDConfig.PIXCDCielo.Scopes;
+      URLProducao         := pLibPIXCDConfig.PIXCDCielo.URLProducao;
+      URLSandbox          := pLibPIXCDConfig.PIXCDCielo.URLSandBox;
+    end;
+
+    with ACBrPSPMercadoPago1 do
+    begin
+      ChavePIX    := pLibPIXCDConfig.PIXCDMercadoPago.ChavePIX;
+      AccessToken := pLibPIXCDConfig.PIXCDMercadoPago.AccessToken;
+      Scopes      := pLibPIXCDConfig.PIXCDMercadoPago.Scopes;
+      URLProducao := pLibPIXCDConfig.PIXCDMercadoPago.URLProducao;
+      URLSandbox  := pLibPIXCDConfig.PIXCDMercadoPago.URLSandBox;
+    end;
+
+    with ACBrPSPGate2All1 do
+    begin
+      AuthenticationApi := pLibPIXCDConfig.PIXCDGate2All.AuthenticationApi;
+      AuthenticationKey := pLibPIXCDConfig.PIXCDGate2All.AuthenticationKey;
+      Scopes            := pLibPIXCDConfig.PIXCDGate2All.Scopes;
+      URLProducao       := pLibPIXCDConfig.PIXCDGate2All.URLProducao;
+      URLSandbox        := pLibPIXCDConfig.PIXCDGate2All.URLSandBox;
+    end;
+
+    with ACBrPSPBanrisul1 do
+    begin
+      ChavePIX           := pLibPIXCDConfig.PIXCDBanrisul.ChavePIX;
+      ClientID           := pLibPIXCDConfig.PIXCDBanrisul.ClientID;
+      ClientSecret       := pLibPIXCDConfig.PIXCDBanrisul.ClientSecret;
+      ArquivoPFX         := pLibPIXCDConfig.PIXCDBanrisul.ArquivoPFX;
+      ArquivoCertificado := pLibPIXCDConfig.PIXCDBanrisul.ArquivoCertificado;
+      SenhaPFX           := pLibPIXCDConfig.PIXCDBanrisul.SenhaPFX;
+      Scopes             := pLibPIXCDConfig.PIXCDBanrisul.Scopes;
+      URLProducao        := pLibPIXCDConfig.PIXCDBanrisul.URLProducao;
+      URLSandbox         := pLibPIXCDConfig.PIXCDBanrisul.URLSandBox;
+    end;
+
+    with ACBrPSPC6Bank1 do
+    begin
+      ChavePIX            := pLibPIXCDConfig.PIXCDC6Bank.ChavePIX;
+      ClientID            := pLibPIXCDConfig.PIXCDC6Bank.ClientID;
+      ClientSecret        := pLibPIXCDConfig.PIXCDC6Bank.ClientSecret;
+      ArquivoChavePrivada := pLibPIXCDConfig.PIXCDC6Bank.ArqChavePrivada;
+      ArquivoCertificado  := pLibPIXCDConfig.PIXCDC6Bank.ArqCertificado;
+      Scopes              := pLibPIXCDConfig.PIXCDC6Bank.Scopes;
+      URLProducao         := pLibPIXCDConfig.PIXCDC6Bank.URLProducao;
+      URLSandbox          := pLibPIXCDConfig.PIXCDC6Bank.URLSandBox;
+    end;
+
+    with ACBrPSPAppLess1 do
+    begin
+      ClientID           := pLibPIXCDConfig.PIXCDAppLess.ClientID;
+      ClientSecret       := pLibPIXCDConfig.PIXCDAppLess.ClientSecret;
+      SecretKeyHMAC      := pLibPIXCDConfig.PIXCDAppLess.SecretKeyHMAC;
+      Scopes             := pLibPIXCDConfig.PIXCDAppLess.Scopes;
+      URLProducao        := pLibPIXCDConfig.PIXCDAppLess.URLProducao;
+      URLSandbox         := pLibPIXCDConfig.PIXCDAppLess.URLSandBox;
+    end;
+
+    with ACBrPSPQQPag1 do
+    begin
+      ChavePIX     := pLibPIXCDConfig.PIXCDQQPag.ChavePIX;
+      ClientID     := pLibPIXCDConfig.PIXCDQQPag.ClientID;
+      ClientSecret := pLibPIXCDConfig.PIXCDQQPag.ClientSecret;
+      Scopes       := pLibPIXCDConfig.PIXCDQQPag.Scopes;
+      URLProducao  := pLibPIXCDConfig.PIXCDQQPag.URLProducao;
+      URLSandbox   := pLibPIXCDConfig.PIXCDQQPag.URLSandBox;
+    end;
+
+    with ACBrPSPCrediSIS1 do
+    begin
+      ChavePIX     := pLibPIXCDConfig.PIXCDCrediSIS.ChavePIX;
+      ClientID     := pLibPIXCDConfig.PIXCDCrediSIS.ClientID;
+      ClientSecret := pLibPIXCDConfig.PIXCDCrediSIS.ClientSecret;
+      Agencia      := pLibPIXCDConfig.PIXCDCrediSIS.Agencia;
+      Conta        := pLibPIXCDConfig.PIXCDCrediSIS.Conta;
+      Scopes       := pLibPIXCDConfig.PIXCDCrediSIS.Scopes;
+      URLProducao  := pLibPIXCDConfig.PIXCDCrediSIS.URLProducao;
+      URLSandbox   := pLibPIXCDConfig.PIXCDCrediSIS.URLSandBox;
+    end;
+
+    {$IFDEF Demo}
+    ACBrPixCD1.Ambiente := ambTeste;
+    {$ENDIF}
+end;
+
+procedure TLibPIXCDDM.InformarToken(const aToken: String; const aValidadeToken: TDateTime);
+begin
+  fToken := aToken;
+  fValidadeToken := aValidadeToken;
+  if Assigned(ACBrPixCD1.PSP) then
+    ACBrPixCD1.PSP.OnPrecisaAutenticar := DoPrecisaAutenticar;
+end;
+
+end.
+

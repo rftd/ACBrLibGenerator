@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Debug"/>
+    <Units>
+      <Unit>
+        <Filename Value="ACBrNFe_Exemplo.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <CursorPos X="60" Y="10"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="Frm_ACBrNFe.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmACBrNFe"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="339"/>
+        <CursorPos Y="354"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="Frm_SelecionarCertificado.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmSelecionarCertificado"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit>
+      <Unit>
+        <Filename Value="Frm_ConfiguraSerial.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmConfiguraSerial"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit>
+      <Unit>
+        <Filename Value="Frm_Status.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmStatus"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="31"/>
+        <CursorPos X="37" Y="48"/>
+        <UsageCount Value="20"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="29">
+      <Position>
+        <Filename Value="Frm_ACBrNFe.pas"/>
+        <Caret Line="262" Column="25" TopLine="237"/>
+      </Position>
+      <Position>
+        <Filename Value="Frm_ACBrNFe.pas"/>
+        <Caret Line="492" Column="31" TopLine="464"/>
+      </Position>
+      <Position>
+        <Filename Value="Frm_ACBrNFe.pas"/>
+        <Caret Line="443" Column="7" TopLine="427"/>
+      </Position>
+      <Position>
+        <Filename Value="Frm_ACBrNFe.pas"/>
+        <Caret Line="452" TopLine="435"/>
+      </Position>
+      <Position>
+        <Filename Value="Frm_ACBrNFe.pas"/>
+        <Caret Line="2503" Column="3" TopLine="2500"/>
+      </Position>
+      <Position>
+        <Filename Value="Frm_ACBrNFe.pas"/>
+        <Caret Line="451" Column="15" TopLine="437"/>
+      </Position>
+      <Position>
+        <Filename Value="Frm_ACBrNFe.pas"/>
+        <Caret Line="6401" Column="3" TopLine="6398"/>
+      </Position>
+      <Position>
+        <Filename Value="Frm_ACBrNFe.pas"/>
+        <Caret Line="452" TopLine="436"/>
+      </Position>
+      <Position>
+        <Filename Value="Frm_ACBrNFe.pas"/>
+        <Caret Line="501" Column="3" TopLine="487"/>
+      </Position>
+      <Position>
+        <Filename Value="Frm_ACBrNFe.pas"/>
+        <Caret Line="503" Column="3" TopLine="487"/>
+      </Position>
+      <Position>
+        <Filename Value="Frm_ACBrNFe.pas"/>
+        <Caret Line="519" Column="24" TopLine="503"/>
+      </Position>
+      <Position>
+        <Filename Value="Frm_ACBrNFe.pas"/>
+      </Position>
+      <Position>
+        <Filename Value="Frm_ACBrNFe.pas"/>
+        <Caret Line="443" Column="15" TopLine="417"/>
+      </Position>
+      <Position>
+        <Filename Value="Frm_ACBrNFe.pas"/>
+        <Caret Line="503" Column="15" TopLine="476"/>
+      </Position>
+      <Position>
+        <Filename Value="Frm_ACBrNFe.pas"/>
+        <Caret Line="524" Column="84" TopLine="498"/>
+      </Position>
+      <Position>
+        <Filename Value="Frm_ACBrNFe.pas"/>
+      </Position>
+      <Position>
+        <Filename Value="Frm_ACBrNFe.pas"/>
+        <Caret Line="444" TopLine="414"/>
+      </Position>
+      <Position>
+        <Filename Value="Frm_ACBrNFe.pas"/>
+        <Caret Line="443" Column="28" TopLine="427"/>
+      </Position>
+      <Position>
+        <Filename Value="Frm_Status.pas"/>
+      </Position>
+      <Position>
+        <Filename Value="Frm_ACBrNFe.pas"/>
+        <Caret Line="443" Column="18" TopLine="427"/>
+      </Position>
+      <Position>
+        <Filename Value="Frm_Status.pas"/>
+        <Caret Line="61" Column="26" TopLine="31"/>
+      </Position>
+      <Position>
+        <Filename Value="Frm_ACBrNFe.pas"/>
+        <Caret Line="443" Column="15" TopLine="427"/>
+      </Position>
+      <Position>
+        <Filename Value="Frm_ACBrNFe.pas"/>
+        <Caret Line="503" Column="13" TopLine="476"/>
+      </Position>
+      <Position>
+        <Filename Value="Frm_ACBrNFe.pas"/>
+        <Caret Line="496" Column="34" TopLine="492"/>
+      </Position>
+      <Position>
+        <Filename Value="Frm_ACBrNFe.pas"/>
+      </Position>
+      <Position>
+        <Filename Value="Frm_ACBrNFe.pas"/>
+        <Caret Line="443" Column="28" TopLine="417"/>
+      </Position>
+      <Position>
+        <Filename Value="Frm_ACBrNFe.pas"/>
+        <Caret Line="503" Column="13" TopLine="476"/>
+      </Position>
+      <Position>
+        <Filename Value="Frm_ACBrNFe.pas"/>
+        <Caret Line="519" Column="24" TopLine="492"/>
+      </Position>
+      <Position>
+        <Filename Value="Frm_ACBrNFe.pas"/>
+        <Caret Line="520" Column="21" TopLine="493"/>
+      </Position>
+      <Position>
+        <Filename Value="Frm_ACBrNFe.pas"/>
+        <Caret Line="354" TopLine="338"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>

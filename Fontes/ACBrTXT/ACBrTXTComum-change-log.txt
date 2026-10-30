@@ -1,0 +1,96 @@
+{******************************************************************************}
+{ Projeto: Componentes ACBr                                                    }
+{  Biblioteca multiplataforma de componentes Delphi para interação com equipa- }
+{ mentos de Automação Comercial utilizados no Brasil                           }
+{                                                                              }
+{ Direitos Autorais Reservados (c) 2020 Daniel Simoes de Almeida               }
+{                                                                              }
+{  Você pode obter a última versão desse arquivo na pagina do  Projeto ACBr    }
+{ Componentes localizado em      http://www.sourceforge.net/projects/acbr      }
+{                                                                              }
+{  Esta biblioteca é software livre; você pode redistribuí-la e/ou modificá-la }
+{ sob os termos da Licença Pública Geral Menor do GNU conforme publicada pela  }
+{ Free Software Foundation; tanto a versão 2.1 da Licença, ou (a seu critério) }
+{ qualquer versão posterior.                                                   }
+{                                                                              }
+{  Esta biblioteca é distribuída na expectativa de que seja útil, porém, SEM   }
+{ NENHUMA GARANTIA; nem mesmo a garantia implícita de COMERCIABILIDADE OU      }
+{ ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA. Consulte a Licença Pública Geral Menor}
+{ do GNU para mais detalhes. (Arquivo LICENÇA.TXT ou LICENSE.TXT)              }
+{                                                                              }
+{  Você deve ter recebido uma cópia da Licença Pública Geral Menor do GNU junto}
+{ com esta biblioteca; se não, escreva para a Free Software Foundation, Inc.,  }
+{ no endereço 59 Temple Street, Suite 330, Boston, MA 02111-1307 USA.          }
+{ Você também pode obter uma copia da licença em:                              }
+{ http://www.opensource.org/licenses/lgpl-license.php                          }
+{                                                                              }
+{ Daniel Simões de Almeida - daniel@projetoacbr.com.br - www.projetoacbr.com.br}
+{       Rua Coronel Aureliano de Camargo, 963 - Tatuí - SP - 18270-170         }
+{******************************************************************************}
+Agradecimentos:
+
+* Desenvolvedores:
+- Isaque Pinheiro - Doação do componente ao projeto ACBr
+
+{******************************************************************************
+|* ACBrSpedFiscal
+|*
+|* PROPÓSITO: Registro de Alterações
+******************************************************************************}
+
+Símbolo : Significado
+
+[+]     : Novo recurso
+[*]     : Recurso modificado/melhorado
+[-]     : Correção de Bug (assim esperamos)
+
+04/02/2026
+-- Frm_SPEDECF, ACBrECFBloco_0, ACBrECFBloco_0_Class, ACBrECFBloco_X, ACBrECFBloco_X_Class, ACBrECFBloco_Y, ACBrECFBloco_Y_Class, ACBrECFBlocos --
+[+] ACBR-8905 - Implementações para o Leiaute 0012 do ECF - https://www.projetoacbr.com.br/forum/topic/90022-publicado-manual-da-escritura%C3%A7%C3%A3o-cont%C3%A1bil-fiscal-com-leiaute-12-para-o-ano-calend%C3%A1rio-de-2025-e-situa%C3%A7%C3%B5es-especiais-2026/
+  Por: Renato Rubinho
+
+09/01/2026
+-- ACBrEFDBlocos, ACBrEPCBlocos, ACBrTXTUtils --
+[*] Adicionados itens nos enumerados e array de strings contemplando os CSTs de ICMS monofásico de Importação Direta e Adquiridos no Mercado Interno
+  Por: Renato Rubinho
+
+09/02/2024
+-- Diversos --
+[*] Refactoring visando deixar de usar a unit pcnAuxiliar.
+  Por: Italo Giurizzato Junior
+
+27/03/2022
+-- Diversos --
+[*] Remoção de Warnings e Hints.
+   Por: Waldir Paim
+
+25/07/2020
+-- ACBrTXTClass --
+[-] Correção para os métodos "RFill" e "LFill" que não estavam removendo os
+    espaços corretamente de acordo com a propriedade "TrimString".
+    https://www.projetoacbr.com.br/forum/topic/58617-correção-da-função-tacbrtxtclasslfill/
+  Por: pcbonetti
+
+18/02/2020
+-- ACBrLCDPR --
+[-] https://www.projetoacbr.com.br/forum/topic/56293-o-lcdpr-n%C3%A3o-est%C3%A1-limpando-as-informa%C3%A7%C3%B5es-dos-campos-ao-gerar-pela-segunda-vez/
+   Por: Rodrigo Gontijo
+
+Data: 06/01/2017
+-- ACBrTXTClass --
+[-] Correção no método "TACBrTXTClass.LFill(Value: Extended;..."
+    Não estava convertendo corretamente números maiores do que 999, devido a
+    modificação em ACBrUtil.FloatMask
+    (por: DSA)
+
+Data: 22/08/2015
+-- ACBrTXTClass --   (por: DSA)
+[*] Ajuste na criação da Classe, para inicializar os campos com valores default
+[*] Método Add, modificado para respeitar a propriedade "TrimString"
+
+Data: 18/08/2015
+-- ACBrTXTClass --    (por: DSA)
+[-]   Correção para LFill suportar grandes valores com Extended e Int64
+[*]   Refatoração de código (simplificação)
+[+]   Ajustes nos testes Unitários de ACBrTXTComum para verificar por 
+      grandes valores

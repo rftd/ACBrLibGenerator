@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Package Version="5">
+    <PathDelim Value="\"/>
+    <Name Value="ACBr_MDFe"/>
+    <Type Value="RunAndDesignTime"/>
+    <Author Value="Juliomar Marchetti"/>
+    <CompilerOptions>
+      <Version Value="11"/>
+      <PathDelim Value="\"/>
+      <SearchPaths>
+        <OtherUnitFiles Value="..\..\..\..\Fontes\ACBrDFe\ACBrMDFe;..\..\..\..\Fontes\ACBrDFe\ACBrMDFe\DAMDFE;..\..\..\..\Fontes\ACBrDFe\ACBrMDFe\PCNMDFe;..\..\..\..\Fontes\ACBrDFe\ACBrMDFe\Base;..\..\..\..\Fontes\ACBrDFe\ACBrMDFe\Base\Servicos"/>
+        <UnitOutputDirectory Value="..\..\..\..\Lib\Lazarus\ACBrDFe\ACBrMDFe\$(TargetCPU)-$(TargetOS)"/>
+      </SearchPaths>
+    </CompilerOptions>
+    <Description Value="ACBr - Manifesto de Documentos Fiscais Eletrônico - (http://www.projetoacbr.com.br/)"/>
+    <License Value="LGPL"/>
+    <Files>
+      <Item>
+        <Filename Value="..\..\..\..\Fontes\ACBrDFe\ACBrMDFe\ACBrMDFe.pas"/>
+        <UnitName Value="ACBrMDFe"/>
+      </Item>
+      <Item>
+        <Filename Value="..\..\..\..\Fontes\ACBrDFe\ACBrMDFe\ACBrMDFeConfiguracoes.pas"/>
+        <UnitName Value="ACBrMDFeConfiguracoes"/>
+      </Item>
+      <Item>
+        <Filename Value="..\..\..\..\Fontes\ACBrDFe\ACBrMDFe\ACBrMDFeManifestos.pas"/>
+        <UnitName Value="ACBrMDFeManifestos"/>
+      </Item>
+      <Item>
+        <Filename Value="..\..\..\..\Fontes\ACBrDFe\ACBrMDFe\ACBrMDFeReg.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="ACBrMDFeReg"/>
+      </Item>
+      <Item>
+        <Filename Value="..\..\..\..\Fontes\ACBrDFe\ACBrMDFe\ACBrMDFeWebServices.pas"/>
+        <UnitName Value="ACBrMDFeWebServices"/>
+      </Item>
+      <Item>
+        <Filename Value="..\..\..\..\Fontes\ACBrDFe\ACBrMDFe\PCNMDFe\pmdfeConversaoMDFe.pas"/>
+        <UnitName Value="pmdfeConversaoMDFe"/>
+      </Item>
+      <Item>
+        <Filename Value="..\..\..\..\Fontes\ACBrDFe\ACBrMDFe\DAMDFE\ACBrMDFeDAMDFeClass.pas"/>
+        <UnitName Value="ACBrMDFeDAMDFeClass"/>
+      </Item>
+      <Item>
+        <Filename Value="..\..\..\..\Fontes\ACBrDFe\ACBrMDFe\Base\ACBrMDFe.Classes.pas"/>
+        <UnitName Value="ACBrMDFe.Classes"/>
+      </Item>
+      <Item>
+        <Filename Value="..\..\..\..\Fontes\ACBrDFe\ACBrMDFe\Base\ACBrMDFe.ProcInfraSA.pas"/>
+        <UnitName Value="ACBrMDFe.ProcInfraSA"/>
+      </Item>
+      <Item>
+        <Filename Value="..\..\..\..\Fontes\ACBrDFe\ACBrMDFe\Base\ACBrMDFe.XmlReader.pas"/>
+        <UnitName Value="ACBrMDFe.XmlReader"/>
+      </Item>
+      <Item>
+        <Filename Value="..\..\..\..\Fontes\ACBrDFe\ACBrMDFe\Base\ACBrMDFe.XmlWriter.pas"/>
+        <UnitName Value="ACBrMDFe.XmlWriter"/>
+      </Item>
+      <Item>
+        <Filename Value="..\..\..\..\Fontes\ACBrDFe\ACBrMDFe\Base\Servicos\ACBrMDFe.ConsNaoEnc.pas"/>
+        <UnitName Value="ACBrMDFe.ConsNaoEnc"/>
+      </Item>
+      <Item>
+        <Filename Value="..\..\..\..\Fontes\ACBrDFe\ACBrMDFe\Base\Servicos\ACBrMDFe.RetConsNaoEnc.pas"/>
+        <UnitName Value="ACBrMDFe.RetConsNaoEnc"/>
+      </Item>
+      <Item>
+        <Filename Value="..\..\..\..\Fontes\ACBrDFe\ACBrMDFe\Base\Servicos\ACBrMDFe.ConsSit.pas"/>
+        <UnitName Value="ACBrMDFe.ConsSit"/>
+      </Item>
+      <Item>
+        <Filename Value="..\..\..\..\Fontes\ACBrDFe\ACBrMDFe\Base\Servicos\ACBrMDFe.RetConsSit.pas"/>
+        <UnitName Value="ACBrMDFe.RetConsSit"/>
+      </Item>
+      <Item>
+        <Filename Value="..\..\..\..\Fontes\ACBrDFe\ACBrMDFe\Base\Servicos\ACBrMDFe.EventoClass.pas"/>
+        <UnitName Value="ACBrMDFe.EventoClass"/>
+      </Item>
+      <Item>
+        <Filename Value="..\..\..\..\Fontes\ACBrDFe\ACBrMDFe\Base\Servicos\ACBrMDFe.EnvEvento.pas"/>
+        <UnitName Value="ACBrMDFe.EnvEvento"/>
+      </Item>
+      <Item>
+        <Filename Value="..\..\..\..\Fontes\ACBrDFe\ACBrMDFe\Base\Servicos\ACBrMDFe.RetEnvEvento.pas"/>
+        <UnitName Value="ACBrMDFe.RetEnvEvento"/>
+      </Item>
+      <Item>
+        <Filename Value="..\..\..\..\Fontes\ACBrDFe\ACBrMDFe\Base\ACBrMDFe.Consts.pas"/>
+        <UnitName Value="ACBrMDFe.Consts"/>
+      </Item>
+      <Item>
+        <Filename Value="..\..\..\..\Fontes\ACBrDFe\ACBrMDFe\Base\ACBrMDFe.IniReader.pas"/>
+        <UnitName Value="ACBrMDFe.IniReader"/>
+      </Item>
+      <Item>
+        <Filename Value="..\..\..\..\Fontes\ACBrDFe\ACBrMDFe\Base\ACBrMDFe.IniWriter.pas"/>
+        <UnitName Value="ACBrMDFe.IniWriter"/>
+      </Item>
+      <Item>
+        <Filename Value="..\..\..\..\Fontes\ACBrDFe\ACBrMDFe\Base\ACBrMDFe.ValidarRegrasdeNegocio.pas"/>
+        <UnitName Value="ACBrMDFe.ValidarRegrasdeNegocio"/>
+      </Item>
+      <Item>
+        <Filename Value="..\..\..\..\Fontes\ACBrDFe\ACBrMDFe\Base\ACBrMDFe.Conversao.pas"/>
+        <UnitName Value="ACBrMDFe.Conversao"/>
+      </Item>
+    </Files>
+    <RequiredPkgs>
+      <Item>
+        <PackageName Value="ACBrDFeComum"/>
+      </Item>
+    </RequiredPkgs>
+    <UsageOptions>
+      <UnitPath Value="$(PkgOutDir)"/>
+    </UsageOptions>
+    <PublishOptions>
+      <Version Value="2"/>
+    </PublishOptions>
+  </Package>
+</CONFIG>

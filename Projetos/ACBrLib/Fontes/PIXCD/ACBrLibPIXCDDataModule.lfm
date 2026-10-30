@@ -1,0 +1,123 @@
+inherited LibPIXCDDM: TLibPIXCDDM
+  Height = 353
+  HorizontalOffset = 554
+  VerticalOffset = 268
+  Width = 623
+  object ACBrPixCD1: TACBrPixCD[0]
+    Recebedor.CodCategoriaComerciante = 0
+    OnQuandoAlterarPSP = ACBrPixCD1QuandoAlterarPSP
+    Left = 57
+    Top = 40
+  end
+  object ACBrPSPBradesco1: TACBrPSPBradesco[1]
+    Scopes = [scCobWrite, scCobRead, scPixWrite, scPixRead]
+    Left = 144
+    Top = 40
+  end
+  object ACBrPSPItau1: TACBrPSPItau[2]
+    Scopes = [scCobWrite, scCobRead, scPixWrite, scPixRead]
+    Left = 240
+    Top = 40
+  end
+  object ACBrPSPBancoDoBrasil1: TACBrPSPBancoDoBrasil[3]
+    Scopes = [scCobWrite, scCobRead, scPixWrite, scPixRead]
+    QuandoReceberRespostaHttp = ACBrPSPBancoDoBrasil1QuandoReceberRespostaHttp
+    Left = 352
+    Top = 40
+  end
+  object ACBrPSPSantander1: TACBrPSPSantander[4]
+    Scopes = [scCobWrite, scCobRead, scPixWrite, scPixRead]
+    Left = 56
+    Top = 96
+  end
+  object ACBrPSPShipay1: TACBrPSPShipay[5]
+    Scopes = [scCobWrite, scCobRead, scPixWrite, scPixRead]
+    URLProducao = 'https://api.shipay.com.br'
+    URLSandBox = 'https://api-staging.shipay.com.br'
+    Left = 160
+    Top = 96
+  end
+  object ACBrPSPSicredi1: TACBrPSPSicredi[6]
+    Scopes = [scCobWrite, scCobRead, scPixWrite, scPixRead]
+    Left = 256
+    Top = 96
+  end
+  object ACBrPSPSicoob1: TACBrPSPSicoob[7]
+    Scopes = [scCobWrite, scCobRead, scPixWrite, scPixRead]
+    QuandoReceberRespostaHttp = ACBrPSPSicoob1QuandoReceberRespostaHttp
+    Left = 352
+    Top = 96
+  end
+  object ACBrPSPPagSeguro1: TACBrPSPPagSeguro[8]
+    Scopes = [scCobWrite, scCobRead, scPixWrite, scPixRead]
+    Left = 56
+    Top = 160
+  end
+  object ACBrPSPGerenciaNet1: TACBrPSPGerenciaNet[9]
+    Scopes = [scCobWrite, scCobRead, scPixWrite, scPixRead]
+    Left = 176
+    Top = 160
+  end
+  object ACBrPSPPixPDV1: TACBrPSPPixPDV[10]
+    Scopes = [scCobWrite, scCobRead, scPixWrite, scPixRead]
+    APIVersao = apiVersao1
+    Left = 288
+    Top = 160
+  end
+  object ACBrPSPInter1: TACBrPSPInter[11]
+    Scopes = [scCobWrite, scCobRead, scPixWrite, scPixRead]
+    Left = 384
+    Top = 160
+  end
+  object ACBrPSPAilos1: TACBrPSPAilos[12]
+    Scopes = [scCobWrite, scCobRead, scPixWrite, scPixRead]
+    Left = 54
+    Top = 224
+  end
+  object ACBrPSPMatera1: TACBrPSPMatera[13]
+    Scopes = [scCobWrite, scCobRead, scPixWrite, scPixRead]
+    MediatorFee = 0
+    Left = 144
+    Top = 224
+  end
+  object ACBrPSPCielo1: TACBrPSPCielo[14]
+    Scopes = [scCobWrite, scCobRead, scPixWrite, scPixRead]
+    Left = 240
+    Top = 224
+  end
+  object ACBrPSPMercadoPago1: TACBrPSPMercadoPago[15]
+    Scopes = [scCobWrite, scCobRead, scPixWrite, scPixRead]
+    Left = 352
+    Top = 224
+  end
+  object ACBrPSPBanrisul1: TACBrPSPBanrisul[16]
+    Scopes = [scCobWrite, scCobRead, scPixWrite, scPixRead]
+    Left = 472
+    Top = 40
+  end
+  object ACBrPSPGate2All1: TACBrPSPGate2All[17]
+    Scopes = [scCobWrite, scCobRead, scPixWrite, scPixRead]
+    Left = 448
+    Top = 96
+  end
+  object ACBrPSPC6Bank1: TACBrPSPC6Bank[18]
+    Scopes = [scCobWrite, scCobRead, scPixWrite, scPixRead]
+    Left = 480
+    Top = 160
+  end
+  object ACBrPSPAppLess1: TACBrPSPAppLess[19]
+    Scopes = [scCobWrite, scCobRead, scPixWrite, scPixRead]
+    Left = 472
+    Top = 224
+  end
+  object ACBrPSPQQPag1: TACBrPSPQQPag[20]
+    Scopes = [scCobWrite, scCobRead, scPixWrite, scPixRead]
+    Left = 54
+    Top = 288
+  end
+  object ACBrPSPCrediSIS1: TACBrPSPCrediSIS[21]
+    Scopes = [scCobWrite, scCobRead, scPixWrite, scPixRead]
+    Left = 152
+    Top = 288
+  end
+end

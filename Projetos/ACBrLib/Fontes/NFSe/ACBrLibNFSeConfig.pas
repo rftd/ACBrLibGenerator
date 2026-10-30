@@ -1,0 +1,378 @@
+{******************************************************************************}
+{ Projeto: Componentes ACBr                                                    }
+{  Biblioteca multiplataforma de componentes Delphi para interação com equipa- }
+{ mentos de Automação Comercial utilizados no Brasil                           }
+{ Direitos Autorais Reservados (c) 2020 Daniel Simoes de Almeida               }
+{                                                                              }
+{ Colaboradores nesse arquivo: Antonio Carlos Junior                           }
+{                                                                              }
+{  Você pode obter a última versão desse arquivo na pagina do  Projeto ACBr    }
+{ Componentes localizado em      http://www.sourceforge.net/projects/acbr      }
+{                                                                              }
+{  Esta biblioteca é software livre; você pode redistribuí-la e/ou modificá-la }
+{ sob os termos da Licença Pública Geral Menor do GNU conforme publicada pela  }
+{ Free Software Foundation; tanto a versão 2.1 da Licença, ou (a seu critério) }
+{ qualquer versão posterior.                                                   }
+{                                                                              }
+{  Esta biblioteca é distribuída na expectativa de que seja útil, porém, SEM   }
+{ NENHUMA GARANTIA; nem mesmo a garantia implícita de COMERCIABILIDADE OU      }
+{ ADEQUAÇÃO A UMA FINALIDADE ESPECÍFICA. Consulte a Licença Pública Geral Menor}
+{ do GNU para mais detalhes. (Arquivo LICENÇA.TXT ou LICENSE.TXT)              }
+{                                                                              }
+{  Você deve ter recebido uma cópia da Licença Pública Geral Menor do GNU junto}
+{ com esta biblioteca; se não, escreva para a Free Software Foundation, Inc.,  }
+{ no endereço 59 Temple Street, Suite 330, Boston, MA 02111-1307 USA.          }
+{ Você também pode obter uma copia da licença em:                              }
+{ http://www.opensource.org/licenses/lgpl-license.php                          }
+{                                                                              }
+{ Daniel Simões de Almeida - daniel@projetoacbr.com.br - www.projetoacbr.com.br}
+{       Rua Coronel Aureliano de Camargo, 963 - Tatuí - SP - 18270-170         }
+{******************************************************************************}
+
+{$I ACBr.inc}
+
+unit ACBrLibNFSeConfig;
+
+interface
+
+uses
+  Classes, SysUtils, IniFiles,
+  ACBrLibComum, ACBrLibConfig, DFeReportConfig,
+  {$IfNDef NOREPORT}
+  ACBrNFSeXDANFSeRLClass,
+  {$EndIf}
+  ACBrNFSeXDANFSeFPDFClass,
+  ACBrNFSeXConversao, ACBrNFSeXConfiguracoes, ACBrXmlBase, ACBrDFeReport,
+  ACBrDFe.Conversao;
+
+type
+  { TDANFSeReportConfig }
+  TDANFSeReportConfig = class(TDFeReportConfig<TACBrDFeReport>)
+  private
+    FPrestadorLogo: String;
+    FPrefeitura: String;
+    FPrestadorRazaoSocial: String;
+    FPrestadorNomeFantasia: String;
+    FPrestadorEndereco: String;
+    FPrestadorComplemento: String;
+    FPrestadorFone: String;
+    FPrestadorMunicipio: String;
+    FOutrasInformacaoesImp: String;
+    FPrestadorInscMunicipal: String;
+    FTomadorInscEstadual: String;
+    FTomadorInscMunicipal: String;
+    FTomadorFone: String;
+    FTomadorEndereco: String;
+    FTomadorComplemento: String;
+    FTomadorEmail: String;
+    FPrestadorEMail: String;
+    FPrestadorCNPJ: String;
+    FFormatarNumeroDocumentoNFSe: Boolean;
+    FPrestadorUF: String;
+    FAtividade: String;
+    FNFSeCancelada: boolean;
+    FImprimeCanhoto: Boolean;
+    FTipoDANFSE: TTipoDANFSE;
+    FTamanhoFonte: Integer;
+    FProducao: TnfseSimNao;
+    FDetalharServico : Boolean;
+    FDataCompetenciaCompleta: Boolean;
+    FLogoNFSe: String;
+
+    function SimNaoToStr(const t: TnfseSimNao): string;
+    function StrToSimNao(out ok: boolean; const s: string): TnfseSimNao;
+
+  protected
+    procedure LerIniChild(const AIni: TCustomIniFile); override;
+    procedure GravarIniChild(const AIni: TCustomIniFile); override;
+    procedure ApplyChild(const DFeReport: TACBrDFeReport; const Lib: TACBrLib); override;
+    procedure DefinirValoresPadroesChild; override;
+
+  public
+    constructor Create;
+
+    property PrestadorLogo: String read FPrestadorLogo write FPrestadorLogo;
+    property Prefeitura: String read FPrefeitura write FPrefeitura;
+    property PrestadorRazaoSocial: String read FPrestadorRazaoSocial write FPrestadorRazaoSocial;
+    property PrestadorNomeFantasia: String read FPrestadorNomeFantasia write FPrestadorNomeFantasia;
+    property PrestadorUF: String read FPrestadorUF write FPrestadorUF;
+    property PrestadorEndereco: String read FPrestadorEndereco write FPrestadorEndereco;
+    property PrestadorComplemento: String read FPrestadorComplemento write FPrestadorComplemento;
+    property PrestadorFone: String read FPrestadorFone write FPrestadorFone;
+    property PrestadorMunicipio: String read FPrestadorMunicipio write FPrestadorMunicipio;
+    property OutrasInformacaoesImp: String read FOutrasInformacaoesImp write FOutrasInformacaoesImp;
+    property PrestadorInscMunicipal: String read FPrestadorInscMunicipal write FPrestadorInscMunicipal;
+    property PrestadorEMail: String read FPrestadorEMail write FPrestadorEMail;
+    property PrestadorCNPJ: String read FPrestadorCNPJ write FPrestadorCNPJ;
+    property TomadorInscEstadual: String read FTomadorInscEstadual write FTomadorInscEstadual;
+    property TomadorInscMunicipal: String read FTomadorInscMunicipal write FTomadorInscMunicipal;
+    property TomadorFone: String read FTomadorFone write FTomadorFone;
+    property TomadorEndereco: String read FTomadorEndereco write FTomadorEndereco;
+    property TomadorComplemento: String read FTomadorComplemento write FTomadorComplemento;
+    property TomadorEmail: String read FTomadorEmail write FTomadorEmail;
+    property Atividade: String read FAtividade write FAtividade;
+    property Cancelada: Boolean read FNFSeCancelada write FNFSeCancelada;
+    property ImprimeCanhoto: Boolean read FImprimeCanhoto write FImprimeCanhoto default False;
+    property TipoDANFSE: TTipoDANFSE read FTipoDANFSE   write FTipoDANFSE default tpGeral;
+    property TamanhoFonte: Integer   read FTamanhoFonte write FTamanhoFonte;
+    property FormatarNumeroDocumentoNFSe: Boolean read FFormatarNumeroDocumentoNFSe write FFormatarNumeroDocumentoNFSe;
+    property Producao: TnfseSimNao   read FProducao     write FProducao;
+    property DetalharServico: Boolean read FDetalharServico write FDetalharServico default False;
+    property DataCompetenciaCompleta: Boolean read  FDataCompetenciaCompleta write FDataCompetenciaCompleta default False;
+    property LogoNFSe: String read FLogoNFSe write FLogoNFSe;
+  end;
+
+  { TLibNFSeConfig }
+  TLibNFSeConfig = class(TLibConfig)
+  private
+    FNFSeConfig: TConfiguracoesNFSe;
+    FDANFSeConfig: TDANFSeReportConfig;
+
+  protected
+    procedure Travar; override;
+    procedure Destravar; override;
+
+    procedure INIParaClasse; override;
+    procedure ClasseParaINI; override;
+    procedure ClasseParaComponentes; override;
+
+  public
+    constructor Create(AOwner: TObject; ANomeArquivo: String = ''; AChaveCrypt: AnsiString = ''); override;
+    destructor Destroy; override;
+
+    property NFSe: TConfiguracoesNFSe read FNFSeConfig;
+    property DANFSe: TDANFSeReportConfig read FDANFSeConfig;
+  end;
+
+implementation
+
+uses
+  ACBrLibNFSeBase, ACBrLibNFSeConsts;
+
+{ TDANFSeReportConfig }
+
+function TDANFSeReportConfig.SimNaoToStr(const t: TnfseSimNao): string;
+begin
+    Result := EnumeradoToStr(t,
+                           ['0', '1'],
+                           [snNao, snSim]);
+end;
+
+function TDANFSeReportConfig.StrToSimNao(out ok: boolean; const s: string): TnfseSimNao;
+begin
+  Result := StrToEnumerado(ok, s,
+                           ['1', '0'],
+                           [snSim, snNao]);
+end;
+
+constructor TDANFSeReportConfig.Create;
+begin
+  inherited Create(CSessaoDANFSE);
+end;
+
+procedure TDANFSeReportConfig.LerIniChild(const AIni: TCustomIniFile);
+var
+  ok: Boolean;
+begin
+  FPrestadorLogo := AIni.ReadString(CSessaoDANFSE, CChavePLogo, FPrestadorLogo);
+  FPrestadorRazaoSocial := AIni.ReadString(CSessaoDANFSE, CChavePRazaoSocial, FPrestadorRazaoSocial);
+  FPrestadorNomeFantasia := AIni.ReadString(CSessaoDANFSE, CChavePNomeFantasia, FPrestadorNomeFantasia);
+  FPrestadorEndereco := AIni.ReadString(CSessaoDANFSE, CChavePEndereco, FPrestadorEndereco);
+  FPrestadorComplemento := AIni.ReadString(CSessaoDANFSE, CChavePComplemento, FPrestadorComplemento);
+  FPrestadorFone := AIni.ReadString(CSessaoDANFSE, CChavePFone, FPrestadorFone);
+  FPrestadorMunicipio := AIni.ReadString(CSessaoDANFSE, CChavePMunicipio, FPrestadorMunicipio);
+  FPrestadorInscMunicipal := AIni.ReadString(CSessaoDANFSE, CChavePIM, FPrestadorInscMunicipal);
+  FPrestadorEMail := AIni.ReadString(CSessaoDANFSE, CChavePEMail, FPrestadorEMail);
+  FPrestadorUF := AIni.ReadString(CSessaoDANFSE, CChavePUF, FPrestadorUF);
+
+  FTomadorInscEstadual := AIni.ReadString(CSessaoDANFSE, CChaveTIE, FTomadorInscEstadual);
+  FTomadorInscMunicipal := AIni.ReadString(CSessaoDANFSE, CChaveTIM, FTomadorInscMunicipal);
+  FTomadorFone := AIni.ReadString(CSessaoDANFSE, CChaveTFone, FTomadorFone);
+  FTomadorEndereco := AIni.ReadString(CSessaoDANFSE, CChaveTEndereco, FTomadorEndereco);
+  FTomadorComplemento := AIni.ReadString(CSessaoDANFSE, CChaveTComplemento, FTomadorComplemento);
+  FTomadorEmail:= AIni.ReadString(CSessaoDANFSE, CChaveTEMail, FTomadorEmail);
+
+  FPrefeitura := AIni.ReadString(CSessaoDANFSE, CChavePrefeitura, FPrefeitura);
+  FTamanhoFonte := AIni.ReadInteger(CSessaoDANFSE, CChaveTamanhoFonte, FTamanhoFonte);
+  FOutrasInformacaoesImp := AIni.ReadString(CSessaoDANFSE, CChaveOutrasInformacaoesImp, OutrasInformacaoesImp);
+  FAtividade := AIni.ReadString(CSessaoDANFSE, CChaveAtividade, FAtividade);
+  FFormatarNumeroDocumentoNFSe := AIni.ReadBool(CSessaoDANFSE, CChaveFmtNroNFSe, FFormatarNumeroDocumentoNFSe);
+  FNFSeCancelada := AIni.ReadBool(CSessaoDANFSE, CChaveNFSeCancelada, FNFSeCancelada);
+  FImprimeCanhoto := AIni.ReadBool(CSessaoDANFSE, CChaveImprimeCanhoto, FImprimeCanhoto);
+  FDetalharServico := AIni.ReadBool(CSessaoDANFSE, CChaveDetalharServico, FDetalharServico);
+  FProducao := StrToSimNao(ok, AIni.ReadString(CSessaoDANFSE, CChaveProducao, SimNaoToStr(FProducao)));
+  FDataCompetenciaCompleta:=AIni.ReadBool(CSessaoDANFSe, CChaveDataCompetenciaCompleta,FDataCompetenciaCompleta);
+  FLogoNFSe := AIni.ReadString(CSessaoDANFSE, CChaveLogoNFSe, FLogoNFSe);
+end;
+
+procedure TDANFSeReportConfig.GravarIniChild(const AIni: TCustomIniFile);
+begin
+  AIni.WriteString(CSessaoDANFSE, CChavePLogo, FPrestadorLogo);
+  AIni.WriteString(CSessaoDANFSE, CChavePRazaoSocial, FPrestadorRazaoSocial);
+  AIni.WriteString(CSessaoDANFSE, CChavePNomeFantasia, FPrestadorNomeFantasia);
+  AIni.WriteString(CSessaoDANFSE, CChavePEndereco, FPrestadorEndereco);
+  AIni.WriteString(CSessaoDANFSE, CChavePComplemento, FPrestadorComplemento);
+  AIni.WriteString(CSessaoDANFSE, CChavePFone, FPrestadorFone);
+  AIni.WriteString(CSessaoDANFSE, CChavePMunicipio, FPrestadorMunicipio);
+  AIni.WriteString(CSessaoDANFSE, CChavePIM, FPrestadorInscMunicipal);
+  AIni.WriteString(CSessaoDANFSE, CChavePEMail, FPrestadorEMail);
+  AIni.WriteString(CSessaoDANFSE, CChavePUF, FPrestadorUF);
+
+  AIni.WriteString(CSessaoDANFSE, CChaveTIE, FTomadorInscEstadual);
+  AIni.WriteString(CSessaoDANFSE, CChaveTIM, FTomadorInscMunicipal);
+  AIni.WriteString(CSessaoDANFSE, CChaveTFone, FTomadorFone);
+  AIni.WriteString(CSessaoDANFSE, CChaveTEndereco, FTomadorEndereco );
+  AIni.WriteString(CSessaoDANFSE, CChaveTComplemento, FTomadorComplemento);
+  AIni.WriteString(CSessaoDANFSE, CChaveTEMail, FTomadorEmail);
+
+  AIni.WriteString(CSessaoDANFSE, CChavePrefeitura, FPrefeitura);
+  AIni.WriteInteger(CSessaoDANFSE, CChaveTamanhoFonte, FTamanhoFonte);
+  AIni.WriteString(CSessaoDANFSE, CChaveOutrasInformacaoesImp, OutrasInformacaoesImp);
+  AIni.WriteString(CSessaoDANFSE, CChaveAtividade, FAtividade);
+  AIni.WriteBool(CSessaoDANFSE, CChaveFmtNroNFSe, FFormatarNumeroDocumentoNFSe);
+  AIni.WriteBool(CSessaoDANFSE, CChaveNFSeCancelada, FNFSeCancelada);
+  AIni.WriteBool(CSessaoDANFSE, CChaveImprimeCanhoto, FImprimeCanhoto);
+  AIni.WriteBool(CSessaoDANFSE, CChaveDetalharServico, FDetalharServico);
+  AIni.WriteString(CSessaoDANFSE, CChaveProducao, SimNaoToStr(FProducao));
+  AIni.WriteBool(CSessaoDANFSE,CChaveDataCompetenciaCompleta,FDataCompetenciaCompleta);
+  AIni.WriteString(CSessaoDANFSe, CChaveLogoNFSe, FLogoNFSe);
+end;
+
+procedure TDANFSeReportConfig.ApplyChild(const DFeReport: TACBrDFeReport; const Lib: TACBrLib);
+var
+   {$ifNDef NOREPORT}
+     LDANFSe: TACBrNFSeXDANFSeRL;
+   {$Else}
+     LDANFSe: TACBrNFSeXDANFSeFPDF;
+   {$EndIf}
+begin
+  {$ifNDef NOREPORT}
+     LDANFSe := TACBrNFSeXDANFSeRL(DFeReport);
+   {$Else}
+     LDANFSe := TACBrNFSeXDANFSeFPDF(DFeReport);
+   {$EndIf}
+  with LDANFSe do
+  begin
+    Prestador.Logo := FPrestadorLogo;
+    Prestador.RazaoSocial := FPrestadorRazaoSocial;
+    Prestador.NomeFantasia := FPrestadorNomeFantasia;
+    Prestador.Endereco := FPrestadorEndereco;
+    Prestador.Complemento := FPrestadorComplemento;
+    Prestador.Fone := FPrestadorFone;
+    Prestador.Municipio := FPrestadorMunicipio;
+    Prestador.EMail := FPrestadorEMail;
+    Prestador.UF := FPrestadorUF;
+    Prestador.InscricaoMunicipal := FPrestadorInscMunicipal;
+
+    Tomador.InscricaoEstadual := FTomadorInscEstadual;
+    Tomador.InscricaoMunicipal := FTomadorInscMunicipal;
+    Tomador.Fone := FTomadorFone;
+    Tomador.Endereco := FTomadorEndereco;
+    Tomador.Complemento := FTomadorComplemento;
+    Tomador.Email := FTomadorEmail;
+
+    Prefeitura := FPrefeitura;
+    TamanhoFonte := FTamanhoFonte;
+    OutrasInformacaoesImp := FOutrasInformacaoesImp;
+    Atividade := FAtividade;
+    FormatarNumeroDocumentoNFSe := FFormatarNumeroDocumentoNFSe;
+    Cancelada := FNFSeCancelada;
+    ImprimeCanhoto := FImprimeCanhoto;
+    DetalharServico := FDetalharServico;
+    Producao := FProducao;
+    DataCompetenciaCompleta:= FDataCompetenciaCompleta;
+    LogoNFSe := FLogoNFSe;
+  end;
+end;
+
+procedure TDANFSeReportConfig.DefinirValoresPadroesChild;
+begin
+  FPrestadorLogo := EmptyStr;
+  FPrefeitura := EmptyStr;
+  FPrestadorRazaoSocial := EmptyStr;
+  FPrestadorNomeFantasia := EmptyStr;
+  FPrestadorEndereco := EmptyStr;
+  FPrestadorComplemento := EmptyStr;
+  FPrestadorFone := EmptyStr;
+  FPrestadorMunicipio := EmptyStr;
+  FTamanhoFonte := 6;
+  FOutrasInformacaoesImp := EmptyStr;
+  FPrestadorInscMunicipal := EmptyStr;
+  FPrestadorEMail := EmptyStr;
+  FPrestadorUF := EmptyStr;
+  FTomadorInscEstadual := EmptyStr;
+  FTomadorInscMunicipal := EmptyStr;
+  FAtividade := EmptyStr;
+  FTomadorFone := EmptyStr;
+  FTomadorEndereco := EmptyStr;
+  FTomadorComplemento := EmptyStr;
+  FTomadorEmail := EmptyStr;
+  FFormatarNumeroDocumentoNFSe := True;
+  FNFSeCancelada := False;
+  FImprimeCanhoto := False;
+  FDetalharServico := False;
+  FDataCompetenciaCompleta:= False;
+  FLogoNFSe := EmptyStr;
+end;
+
+{ TLibNFSeConfig }
+
+constructor TLibNFSeConfig.Create(AOwner: TObject; ANomeArquivo: String; AChaveCrypt: AnsiString);
+begin
+  inherited Create(AOwner, ANomeArquivo, AChaveCrypt);
+
+  FNFSeConfig := TConfiguracoesNFSe.Create(nil);
+  FNFSeConfig.ChaveCryptINI := AChaveCrypt;
+
+  FDANFSeConfig := TDANFSeReportConfig.Create;
+end;
+
+destructor TLibNFSeConfig.Destroy;
+begin
+  FNFSeConfig.Free;
+  FDANFSeConfig.Free;
+
+  inherited Destroy;
+end;
+
+procedure TLibNFSeConfig.INIParaClasse;
+begin
+  inherited INIParaClasse;
+
+  FNFSeConfig.ChaveCryptINI := ChaveCrypt;
+  FNFSeConfig.LerIni(Ini);
+  FDANFSeConfig.LerIni(Ini);
+end;
+
+procedure TLibNFSeConfig.ClasseParaINI;
+begin
+  inherited ClasseParaINI;
+
+  FNFSeConfig.ChaveCryptINI := ChaveCrypt;
+  FNFSeConfig.GravarIni(Ini);
+  FDANFSeConfig.GravarIni(Ini);
+end;
+
+procedure TLibNFSeConfig.ClasseParaComponentes;
+begin
+  FNFSeConfig.ChaveCryptINI := ChaveCrypt;
+
+  if Assigned(Owner) then
+    TACBrLibNFSe(Owner).NFSeDM.AplicarConfiguracoes;
+end;
+
+procedure TLibNFSeConfig.Travar;
+begin
+  if Assigned(Owner) then
+    TACBrLibNFSe(Owner).NFSeDM.Travar;
+end;
+
+procedure TLibNFSeConfig.Destravar;
+begin
+  if Assigned(Owner) then
+    TACBrLibNFSe(Owner).NFSeDM.Destravar;
+end;
+
+end.
+
+

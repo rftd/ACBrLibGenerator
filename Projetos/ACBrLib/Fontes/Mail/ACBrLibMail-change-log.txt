@@ -1,0 +1,124 @@
+{******************************************************************************}
+{ Projeto: Componentes ACBr                                                    }
+{  Biblioteca multiplataforma de componentes Delphi para intera��o com equipa- }
+{ mentos de Automa��o Comercial utilizados no Brasil                           }
+{                                                                              }
+{  Voc� pode obter a �ltima vers�o desse arquivo na pagina do  Projeto ACBr    }
+{ Componentes localizado em      http://www.sourceforge.net/projects/acbr      }
+{                                                                              }
+{  Esta biblioteca � software livre; voc� pode redistribu�-la e/ou modific�-la }
+{ sob os termos da Licen�a P�blica Geral Menor do GNU conforme publicada pela  }
+{ Free Software Foundation; tanto a vers�o 2.1 da Licen�a, ou (a seu crit�rio) }
+{ qualquer vers�o posterior.                                                   }
+{                                                                              }
+{  Esta biblioteca � distribu�da na expectativa de que seja �til, por�m, SEM   }
+{ NENHUMA GARANTIA; nem mesmo a garantia impl�cita de COMERCIABILIDADE OU      }
+{ ADEQUA��O A UMA FINALIDADE ESPEC�FICA. Consulte a Licen�a P�blica Geral Menor}
+{ do GNU para mais detalhes. (Arquivo LICEN�A.TXT ou LICENSE.TXT)              }
+{                                                                              }
+{  Voc� deve ter recebido uma c�pia da Licen�a P�blica Geral Menor do GNU junto}
+{ com esta biblioteca; se n�o, escreva para a Free Software Foundation, Inc.,  }
+{ no endere�o 59 Temple Street, Suite 330, Boston, MA 02111-1307 USA.          }
+{ Voc� tamb�m pode obter uma copia da licen�a em:                              }
+{ http://www.opensource.org/licenses/lgpl-license.php                          }
+{                                                                              }
+{ Daniel Sim�es de Almeida - daniel@projetoacbr.com.br - www.projetoacbr.com.br}
+{       Rua Coronel Aureliano de Camargo, 963 - Tatu� - SP - 18270-170         }
+{******************************************************************************}
+
+Agradecimentos:
+
+* Administradores:
+- Daniel Sim�es de Almeida
+
+{******************************************************************************
+|* ACBrLibMail
+|*
+|* PROP�SITO: Registro de Altera��es
+******************************************************************************}
+
+S�mbolo : Significado
+
+[+]     : Novo recurso
+[*]     : Recurso modificado/melhorado
+[-]     : Corre��o de Bug (assim esperamos)
+
+09/10/2025
+-- ACBrLibMailConsoleMT.lpi, ACBrLibMailConsoleMTDemo.lpi --
+[+] TK-7487 - Habilita 16KB de alinhamento nos LPI console da ACBrLibMail, obs: para ndk <=r22b
+   Adiciona flags de linker -k-z" common-page-size=16384" e -k-z" max-page-size=16384" 
+   no perfil de compilação android-arm64-v8a para resolver problemas de alinhamento de página e compatibilizar com Android 15+.
+   
+   Por: doszapro
+
+10/02/2025
+-- ACBrLibMailConsoleMT.lpi, ACBrLibMailConsoleMTDemo.lpi --
+[+] Adicionado novo Projeto, 100% CONSOLE e MT vers�o Pro e Demonstra��o.
+[+] Compat�vel com compila��o em Linux 64 e Android 32 e 64
+    Por: Antonio Carlos Junior
+
+13/03/2024
+--- ACBrLibMailDataModule,ACBrLibMailBase  --
+[*] Adicionado uses ACBrUtil.filesIO
+Por: Daniel Morais Infocotidiano
+
+11/01/2023
+--- ACBrLibMailBase ---
+[-] Corre��o para convers�o das respostas com Erros, em ANSI, se assim estiver configurado
+	Por: Antonio Carlos Junior
+
+20/07/2022
+--- ACBrLibEMAIL ---
+[*] Remo��o de Warning @deprecated ref. ACBrUtils
+
+07/09/2020
+--- ACBrLibMAILMT, ACBrLibMAILST ---
+[+] Removido o metodo MAIL_ConfigImportar.
+   Por: Rafael Dias
+[+] Removido o metodo MAIL_ConfigExportar.
+   Por: Rafael Dias
+[-] Removido o metodo MAIL_ImportarConfig.
+   Por: Rafael Dias
+
+03/01/2020
+--- ACBrLibMailClass ---
+[+] Adicionado o metodo MAIL_ImportarConfig.
+   Por: Rafael Dias
+
+23/08/2018
+--- ACBrLibMail ---
+[+] Adicionado a nova propriedade para confirma��o de entrega.
+    Por: Rafael Dias
+
+15/08/2018
+--- ACBrLibMail ---
+[*] Melhorias no codigo para evitar duplica��o de codigo.
+    Por: Rafael Dias
+
+14/08/2018
+--- ACBrLibMail ---
+[-] Corrigido erro ao inicializar datamodule.
+    Por: Rafael Dias
+
+13/08/2018
+--- ACBrLibMail ---
+[+] Adcionado o metodo MAIL_AddBody e MAIL_AddAltBody, para poder adicionar o corpo do email.
+    Por: Rafael Dias
+
+09/08/2018
+--- ACBrLibMail ---
+[-] Corre��o nos nomes das Unit do DataModule para seguir o padr�o.
+    Por: Rafael Dias
+[-] Corre��o do LFM do DataModule estava com o nome da classe incorreto.
+    Por: Rafael Dias
+[-] Remo��o de metodos com Stream.
+    Por: Rafael Dias
+[-] Corre��es nos metodos para n�o usarem parametros opcionais e enum.
+    Por: Rafael Dias
+[*] Adicionados os modos de compila��o padr�o.
+    Por: Rafael Dias
+
+02/08/2018
+--- ACBrLibMail ---
+[+] Inicio do projeto.
+   Por: Italo Jurisato Junior

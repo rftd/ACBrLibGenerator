@@ -1,0 +1,124 @@
+{******************************************************************************}
+{ Projeto: Componentes ACBr                                                    }
+{  Biblioteca multiplataforma de componentes Delphi para intera��o com equipa- }
+{ mentos de Automa��o Comercial utilizados no Brasil                           }
+{                                                                              }
+{  Voc� pode obter a �ltima vers�o desse arquivo na pagina do  Projeto ACBr    }
+{ Componentes localizado em      http://www.sourceforge.net/projects/acbr      }
+{                                                                              }
+{  Esta biblioteca � software livre; voc� pode redistribu�-la e/ou modific�-la }
+{ sob os termos da Licen�a P�blica Geral Menor do GNU conforme publicada pela  }
+{ Free Software Foundation; tanto a vers�o 2.1 da Licen�a, ou (a seu crit�rio) }
+{ qualquer vers�o posterior.                                                   }
+{                                                                              }
+{  Esta biblioteca � distribu�da na expectativa de que seja �til, por�m, SEM   }
+{ NENHUMA GARANTIA; nem mesmo a garantia impl�cita de COMERCIABILIDADE OU      }
+{ ADEQUA��O A UMA FINALIDADE ESPEC�FICA. Consulte a Licen�a P�blica Geral Menor}
+{ do GNU para mais detalhes. (Arquivo LICEN�A.TXT ou LICENSE.TXT)              }
+{                                                                              }
+{  Voc� deve ter recebido uma c�pia da Licen�a P�blica Geral Menor do GNU junto}
+{ com esta biblioteca; se n�o, escreva para a Free Software Foundation, Inc.,  }
+{ no endere�o 59 Temple Street, Suite 330, Boston, MA 02111-1307 USA.          }
+{ Voc� tamb�m pode obter uma copia da licen�a em:                              }
+{ http://www.opensource.org/licenses/lgpl-license.php                          }
+{                                                                              }
+{ Daniel Sim�es de Almeida - daniel@projetoacbr.com.br - www.projetoacbr.com.br}
+{       Rua Coronel Aureliano de Camargo, 963 - Tatu� - SP - 18270-170         }
+{******************************************************************************}
+Agradecimentos:
+
+* Administradores:
+- Daniel Sim�es de Almeida
+
+{******************************************************************************
+|* ACBrLibNFe
+|*
+|* PROP�SITO: Registro de Altera��es
+******************************************************************************}
+
+S�mbolo : Significado
+
+[+]     : Novo recurso
+[*]     : Recurso modificado/melhorado
+[-]     : Corre��o de Bug (assim esperamos)
+
+09/10/2025
+-- ACBrLibPosPrinterConsoleMT.lpi, ACBrLibPosPrinterConsoleMTDemo.lpi --
+[+] TK-7487 - Habilita 16KB de alinhamento nos LPI console da ACBrLibPosPrinter, obs: para ndk <=r22b
+   Adiciona flags de linker -k-z" common-page-size=16384" e -k-z" max-page-size=16384" 
+   no perfil de compilação android-arm64-v8a para resolver problemas de alinhamento de página e compatibilizar com Android 15+.
+   
+   Por: doszapro
+
+13/03/2024
+--- ACBrLibPosPrinterDataModule --
+[*] Adicionado uses ACBrUtil.filesIO
+Por: Daniel Morais Infocotidiano
+
+11/01/2023
+--- ACBrLibPosPrinterBase ---
+[-] Corre��o para convers�o das respostas com Erros, em ANSI, se assim estiver configurado
+	Por: Antonio Carlos Junior
+
+20/07/2022
+--- ACBrLibPOSPrinter ---
+[*] Remo��o de Warning @deprecated ref. ACBrUtils
+
+07/09/2020
+--- ACBrLibPosPrinterMT, ACBrLibPosPrinterST ---
+[+] Removido o metodo PosPrinter_ConfigImportar.
+   Por: Rafael Dias
+[+] Removido o metodo PosPrinter_ConfigExportar.
+   Por: Rafael Dias
+[-] Removido o metodo PosPrinter_ImportarConfig.
+   Por: Rafael Dias
+
+19/05/2020
+-- ACBrLibPosPrinterClass --
+[*] Trocado StrToFloat por StringToFloatDef no metodo POS_ImprimirCheque.
+    (Por: Rafael Dias)
+
+09/05/2020
+-- ACBrLibPosPrinterClass --
+[+] Adiciona os metodos POS_ImprimirCheque, POS_ImprimirTextoCheque, 
+    POS_LeituraCheque, POS_LerCMC7, POS_EjetarCheque, POS_PodeLerDaPorta e POS_LerCaracteristicas.
+    (Por: Rafael Dias)
+
+18/04/2020
+-- ACBrLibPosPrinterClass, ACBrLibPosPrinterDataModule --
+[-] Corre��o na ordem de passagem de par�metros em 
+    function POS_RetornarTags(IncluiAjuda: Boolean; const sResposta: PChar; var esTamanho: longint): longint;
+[+] Adicionada rotina de verifica��o do Encoding de Entrada. Para correta convers�o da P�gina de c�digo
+[-] Corre��es e Novos testes Unit�rios
+	(por: DSA)
+
+24/12/2019
+--- ACBrLibPosPrinter ---
+[-] Arrumado ordem dos parametos do metodo POS_RetornarTags.  Por: (Rafael Dias)
+[+] Adicionado metodo para achar as portas seriais e as impressoras USB(impressoras USB funciona apenas no windows).  Por: (Rafael Dias)
+
+18/04/2018
+--- ACBrLibPosPrinter ---
+[+] Adicionado a propriedade TimeOut do componente PosPrinter.  Por: (Rafael Dias)
+[-] Corrigido erro na fun��o POS_UltimoRetorno.  Por: (Rafael Dias)
+
+09/04/2018
+--- ACBrLibPosPrinter ---
+[+] Adicionado a propriedade ArqLog do componente PosPrinter.  Por: (Rafael Dias)
+[+] Adicionado o metodo POS_RetornarTags para retornar as tags que a impressoa aceita.
+    Por: (Rafael Dias)
+
+29/03/2018
+--- ACBrLibPosPrinterConfig ---
+[-] Corrigido de n�o salvar as configura��es de Logo.  Por: (Rafael Dias)
+
+--- ACBrLibPosPrinterDataModule ---
+[-] Corrigido erro na hora de setar as propriedades do componente.  Por: (Rafael Dias)
+
+--- ACBrLibPosPrinter ---
+[+] Finalizado a implementa��o do metodos do ACBrPosPrinter.  Por: (Rafael Dias)
+[-] Corre��o na compila��o CDECL x86. Por: (Rafael Dias)
+
+26/03/2018
+--- ACBrLibPosPrinter ---
+[+] Inicio do projeto.  Por: (Rafael Dias)

@@ -1,0 +1,169 @@
+{******************************************************************************}
+{ Projeto: Componentes ACBr                                                    }
+{  Biblioteca multiplataforma de componentes Delphi para intera��o com equipa- }
+{ mentos de Automa��o Comercial utilizados no Brasil                           }
+{                                                                              }
+{  Voc� pode obter a �ltima vers�o desse arquivo na pagina do  Projeto ACBr    }
+{ Componentes localizado em      http://www.sourceforge.net/projects/acbr      }
+{                                                                              }
+{  Esta biblioteca � software livre; voc� pode redistribu�-la e/ou modific�-la }
+{ sob os termos da Licen�a P�blica Geral Menor do GNU conforme publicada pela  }
+{ Free Software Foundation; tanto a vers�o 2.1 da Licen�a, ou (a seu crit�rio) }
+{ qualquer vers�o posterior.                                                   }
+{                                                                              }
+{  Esta biblioteca � distribu�da na expectativa de que seja �til, por�m, SEM   }
+{ NENHUMA GARANTIA; nem mesmo a garantia impl�cita de COMERCIABILIDADE OU      }
+{ ADEQUA��O A UMA FINALIDADE ESPEC�FICA. Consulte a Licen�a P�blica Geral Menor}
+{ do GNU para mais detalhes. (Arquivo LICEN�A.TXT ou LICENSE.TXT)              }
+{                                                                              }
+{  Voc� deve ter recebido uma c�pia da Licen�a P�blica Geral Menor do GNU junto}
+{ com esta biblioteca; se n�o, escreva para a Free Software Foundation, Inc.,  }
+{ no endere�o 59 Temple Street, Suite 330, Boston, MA 02111-1307 USA.          }
+{ Voc� tamb�m pode obter uma copia da licen�a em:                              }
+{ http://www.opensource.org/licenses/lgpl-license.php                          }
+{                                                                              }
+{ Daniel Sim�es de Almeida - daniel@projetoacbr.com.br - www.projetoacbr.com.br}
+{       Rua Coronel Aureliano de Camargo, 963 - Tatu� - SP - 18270-170         }
+{******************************************************************************}
+Agradecimentos:
+
+* Administradores:
+- Daniel Sim�es de Almeida
+
+{******************************************************************************
+|* ACBrLibReinf
+|*
+|* PROP�SITO: Registro de Altera��es
+******************************************************************************}
+
+S�mbolo : Significado
+
+[+]     : Novo recurso
+[*]     : Recurso modificado/melhorado
+[-]     : Corre��o de Bug (assim esperamos)
+
+09/10/2025
+-- ACBrLibReinfConsoleMT.lpi, ACBrLibReinfConsoleMTDemo.lpi --
+[+] TK-7487 - Habilita 16KB de alinhamento nos LPI console da ACBrLibReinf, obs: para ndk <=r22b
+   Adiciona flags de linker -k-z" common-page-size=16384" e -k-z" max-page-size=16384" 
+   no perfil de compilação android-arm64-v8a para resolver problemas de alinhamento de página e compatibilizar com Android 15+.
+   
+   Por: doszapro
+
+17/03/2025
+-- Diversos --
+[+] #TK-4956-8: Implementados programas de exemplo em PHP do Reinf ST e MT.
+  Por: Renato Rubinho
+
+13/03/2025
+-- ACBrLibReinfBase --
+[*] #TK-4956-8 Implementado m�todo CriarEnviarReinf para receber o conte�do do arquivo ini ou o caminho do arquivo
+    Por: Renato Rubinho
+
+10/02/2025
+-- ACBrLibReinfConsoleMT.lpi, ACBrLibReinfConsoleMTDemo.lpi --
+[+] Adicionado novo Projeto, 100% CONSOLE e MT vers�o Pro e Demonstra��o.
+[+] Compat�vel com compila��o em Linux 64 e Android 32 e 64
+    Por: Antonio Carlos Junior
+
+05/02/2025
+-- ACBrLib.hnd --
+[*] #TK-6528 Revisada e atualizada documenta��o do Reinf na Lib.
+    Por: Renato Rubinho
+
+15/02/2024
+--- ACBrLibReinfRespostas ---
+[*] Configurados retornos do R4099 para tratar as tags totApurMen de mesmo nome com os prefixos infoCR_CNR e infoTotalCR
+    Por: Renato Rubinho
+
+30/01/2024
+--- ACBrReinf, ACBrReinf.Delegates ---
+[-] Corre��o no programa de exemplo MT em C#
+    Por: Renato Rubinho
+
+05/01/2024
+--- Diversos ---
+[+] Desenvolvido programa de exemplo em Java
+    Por: Renato Rubinho
+
+28/12/2023
+--- ACBrLibReinfDataModule ---
+[+] Cria��o Vers�o Demo ACBrLibReinf
+    Por: Antonio Carlos Junior
+
+19/12/2023
+-- ACBrLib.hnd --
+[*] Implementada documenta��o do Reinf
+  Por: Renato Rubinho
+
+15/12/2023
+--- ACBrLibReinfTestCase ---
+[*] Declara��o de testregistry para corrigir erro de compila��o
+
+15/12/2023
+--- ACBrLibReinfTestCase ---
+[+] Implementados testes unit�rios
+--- ACBrLibReinf.lpi ---
+[*] Atualizada vers�o com a mesma gravada nos fontes
+--- ACBrLibReinfStaticImportMT, ACBrLibReinfStaticImportST --- 
+[*] Corrigida declara��o do m�todo Reinf_CriarEnviarReinf()
+
+12/12/2023
+--- Diversos ---
+[+] Desenvolvido programa de exemplo em C#
+--- ACBrLibReinfConfig, ACBrLibReinfDataModule ---
+[*] Corre��o na inicializa��o da lib e carregamento das configura��es
+--- ACBrLibReinfMT, ACBrLibReinfStaticImportMT, ACBrLibReinfStaticImportST ---
+[*] Corre��o e fun��es de Empregrador para Contribuinte e remo��o de fun��es indevidas
+    Por: Renato Rubinho
+
+07/12/2023
+--- ACBrLibReinfConsts, ACBrLibReinfMT, ACBrLibReinfStaticImportMT ---
+[*] Ajuste e melhorias para realizar os testes unit�rios.
+    Por: Antonio Carlos Junior
+
+01/12/2023
+--- ACBrLibReinfMT ---
+[*] Corre��o m�todo CriarEnviarReinf..
+    Por: Antonio Carlos
+
+01/12/2023
+--- ACBrLibReinf ---
+[*] Ajustes para compila��o vers�o MultiThread.
+    Por: Antonio Carlos
+ 
+30/11/2023
+--- Diversos --- 
+[*] Remo��o dos par�metros "grupo", n�o utilizados no Reinf
+    Implementado retorno da Resposta no m�todo CriarEnviarReinf()
+--- lib_test_teste-acbrlibreinf.js ---
+[*] Atualiza��o do programa de exemplo em node.js
+   Por: Renato Rubinho
+
+27/10/2023
+--- ACBrLibReinf ---
+[*] Refatorada Lib, criadas classes e m�todos de respostas, implementada Reinf_ConsultarReciboReinf
+   Por: Renato Rubinho
+
+17/09/2018
+--- ACBrLibReinf ---
+[+] Inicio do projeto.
+   Por: Italo Jurisato Junior
+
+29/05/2018
+--- ACBrLibReinfRespostas / ACBrLibReinfConsts ---
+[*] Altera��es nos nomes de constantes e classes visando a reutiliza��o das mesmas
+   para o Envio e Consulta.
+   Por: Italo Jurisato Junior
+
+21/05/2018
+--- ACBrLibReinfRespostas ---
+[*] Adequa��es em viture das altera��es feitas no componente ACBrReinf.
+   Por: Italo Jurisato Junior
+
+15/05/2018
+--- ACBrLibReinf ---
+
+[+] Adicionado m�todos para retorno de envio do XML do componente Reinf
+ (Utilizado tamb�m pelo ACBrMonitorPlus).
+

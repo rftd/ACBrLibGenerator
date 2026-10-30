@@ -1,0 +1,115 @@
+{******************************************************************************}
+{ Projeto: Componentes ACBr                                                    }
+{  Biblioteca multiplataforma de componentes Delphi para intera��o com equipa- }
+{ mentos de Automa��o Comercial utilizados no Brasil                           }
+{                                                                              }
+{  Voc� pode obter a �ltima vers�o desse arquivo na pagina do  Projeto ACBr    }
+{ Componentes localizado em      http://www.sourceforge.net/projects/acbr      }
+{                                                                              }
+{  Esta biblioteca � software livre; voc� pode redistribu�-la e/ou modific�-la }
+{ sob os termos da Licen�a P�blica Geral Menor do GNU conforme publicada pela  }
+{ Free Software Foundation; tanto a vers�o 2.1 da Licen�a, ou (a seu crit�rio) }
+{ qualquer vers�o posterior.                                                   }
+{                                                                              }
+{  Esta biblioteca � distribu�da na expectativa de que seja �til, por�m, SEM   }
+{ NENHUMA GARANTIA; nem mesmo a garantia impl�cita de COMERCIABILIDADE OU      }
+{ ADEQUA��O A UMA FINALIDADE ESPEC�FICA. Consulte a Licen�a P�blica Geral Menor}
+{ do GNU para mais detalhes. (Arquivo LICEN�A.TXT ou LICENSE.TXT)              }
+{                                                                              }
+{  Voc� deve ter recebido uma c�pia da Licen�a P�blica Geral Menor do GNU junto}
+{ com esta biblioteca; se n�o, escreva para a Free Software Foundation, Inc.,  }
+{ no endere�o 59 Temple Street, Suite 330, Boston, MA 02111-1307 USA.          }
+{ Voc� tamb�m pode obter uma copia da licen�a em:                              }
+{ http://www.opensource.org/licenses/lgpl-license.php                          }
+{                                                                              }
+{ Daniel Sim�es de Almeida - daniel@projetoacbr.com.br - www.projetoacbr.com.br}
+{       Rua Coronel Aureliano de Camargo, 963 - Tatu� - SP - 18270-170         }
+{******************************************************************************}
+Agradecimentos:
+
+* Administradores:
+- Daniel Sim�es de Almeida
+
+{******************************************************************************
+|* ACBrLibBAL
+|*
+|* PROP�SITO: Registro de Altera��es
+******************************************************************************}
+
+S�mbolo : Significado
+
+[+]     : Novo recurso
+[*]     : Recurso modificado/melhorado
+[-]     : Corre��o de Bug (assim esperamos)
+
+09/10/2025
+-- ACBrLibBALConsoleMT.lpi, ACBrLibBALConsoleMTDemo.lpi --
+[+] TK-7487 - Habilita 16KB de alinhamento nos LPI console da ACBrLibBAL, obs: para ndk <=r22b
+   Adiciona flags de linker -k-z" common-page-size=16384" e -k-z" max-page-size=16384" 
+   no perfil de compilação android-arm64-v8a para resolver problemas de alinhamento de página e compatibilizar com Android 15+.
+   
+   Por: doszapro
+
+27/12/2024
+--- ACBrLibBALConsoleMTDemo.lpi ---
+[+] Adicionado novo Projeto, 100% CONSOLE e MT vers�o Demonstra��o.
+[+] Compat�vel com compila��o em Linux 64 e Android 32 e 64
+    Por: Antonio Carlos Junior
+
+12/08/2024
+--- ACBrLibBALBase, ACBrLibBALST, ACBrLibBALMT,
+    ACBrLibBALStaticImportST, ACBrLibBALStaticImportMT ---
+[*] Ajustes para usar 'PAnsiChar' no lugar de 'PChar' e 'Integer' ao inves de 'LongInt'
+[*] Ajustes para usar 'ConverterStringEntrada' e 'ConverterStringSaida'
+[*] Remo��o de Units n�o utilizadas
+    Por: Antonio Carlos Junior
+
+
+11/03/2024
+--- ACBrLibBALBase, ACBrLibBALDataModule ---
+[-] Inclusao em uses da unit ACBrUtil.FilesIO para novo Log
+	Por: Daniel de Morais InfoCotidiano
+
+11/01/2023
+--- ACBrLibBALBase ---
+[-] Corre��o para convers�o das respostas com Erros, em ANSI, se assim estiver configurado
+	Por: Antonio Carlos Junior
+
+20/07/2022
+--- ACBrLibBAL ---
+[*] Remo��o de Warning @deprecated ref. ACBrUtils
+
+07/09/2020
+--- ACBrLibBALMT, ACBrLibBALST ---
+[+] Removido o metodo BAL_ConfigImportar.
+   Por: Rafael Dias
+[+] Removido o metodo BAL_ConfigExportar.
+   Por: Rafael Dias
+[-] Removido o metodo BAL_ImportarConfig.
+   Por: Rafael Dias
+   
+26/11/2020
+--- ACBrLibBALDataModule ---
+[+] Corre��o do na passagem das configura��es para o componente estava lendo as configura��es do PosPrinter.
+   Por: Rafael Teno Dias
+
+02/04/2020
+--- ACBrLibBALClass ---
+[+] Adicionado os m�todos BAL_LePesoStr, BAL_UltimoPesoLidoStr e BAL_InterpretarRespostaPesoStr, para ser usadas em linguagens de programa��o que n�o tem tipagem. Ex.: [x]Harbour.
+   Por: Rafael Teno Dias
+
+03/01/2020
+--- ACBrLibBALClass ---
+--- ACBrLibBALConfig ---
+[+] Adicionado o metodo BAL_ImportarConfig.
+   Por: Rafael Teno Dias
+
+19/03/2019
+--- ACBrLibBAL ---
+[+] Adicionado classe com as configura��es da porta serial.
+   Por: Rafael Teno Dias
+
+22/08/2018
+--- ACBrLibBAL ---
+[+] Inicio do projeto.
+   Por: Italo Jurisato Junior

@@ -1,0 +1,17 @@
+<xsd:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xsd:element name="EmailNFSeTomador">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element type="xsd:string" name="CnpjCpf"/>
+        <xsd:element name="Envia">
+          <xsd:complexType>
+            <xsd:sequence>
+               <xsd:element type="xsd:string" name="NumeroNfse"/>
+               <xsd:element type="xsd:string" name="EmailTomador"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>
