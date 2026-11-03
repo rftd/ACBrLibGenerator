@@ -38,7 +38,7 @@ else:
     build = ['python3', '/opt/generator/scripts/acbrbuild.py', *args, '--profile', 'linux64',
              '--sources', '/opt/acbr', '--no-installer', '--output', '/artifacts', '--image', digest]
     # Single container: package preparation and compilation must share its writable layer.
-    script = "import subprocess,sys,json; commands=json.loads(sys.argv[1]); [subprocess.run(c,check=True) for c in commands]"
     command = ['docker', 'run', '--rm', *mounts, '--entrypoint', 'python3', digest,
-               '-c', script, json.dumps([bootstrap, build])]
+               '/opt/generator/scripts/container_build.py', '--uid', str(os.getuid()), '--gid', str(os.getgid()),
+               json.dumps([bootstrap, build])]
 subprocess.run(command, cwd=root, check=True)

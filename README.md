@@ -24,6 +24,8 @@ A imagem inicial usa FPC 3.2.2, Lazarus 4.6 e revisão ACBr 48919 como base de p
 
 A imagem usa as CLIs dos instaladores. Quando `--build-only` estiver disponível, dispensa adicionar OPM/designer e componentes à IDE; versões anteriores também configuram a IDE. Os compiladores são verificados com um programa de teste, incluindo cada alvo cross configurado.
 
+O PascalInstall prepara o ambiente nativo. Os compiladores cross são construídos pelo `fpclazup` a partir desses mesmos fontes, sem repetir as opções de download que ele rejeita no modo cross. Qualquer falha interrompe a preparação antes de compilar os produtos.
+
 ## Uso local
 
 Requer Python 3.11 ou posterior e um ambiente Lazarus/ACBr preparado. Nesta versão, a pasta de saída não pode conter espaços; a pasta dos fontes pode.
@@ -114,6 +116,10 @@ python3 scripts/resolve_sources.py --repository https://github.com/rftd/ACBrLibG
 Para testar sem publicar, execute **Gerar ACBrLib e Monitor** com `source_ref=svn/trunk` ou um SHA completo após sincronizar o mirror. Nesse modo, deixar a referência vazia usa o lock versionado e não sincroniza o SVN automaticamente. A imagem Linux é preparada automaticamente; é possível selecionar uma imagem existente por digest. Execuções manuais não publicam arquivos em releases.
 
 A imagem é identificada por um hash dos arquivos do ambiente e reutilizada quando disponível. Uma construção nova também publica as tags `sha-<commit>` e `toolchain-v1`. O build recebe a referência por digest e o resumo registra esse valor. Ela fornece os compiladores e dependências de terceiros. Os scripts atuais e os fontes selecionados são montados no contêiner; a seleção ACBr é recompilada para evitar reutilizar PPUs de outra revisão. No Windows, o mesmo commit espelhado é preparado antes do build e do Inno Setup.
+
+O checkout verificado recebe uma adaptação de compatibilidade para revisões em que a ACBrLibDIS ainda chama os métodos antigos de conversão de strings. O gerador usa `ConverterStringEntrada`/`ConverterStringSaida` da classe base e registra o arquivo e seus hashes no `environment.json`. A adaptação preserva a codificação dos arquivos, é dispensada quando os métodos antigos ainda existem e não altera o SVN nem a branch do mirror.
+
+Ao encerrar o contêiner, mesmo com falha de compilação, o gerador devolve a propriedade dos artefatos ao usuário do runner. Isso permite anexar manifestos e logs privados ao workflow para diagnóstico.
 
 São usadas as permissões `contents: write` para atualizar o mirror, `actions: write` para disparar builds e `packages: write` para publicar a imagem. Credenciais não são gravadas no cache SVN/Git. A primeira publicação dos arquivos locais e a autorização de acesso ao repositório privado, se houver, são necessárias antes de executar os workflows.
 

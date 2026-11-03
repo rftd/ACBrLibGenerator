@@ -12,8 +12,32 @@ import tempfile
 from .build import plan, source_info
 from .catalog import Catalog, xml
 from .common import Runner, lazbuild, primary_config, sha256, write_json
+from .source_patches import apply_compatibility
 
 ROOT = Path(__file__).resolve().parents[1]
+TARGETS = {"win32": ("i386", "win32"), "win64": ("x86_64", "win64"),
+           "linux32": ("i386", "linux"), "linux64": ("x86_64", "linux")}
+
+
+def install_pascal(environment, pascal, cfg, cross, build_options, runner):
+    for name in cross:
+        if name not in TARGETS:
+            raise ValueError(f'Alvo cross desconhecido: {name}')
+    # The pinned installer passes source URLs to cross builds. fpclazup rejects
+    # these options in cross mode, so prepare native tools through PascalInstall
+    # and build cross targets from those already selected sources separately.
+    runner.run([pascal, '--cli', '--dir', environment, '--fpc', cfg['fpc'], '--laz', cfg['lazarus'],
+                '--cross', '', *build_options])
+    if not cross:
+        return
+    bootstrap = environment / '_fpcup' / ('fpclazup.exe' if os.name == 'nt' else 'fpclazup')
+    if not bootstrap.is_file():
+        raise ValueError(f'Bootstrap do PascalInstall não encontrado: {bootstrap}')
+    for name in dict.fromkeys(cross):
+        cpu, target_os = TARGETS[name]
+        runner.say(f'Instalando cross-compiler {name} com os fontes FPC/Lazarus já preparados.')
+        runner.run([bootstrap, f'--installdir={environment}', f'--cputarget={cpu}', f'--ostarget={target_os}',
+                    '--only=FPCBuildOnly,LazarusBuildOnly', '--noconfirm', '--verbose'])
 
 
 def read_toolchain(path):
@@ -103,9 +127,8 @@ def smoke_compilers(environment: Path, cross, runner):
     compiler = Path(node.get("Value"))
     if not compiler.is_absolute():
         compiler = primary_config(environment) / compiler
-    targets = {"win32": ("i386", "win32"), "win64": ("x86_64", "win64"), "linux32": ("i386", "linux"), "linux64": ("x86_64", "linux")}
     native = ("x86_64", "win64" if os.name == "nt" else "linux")
-    wanted = [native, *(targets[name] for name in cross)]
+    wanted = [native, *(TARGETS[name] for name in cross)]
     with tempfile.TemporaryDirectory(prefix="acbr-compiler-smoke-") as temporary:
         source = Path(temporary) / "smoke.pas"
         source.write_text("program smoke; begin end.\n", encoding="utf-8")
@@ -144,8 +167,10 @@ def main(argv=None):
             state = source_info(args.sources)
             if (state.get('commit'), state.get('revision'), state.get('url')) != (args.expected_commit, args.expected_revision, cfg['acbr_svn_url'].rstrip('/')):
                 raise ValueError('Fontes Git não correspondem ao SHA/revisão/origem selecionados')
+            source_patches = apply_compatibility(args.sources, runner)
         else:
             prepare_sources(cfg, args.sources, runner)
+            source_patches = []
         suffix = ".exe" if os.name == "nt" else ""
         pascal = args.installers / f"pascalinstall{suffix}"
         acbr = args.installers / f"acbrinstall{suffix}"
@@ -159,8 +184,7 @@ def main(argv=None):
             return []
 
         if not args.skip_pascal:
-            runner.run([pascal, "--cli", "--dir", args.environment, "--fpc", cfg["fpc"], "--laz", cfg["lazarus"],
-                        "--cross", ",".join(cross), *build_only(pascal)])
+            install_pascal(args.environment, pascal, cfg, cross, build_only(pascal), runner)
         else:
             saved = json.loads((args.state / 'environment.json').read_text())['toolchain']
             for key in ('fpc', 'lazarus', 'linux_cross' if os.name != 'nt' else 'windows_cross'):
@@ -178,7 +202,8 @@ def main(argv=None):
             runner.run([tool, f"--pcp={pcp}", "--add-package-link", path])
         runner.run([acbr, "--cli", "--ide", "lazarus", "--dir", args.environment, "--acbr-dir", args.sources,
                     "--acbr-action", "install", "--acbr-packages", ",".join(packages), *build_only(acbr)])
-        metadata = {"toolchain": cfg, "source": source_info(args.sources), "host": platform.platform(), "compiler": compiler, "packages": packages,
+        metadata = {"toolchain": cfg, "source": source_info(args.sources), "source_patches": source_patches,
+                    "host": platform.platform(), "compiler": compiler, "packages": packages,
                     "installers": {p.name: {"sha256": sha256(p), "version": subprocess.check_output([p, "--version"], text=True).strip()}
                                    for p in (pascal, acbr)}}
         write_json(args.state / "environment.json", metadata)
