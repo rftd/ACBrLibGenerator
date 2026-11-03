@@ -56,11 +56,11 @@ jobs:
       commit: ${{ steps.source.outputs.commit }}
       revision: ${{ steps.source.outputs.revision }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.event.release.tag_name || github.sha }}
           persist-credentials: false
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
       - name: Recuperar fontes já fixados nesta release
@@ -74,7 +74,7 @@ jobs:
       - name: Instalar Git e git-svn compatíveis
         if: github.event_name == 'release' && steps.snapshot.outputs.restored != 'true'
         run: bash scripts/install_git_svn.sh
-      - uses: actions/cache/restore@v4
+      - uses: actions/cache/restore@v6
         if: github.event_name == 'release' && steps.snapshot.outputs.restored != 'true'
         with:
           path: build/svn-mirror/.git
@@ -85,7 +85,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python scripts/sync_mirror.py --repository "https://github.com/$GITHUB_REPOSITORY.git" --push
-      - uses: actions/cache/save@v4
+      - uses: actions/cache/save@v6
         if: github.event_name == 'release' && steps.snapshot.outputs.restored != 'true'
         with:
           path: build/svn-mirror/.git
@@ -111,7 +111,7 @@ jobs:
           lock = json.load(open('dist/source-lock.json'))
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as out:
               print(f"Fontes ACBr: SVN r{lock['revision']} — Git `{lock['commit']}`", file=out)
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: source-lock
           path: dist/source-lock.json
@@ -125,15 +125,15 @@ jobs:
       contents: read
       packages: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.event.release.tag_name || github.sha }}
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ needs.sources.outputs.commit }}
           path: build/acbr
           persist-credentials: false
-      - uses: docker/login-action@v3
+      - uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -146,7 +146,7 @@ jobs:
           LIBRARIES: ${{ inputs.libraries }}
           MONITOR: ${{ inputs.monitor }}
         run: python3 scripts/ci_build.py
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: acbr-linux64
@@ -163,15 +163,15 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 180
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.event.release.tag_name || github.sha }}
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ needs.sources.outputs.commit }}
           path: build/acbr
           persist-credentials: false
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
       - name: Ler configuração
@@ -183,7 +183,7 @@ jobs:
           with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
               print(f"repository={cfg['installers_repository'].removeprefix('https://github.com/').removesuffix('.git')}", file=out)
               print(f"ref={cfg['installers_ref']}", file=out)
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           repository: ${{ steps.config.outputs.repository }}
           ref: ${{ steps.config.outputs.ref }}
@@ -218,7 +218,7 @@ jobs:
           MONITOR: ${{ inputs.monitor }}
           INSTALLER: ${{ inputs.installer }}
         run: python scripts/ci_build.py
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: acbr-windows
@@ -238,30 +238,30 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v7
         with:
           pattern: acbr-*
           path: artifacts
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v7
         with:
           name: source-lock
           path: .
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.event.release.tag_name }}
           path: generator
           persist-credentials: false
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ needs.sources.outputs.commit }}
           path: sources
           persist-credentials: false
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
       - name: Montar ZIPs e instaladores no padrão FinalBuilder
         run: python generator/scripts/package_release.py --artifacts artifacts --sources sources --lock source-lock.json --output publish
-      - uses: softprops/action-gh-release@v2
+      - uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ github.event.release.tag_name }}
           files: |

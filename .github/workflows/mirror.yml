@@ -23,16 +23,16 @@ jobs:
       contents: write
       actions: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: main
           persist-credentials: false
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
       - name: Instalar Git e git-svn compatíveis
         run: bash scripts/install_git_svn.sh
-      - uses: actions/cache/restore@v4
+      - uses: actions/cache/restore@v6
         with:
           path: build/svn-mirror/.git
           key: svn-${{ hashFiles('config/mirror.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
@@ -43,11 +43,11 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SVN_REVISION: ${{ inputs.revision }}
         run: python scripts/sync_mirror.py --repository "https://github.com/$GITHUB_REPOSITORY.git" --revision "$SVN_REVISION" --push
-      - uses: actions/cache/save@v4
+      - uses: actions/cache/save@v6
         with:
           path: build/svn-mirror/.git
           key: svn-${{ hashFiles('config/mirror.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: mirror-state
           path: dist/mirror-state.json
