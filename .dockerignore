@@ -1,0 +1,11 @@
+.git
+.github
+.idea
+.venv
+dist
+build
+tests
+**/__pycache__
+**/*.pyc
+**/*.fbl8
+**/*.fbp8

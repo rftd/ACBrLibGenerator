@@ -1,0 +1,194 @@
+name: Gerar ACBrLib e Monitor
+on:
+  workflow_dispatch:
+    inputs:
+      source_ref:
+        description: SHA do mirror ou svn/trunk; vazio usa sources.lock.json
+        type: string
+        default: ''
+      platform:
+        description: Plataforma
+        type: choice
+        options: [all, linux64, windows]
+        default: all
+      libraries:
+        description: Bibliotecas separadas por vírgula; all ou vazio para nenhuma
+        type: string
+        default: all
+      monitor:
+        description: Compilar ACBrMonitor
+        type: boolean
+        default: true
+      installer:
+        description: Gerar instalador Windows
+        type: boolean
+        default: true
+      image:
+        description: Imagem Linux por tag ou digest; vazio usa toolchain-v1
+        type: string
+        default: ''
+  release:
+    types: [published]
+permissions:
+  contents: read
+jobs:
+  sources:
+    runs-on: ubuntu-22.04
+    outputs:
+      commit: ${{ steps.source.outputs.commit }}
+      revision: ${{ steps.source.outputs.revision }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Resolver fontes imutáveis
+        id: source
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SOURCE_REF: ${{ inputs.source_ref }}
+        run: python scripts/resolve_sources.py --repository "https://github.com/$GITHUB_REPOSITORY.git" --ref "$SOURCE_REF"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: source-lock
+          path: dist/source-lock.json
+  linux:
+    needs: sources
+    if: github.event_name == 'release' || inputs.platform == 'all' || inputs.platform == 'linux64'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name || github.sha }}
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.sources.outputs.commit }}
+          path: build/acbr
+          persist-credentials: false
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Compilar na imagem preparada
+        env:
+          SOURCE_COMMIT: ${{ needs.sources.outputs.commit }}
+          SOURCE_REVISION: ${{ needs.sources.outputs.revision }}
+          REQUESTED_IMAGE: ${{ inputs.image }}
+          LIBRARIES: ${{ inputs.libraries }}
+          MONITOR: ${{ inputs.monitor }}
+        run: python3 scripts/ci_build.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: acbr-linux64
+          path: |
+            dist/**/manifest.json
+            dist/**/*.log
+            dist/**/SHA256SUMS
+            dist/**/*.zip
+          if-no-files-found: warn
+  windows:
+    needs: sources
+    if: github.event_name == 'release' || inputs.platform == 'all' || inputs.platform == 'windows'
+    runs-on: windows-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name || github.sha }}
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.sources.outputs.commit }}
+          path: build/acbr
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Ler configuração
+        id: config
+        shell: python
+        run: |
+          import json, os
+          cfg = json.load(open('config/toolchain.json'))
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              print(f"repository={cfg['installers_repository'].removeprefix('https://github.com/').removesuffix('.git')}", file=out)
+              print(f"ref={cfg['installers_ref']}", file=out)
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ steps.config.outputs.repository }}
+          ref: ${{ steps.config.outputs.ref }}
+          path: build/installers
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: build/installers
+      - working-directory: build/installers
+        run: cargo build --release --locked -p acbrinstall -p pascalinstall
+      - name: Instalar SVN
+        shell: pwsh
+        run: |
+          choco install sliksvn --yes --no-progress
+          if ($LASTEXITCODE -ne 0) { throw 'Falha ao instalar SVN' }
+          'C:\Program Files\SlikSvn\bin' | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+      - name: Preparar ambiente com os fontes espelhados
+        env:
+          SOURCE_COMMIT: ${{ needs.sources.outputs.commit }}
+          SOURCE_REVISION: ${{ needs.sources.outputs.revision }}
+        shell: pwsh
+        run: python scripts/bootstrap.py --profile windows --environment C:/acbr-env --sources build/acbr --installers build/installers/target/release --state dist/bootstrap --existing-sources --expected-commit $env:SOURCE_COMMIT --expected-revision $env:SOURCE_REVISION
+      - name: Instalar Inno Setup verificado
+        if: github.event_name == 'release' || (inputs.monitor && inputs.installer)
+        shell: pwsh
+        run: ./scripts/install_inno.ps1
+      - name: Compilar projetos e instaladores
+        env:
+          SOURCE_COMMIT: ${{ needs.sources.outputs.commit }}
+          SOURCE_REVISION: ${{ needs.sources.outputs.revision }}
+          LIBRARIES: ${{ inputs.libraries }}
+          MONITOR: ${{ inputs.monitor }}
+          INSTALLER: ${{ inputs.installer }}
+        run: python scripts/ci_build.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: acbr-windows
+          path: |
+            dist/**/manifest.json
+            dist/**/*.log
+            dist/**/environment.json
+            dist/**/SHA256SUMS
+            dist/**/*.zip
+            dist/**/installer/*.exe
+          if-no-files-found: warn
+  release:
+    needs: [sources, linux, windows]
+    if: github.event_name == 'release'
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: acbr-*
+          path: artifacts
+      - uses: actions/download-artifact@v4
+        with:
+          name: source-lock
+          path: .
+      - run: |
+          cd artifacts
+          zip -r ../ACBr-linux64.zip acbr-linux64
+          zip -r ../ACBr-windows.zip acbr-windows
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.release.tag_name }}
+          files: |
+            ACBr-linux64.zip
+            ACBr-windows.zip
+            source-lock.json
+          fail_on_unmatched_files: true

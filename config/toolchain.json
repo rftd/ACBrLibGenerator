@@ -1,0 +1,15 @@
+{
+  "installers_repository": "https://github.com/rftd/ACBrInstall.git",
+  "installers_ref": "97a72d9d33791a13ff077c36a76295844bae5089",
+  "fpc": "release_3_2_2",
+  "lazarus": "lazarus_4_6",
+  "acbr_svn_url": "https://svn.code.sf.net/p/acbr/code/trunk2/",
+  "acbr_revision": "48919",
+  "linux_cross": [],
+  "windows_cross": ["win32"],
+  "inno_setup": {
+    "version": "6.4.3",
+    "url": "https://github.com/jrsoftware/issrc/releases/download/is-6_4_3/innosetup-6.4.3.exe",
+    "sha256": "f3c42116542c4cc57263c5ba6c4feabfc49fe771f2f98a79d2f7628b8762723b"
+  }
+}

@@ -1,0 +1,60 @@
+name: Sincronizar SVN
+on:
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      revision:
+        description: Revisão SVN; vazio consulta HEAD
+        type: string
+        default: ''
+      build_after_sync:
+        description: Compilar a revisão após sincronizar
+        type: boolean
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: svn-mirror
+  cancel-in-progress: false
+jobs:
+  sync:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 180
+    permissions:
+      contents: write
+      actions: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: sudo apt-get update && sudo apt-get install -y git-svn subversion
+      - uses: actions/cache/restore@v4
+        with:
+          path: build/svn-mirror/.git
+          key: svn-${{ hashFiles('config/mirror.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: svn-${{ hashFiles('config/mirror.json') }}-
+      - name: Atualizar somente svn/trunk
+        id: mirror
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SVN_REVISION: ${{ inputs.revision }}
+        run: python scripts/sync_mirror.py --repository "https://github.com/$GITHUB_REPOSITORY.git" --revision "$SVN_REVISION" --push
+      - uses: actions/cache/save@v4
+        with:
+          path: build/svn-mirror/.git
+          key: svn-${{ hashFiles('config/mirror.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mirror-state
+          path: dist/mirror-state.json
+      - name: Disparar build explicitamente
+        if: inputs.build_after_sync
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SOURCE_COMMIT: ${{ steps.mirror.outputs.commit }}
+        run: gh workflow run build.yml --ref main -f platform=all -f source_ref="$SOURCE_COMMIT"
