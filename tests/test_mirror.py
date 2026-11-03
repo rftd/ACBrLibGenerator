@@ -3,9 +3,12 @@ import shutil
 import subprocess
 import tempfile
 import unittest
+import json
+from unittest.mock import patch
 from acbrlibgenerator.mirror import sync, check_blobs
 from acbrlibgenerator.sources import resolve, verify
 from acbrlibgenerator.build import source_info
+from acbrlibgenerator.release_snapshot import freeze, restore
 
 
 def run(*args):
@@ -80,3 +83,24 @@ class MirrorIntegrationTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             resolve(str(self.remote),'svn/trunk',{**self.config,'svn_url':'file:///other'})
         with self.assertRaises(ValueError):resolve(str(self.remote),'--upload-pack=bad',self.config)
+
+    def test_release_retry_keeps_snapshot_after_new_svn_commits(self):
+        first=sync(self.config,str(self.remote),self.root/'cache',2,True)
+        lock_file=self.root/'source-lock.json'
+        with patch('acbrlibgenerator.release_snapshot.gh_json',return_value={'tag_name':'v1'}), \
+             patch('acbrlibgenerator.release_snapshot.subprocess.run'):
+            freeze('owner/repo',1,'v1',self.config,first,lock_file)
+        original=lock_file.read_bytes()
+        lock=json.loads(original)
+        (self.wc/'hello.txt').write_text('new sources after first release attempt')
+        run('svn','commit',self.wc,'-m','next version')
+        second=sync(self.config,str(self.remote),self.root/'cache',3,True)
+        self.assertNotEqual(first['commit'],second['commit'])
+        lock_file.unlink()
+        with patch('acbrlibgenerator.release_snapshot.gh_json',
+                   side_effect=[{'tag_name':'v1'},[[{'id':2,'name':'source-lock.json'}]],lock]):
+            self.assertTrue(restore('owner/repo',1,'v1',self.config,lock_file))
+        restored=json.loads(lock_file.read_bytes())
+        self.assertEqual(lock_file.read_bytes(),original)
+        self.assertEqual(resolve(str(self.remote),restored['commit'],self.config),lock)
+        self.assertEqual(restored['revision'],'2')

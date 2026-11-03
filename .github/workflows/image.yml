@@ -1,25 +1,48 @@
 name: Imagem de compilação
 on:
   workflow_dispatch:
+  workflow_call:
+    inputs:
+      image:
+        description: Imagem existente; vazio prepara automaticamente
+        type: string
+        default: ''
+    outputs:
+      image:
+        description: Imagem Linux fixada por digest
+        value: ${{ jobs.image.outputs.image }}
 permissions:
   contents: read
 jobs:
   image:
     runs-on: ubuntu-22.04
     timeout-minutes: 180
+    concurrency:
+      group: acbr-toolchain-image
+      cancel-in-progress: false
+    outputs:
+      image: ${{ steps.resolved.outputs.image }}
     permissions:
       contents: read
       packages: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name || github.sha }}
       - name: Ler versões
         id: config
+        env:
+          TOOLCHAIN_HASH: ${{ hashFiles('docker/**', '.dockerignore', 'config/toolchain.json', 'config/builds.json', 'acbrlibgenerator/**/*.py', 'scripts/**/*.py') }}
+          REQUESTED_IMAGE: ${{ inputs.image }}
         shell: python
         run: |
           import json, os
           cfg = json.load(open('config/toolchain.json'))
+          image = f"ghcr.io/{os.environ['GITHUB_REPOSITORY'].lower()}/builder"
+          selected = os.environ.get('REQUESTED_IMAGE') or f"{image}:toolchain-{os.environ['TOOLCHAIN_HASH']}"
           with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
-              print(f"image=ghcr.io/{os.environ['GITHUB_REPOSITORY'].lower()}/builder", file=out)
+              print(f"image={image}", file=out)
+              print(f"selected={selected}", file=out)
               print(f"repository={cfg['installers_repository']}", file=out)
               print(f"ref={cfg['installers_ref']}", file=out)
       - uses: docker/setup-buildx-action@v3
@@ -28,7 +51,21 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Verificar imagem existente
+        id: existing
+        env:
+          SELECTED_IMAGE: ${{ steps.config.outputs.selected }}
+          REQUESTED_IMAGE: ${{ inputs.image }}
+        shell: python
+        run: |
+          import os, subprocess
+          result = subprocess.run(['docker', 'buildx', 'imagetools', 'inspect', os.environ['SELECTED_IMAGE']])
+          if result.returncode and os.environ.get('REQUESTED_IMAGE'):
+              raise SystemExit('A imagem informada não existe ou não está acessível')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              print(f"exists={str(result.returncode == 0).lower()}", file=out)
       - uses: docker/build-push-action@v6
+        if: steps.existing.outputs.exists != 'true'
         id: build
         with:
           context: .
@@ -36,6 +73,7 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
+            ${{ steps.config.outputs.selected }}
             ${{ steps.config.outputs.image }}:sha-${{ github.sha }}
             ${{ steps.config.outputs.image }}:toolchain-v1
           build-args: |
@@ -44,7 +82,19 @@ jobs:
           cache-from: type=gha,scope=pascal-builder
           cache-to: type=gha,mode=max,scope=pascal-builder
       - name: Registrar referência imutável
+        id: resolved
         env:
-          IMAGE: ${{ steps.config.outputs.image }}
-          DIGEST: ${{ steps.build.outputs.digest }}
-        run: printf '%s@%s\n' "$IMAGE" "$DIGEST" >> "$GITHUB_STEP_SUMMARY"
+          SELECTED_IMAGE: ${{ steps.config.outputs.selected }}
+        shell: python
+        run: |
+          import os, re, subprocess
+          selected = os.environ['SELECTED_IMAGE']
+          info = subprocess.check_output(['docker', 'buildx', 'imagetools', 'inspect', selected], text=True)
+          match = re.search(r'^Digest:\s+(sha256:[0-9a-f]{64})\s*$', info, re.M)
+          if not match:
+              raise SystemExit('Não foi possível resolver o digest da imagem')
+          image = f"{selected.split('@')[0]}@{match[1]}"
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              print(f'image={image}', file=out)
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as out:
+              print(f'Imagem Linux: `{image}`', file=out)
