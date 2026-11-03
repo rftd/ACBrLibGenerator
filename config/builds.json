@@ -1,16 +1,35 @@
 {
   "linux64": {
     "libraries": "all",
-    "library_modes": ["Linux-x86_64", "Linux-x86_64-MT"],
-    "monitor": true,
-    "monitor_modes": ["Release-Linux-x86_64"],
+    "library_modes": [
+      "Linux-x86_64",
+      "Linux-x86_64-MT"
+    ],
+    "monitor": false,
+    "monitor_modes": [],
     "installer": false
   },
   "windows": {
     "libraries": "all",
-    "library_modes": ["Win32-i386-CDECL", "Win64-x86_64-CDECL", "Win32-i386-STDCALL", "Win64-x86_64-STDCALL", "Win32-i386-CDECL-MT", "Win64-x86_64-CDECL-MT", "Win32-i386-STDCALL-MT", "Win64-x86_64-STDCALL-MT"],
+    "library_modes": [
+      "Win32-i386-CDECL",
+      "Win64-x86_64-CDECL",
+      "Win32-i386-STDCALL",
+      "Win64-x86_64-STDCALL",
+      "Win32-i386-CDECL-MT",
+      "Win64-x86_64-CDECL-MT",
+      "Win32-i386-STDCALL-MT",
+      "Win64-x86_64-STDCALL-MT",
+      "x86 - CDECL",
+      "x64 - CDECL",
+      "x86 - STDCALL",
+      "x64 - STDCALL"
+    ],
     "monitor": true,
-    "monitor_modes": ["Release-Win32-i386", "Release-Win64-x86_64"],
+    "monitor_modes": [
+      "Release-Win32-i386",
+      "Release-Win64-x86_64"
+    ],
     "installer": true
   }
 }

@@ -1,8 +1,5 @@
 name: Imagem de compilação
 on:
-  push:
-    branches: [main]
-    paths: ['docker/**', 'config/toolchain.json', 'acbrlibgenerator/bootstrap.py', 'acbrlibgenerator/catalog.py', 'acbrlibgenerator/common.py', 'scripts/bootstrap.py', '.github/workflows/image.yml']
   workflow_dispatch:
 permissions:
   contents: read

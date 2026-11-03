@@ -8,7 +8,7 @@ import sys
 root = Path(__file__).resolve().parents[1]
 release = os.environ.get('GITHUB_EVENT_NAME') == 'release'
 libraries = 'all' if release else os.environ.get('LIBRARIES', 'all')
-monitor = release or os.environ.get('MONITOR', 'true') == 'true'
+monitor = (os.name == 'nt') and (release or os.environ.get('MONITOR', 'true') == 'true')
 installer = release or os.environ.get('INSTALLER', 'true') == 'true'
 commit = os.environ['SOURCE_COMMIT']
 revision = os.environ['SOURCE_REVISION']

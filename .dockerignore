@@ -9,3 +9,6 @@ tests
 **/*.pyc
 **/*.fbl8
 **/*.fbp8
+
+# Templates are used by the release job, not by the toolchain image.
+ACBrLib

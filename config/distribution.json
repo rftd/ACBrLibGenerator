@@ -1,0 +1,213 @@
+{
+  "ACBrLibAbecsPinpad": {
+    "files": {
+      "log/ACBrLibAbecsPinpad-change-log.txt": "Projetos/ACBrLib/Fontes/AbecsPinpad/ACBrLibAbecsPinpad-change-log.txt",
+      "log/ACBrLibComum-change-log.txt": "Projetos/ACBrLib/Fontes/Comum/ACBrLibComum-change-log.txt",
+      "log/ACBrSerial-change-log.txt": "Fontes/ACBrSerial/ACBrSerial-change-log.txt"
+    },
+    "directories": {}
+  },
+  "ACBrLibBAL": {
+    "files": {
+      "log/ACBrLibBAL-change-log.txt": "Projetos/ACBrLib/Fontes/BAL/ACBrLibBAL-change-log.txt",
+      "log/ACBrLibComum-change-log.txt": "Projetos/ACBrLib/Fontes/Comum/ACBrLibComum-change-log.txt",
+      "log/ACBrSerial-change-log.txt": "Fontes/ACBrSerial/ACBrSerial-change-log.txt"
+    },
+    "directories": {}
+  },
+  "ACBrLibBPe": {
+    "files": {
+      "dep/ACBrBPeServicos.ini": "Fontes/ACBrDFe/ACBrBPe/ACBrBPeServicos.ini"
+    },
+    "directories": {
+      "dep/Schemas/BPe": "Exemplos/ACBrDFe/Schemas/BPe"
+    }
+  },
+  "ACBrLibBoleto": {
+    "files": {
+      "log/ACBrLibBoleto-change-log.txt": "Projetos/ACBrLib/Fontes/Boleto/ACBrLibBoleto-change-log.txt",
+      "log/ACBrLibComum-change-log.txt": "Projetos/ACBrLib/Fontes/Comum/ACBrLibComum-change-log.txt",
+      "log/ACBrBoleto-change-log.txt": "Fontes/ACBrBoleto/ACBrBoleto-change-log.txt"
+    },
+    "directories": {
+      "dep/LogosBoletos": "Fontes/ACBrBoleto/Logos"
+    }
+  },
+  "ACBrLibCEP": {
+    "files": {
+      "log/ACBrLibCEP-change-log.txt": "Projetos/ACBrLib/Fontes/CEP/ACBrLibCEP-change-log.txt",
+      "log/ACBrLibComum-change-log.txt": "Projetos/ACBrLib/Fontes/Comum/ACBrLibComum-change-log.txt",
+      "log/ACBrTCP-change-log.txt": "Fontes/ACBrTCP/ACBrTCP-change-log.txt"
+    },
+    "directories": {}
+  },
+  "ACBrLibCHQ": {
+    "files": {
+      "log/ACBrLibCHQ-change-log.txt": "Projetos/ACBrLib/Fontes/CHQ/ACBrLibCHQ-change-log.txt",
+      "log/ACBrLibComum-change-log.txt": "Projetos/ACBrLib/Fontes/Comum/ACBrLibComum-change-log.txt",
+      "log/ACBrSerial-change-log.txt": "Fontes/ACBrSerial/ACBrSerial-change-log.txt"
+    },
+    "directories": {}
+  },
+  "ACBrLibCTe": {
+    "files": {
+      "dep/ACBrCTeServicos.ini": "Fontes/ACBrDFe/ACBrCTe/ACBrCTeServicos.ini",
+      "log/ACBrLibCTe-change-log.txt": "Projetos/ACBrLib/Fontes/CTe/ACBrLibCTe-change-log.txt",
+      "log/ACBrLibComum-change-log.txt": "Projetos/ACBrLib/Fontes/Comum/ACBrLibComum-change-log.txt",
+      "log/ACBrTCP-change-log.txt": "Fontes/ACBrTCP/ACBrTCP-change-log.txt",
+      "log/ACBrCTe-change-log.txt": "Fontes/ACBrDFe/ACBrCTe/ACBrCTe-change-log.txt"
+    },
+    "directories": {
+      "dep/Schemas/CTe": "Exemplos/ACBrDFe/Schemas/CTe"
+    }
+  },
+  "ACBrLibConsultaCNPJ": {
+    "files": {
+      "log/ACBrLibConsultaCNPJ-change-log.txt": "Projetos/ACBrLib/Fontes/ConsultaCNPJ/ACBrLibConsultaCNPJ-change-log.txt",
+      "log/ACBrLibComum-change-log.txt": "Projetos/ACBrLib/Fontes/Comum/ACBrLibComum-change-log.txt",
+      "log/ACBrTCP-change-log.txt": "Fontes/ACBrTCP/ACBrTCP-change-log.txt"
+    },
+    "directories": {}
+  },
+  "ACBrLibConsultaCPF": {
+    "files": {},
+    "directories": {}
+  },
+  "ACBrLibCupomVerde": {
+    "files": {
+      "log/ACBrLibCupomVerde-change-log.txt": "Projetos/ACBrLib/Fontes/CupomVerde/ACBrLibCupomVerde-change-log.txt",
+      "log/ACBrLibComum-change-log.txt": "Projetos/ACBrLib/Fontes/Comum/ACBrLibComum-change-log.txt",
+      "log/ACBrTCP-change-log.txt": "Fontes/ACBrTCP/ACBrTCP-change-log.txt"
+    },
+    "directories": {}
+  },
+  "ACBrLibDIS": {
+    "files": {},
+    "directories": {}
+  },
+  "ACBrLibETQ": {
+    "files": {
+      "log/ACBrLibETQ-change-log.txt": "Projetos/ACBrLib/Fontes/ETQ/ACBrLibETQ-change-log.txt",
+      "log/ACBrLibComum-change-log.txt": "Projetos/ACBrLib/Fontes/Comum/ACBrLibComum-change-log.txt",
+      "log/ACBrSerial-change-log.txt": "Fontes/ACBrSerial/ACBrSerial-change-log.txt"
+    },
+    "directories": {}
+  },
+  "ACBrLibGNRe": {
+    "files": {
+      "dep/ACBrGNREServicos.ini": "Fontes/ACBrDFe/ACBrGNRE/ACBrGNREServicos.ini",
+      "log/ACBrDFe-change-log.txt": "Fontes/ACBrDFe/ACBrDFe-change-log.txt",
+      "log/ACBrLibGNRe-change-log.txt": "Projetos/ACBrLib/Fontes/GNRe/ACBrLibGNRe-change-log.txt",
+      "log/ACBrLibComum-change-log.txt": "Projetos/ACBrLib/Fontes/Comum/ACBrLibComum-change-log.txt",
+      "log/ACBrTCP-change-log.txt": "Fontes/ACBrTCP/ACBrTCP-change-log.txt",
+      "log/ACBrGNRE-change-log.txt": "Fontes/ACBrDFe/ACBrGNRE/ACBrGNRE-change-log.txt"
+    },
+    "directories": {
+      "dep/Schemas/GNRe": "Exemplos/ACBrDFe/Schemas/GNRe"
+    }
+  },
+  "ACBrLibMDFe": {
+    "files": {
+      "dep/ACBrMDFeServicos.ini": "Fontes/ACBrDFe/ACBrMDFe/ACBrMDFeServicos.ini",
+      "log/ACBrDFe-change-log.txt": "Fontes/ACBrDFe/ACBrDFe-change-log.txt",
+      "log/ACBrLibMDFe-change-log.txt": "Projetos/ACBrLib/Fontes/MDFe/ACBrLibMDFe-change-log.txt",
+      "log/ACBrLibComum-change-log.txt": "Projetos/ACBrLib/Fontes/Comum/ACBrLibComum-change-log.txt",
+      "log/ACBrTCP-change-log.txt": "Fontes/ACBrTCP/ACBrTCP-change-log.txt",
+      "log/ACBrMDFe-change-log.txt": "Fontes/ACBrDFe/ACBrMDFe/ACBrMDFe-change-log.txt"
+    },
+    "directories": {
+      "dep/Schemas/MDFe": "Exemplos/ACBrDFe/Schemas/MDFe"
+    }
+  },
+  "ACBrLibMail": {
+    "files": {
+      "log/ACBrLibMail-change-log.txt": "Projetos/ACBrLib/Fontes/Mail/ACBrLibMail-change-log.txt",
+      "log/ACBrLibComum-change-log.txt": "Projetos/ACBrLib/Fontes/Comum/ACBrLibComum-change-log.txt",
+      "log/ACBrTCP-change-log.txt": "Fontes/ACBrTCP/ACBrTCP-change-log.txt"
+    },
+    "directories": {}
+  },
+  "ACBrLibNFSe": {
+    "files": {
+      "dep/ACBrNFSeXServicos.ini": "Fontes/ACBrDFe/ACBrNFSeX/ACBrNFSeXServicos.ini",
+      "log/ACBrLibNFSe-change-log.txt": "Projetos/ACBrLib/Fontes/NFSe/ACBrLibNFSe-change-log.txt",
+      "log/ACBrLibComum-change-log.txt": "Projetos/ACBrLib/Fontes/Comum/ACBrLibComum-change-log.txt",
+      "log/ACBrTCP-change-log.txt": "Fontes/ACBrTCP/ACBrTCP-change-log.txt",
+      "log/ACBrNFSeX-change-log.txt": "Fontes/ACBrDFe/ACBrNFSeX/ACBrNFSeX-change-log.txt"
+    },
+    "directories": {
+      "dep/Schemas/NFSe": "Exemplos/ACBrDFe/Schemas/NFSe"
+    }
+  },
+  "ACBrLibNFe": {
+    "files": {
+      "dep/ACBrNFeServicos.ini": "Fontes/ACBrDFe/ACBrNFe/ACBrNFeServicos.ini",
+      "log/ACBrLibNFe-change-log.txt": "Projetos/ACBrLib/Fontes/NFe/ACBrLibNFe-change-log.txt",
+      "log/ACBrLibComum-change-log.txt": "Projetos/ACBrLib/Fontes/Comum/ACBrLibComum-change-log.txt",
+      "log/ACBrTCP-change-log.txt": "Fontes/ACBrTCP/ACBrTCP-change-log.txt",
+      "log/ACBrNFe-change-log.txt": "Fontes/ACBrDFe/ACBrNFe/ACBrNFe-change-log.txt"
+    },
+    "directories": {
+      "dep/Schemas/NFe": "Exemplos/ACBrDFe/Schemas/NFe"
+    }
+  },
+  "ACBrLibPIXCD": {
+    "files": {
+      "log/ACBrLibPIXCD-change-log.txt": "Projetos/ACBrLib/Fontes/PIXCD/ACBrLibPIXCD-change-log.txt",
+      "log/ACBrLibComum-change-log.txt": "Projetos/ACBrLib/Fontes/Comum/ACBrLibComum-change-log.txt",
+      "log/ACBrTCP-change-log.txt": "Fontes/ACBrTCP/ACBrTCP-change-log.txt",
+      "log/ACBrPIXCD-change-log.txt": "Fontes/ACBrPIXCD/ACBrPIXCD-change-log.txt"
+    },
+    "directories": {}
+  },
+  "ACBrLibPosPrinter": {
+    "files": {
+      "log/ACBrLibPosPrinter-change-log.txt": "Projetos/ACBrLib/Fontes/PosPrinter/ACBrLibPosPrinter-change-log.txt",
+      "log/ACBrLibComum-change-log.txt": "Projetos/ACBrLib/Fontes/Comum/ACBrLibComum-change-log.txt",
+      "log/ACBrSerial-change-log.txt": "Fontes/ACBrSerial/ACBrSerial-change-log.txt"
+    },
+    "directories": {}
+  },
+  "ACBrLibReinf": {
+    "files": {
+      "dep/ACBrReinfServicos.ini": "Fontes/ACBrDFe/ACBrReinf/ACBrReinfServicos.ini",
+      "log/ACBrLibReinf-change-log.txt": "Projetos/ACBrLib/Fontes/Reinf/ACBrLibReinf-change-log.txt",
+      "log/ACBrLibComum-change-log.txt": "Projetos/ACBrLib/Fontes/Comum/ACBrLibComum-change-log.txt",
+      "log/ACBrTCP-change-log.txt": "Fontes/ACBrTCP/ACBrTCP-change-log.txt",
+      "log/ACBrReinf-change-log.txt": "Fontes/ACBrDFe/ACBrReinf/ACBrReinf-change-log.txt"
+    },
+    "directories": {
+      "dep/Schemas/Reinf": "Exemplos/ACBrDFe/Schemas/Reinf"
+    }
+  },
+  "ACBrLibSAT": {
+    "files": {
+      "log/ACBrLibSAT-change-log.txt": "Projetos/ACBrLib/Fontes/SAT/ACBrLibSAT-change-log.txt",
+      "log/ACBrLibComum-change-log.txt": "Projetos/ACBrLib/Fontes/Comum/ACBrLibComum-change-log.txt",
+      "log/ACBrSerial-change-log.txt": "Fontes/ACBrSerial/ACBrSerial-change-log.txt",
+      "log/ACBrSAT-change-log.txt": "Fontes/ACBrSAT/ACBrSAT-change-log.txt"
+    },
+    "directories": {}
+  },
+  "ACBrLibSedex": {
+    "files": {
+      "log/ACBrLibSedex-change-log.txt": "Projetos/ACBrLib/Fontes/Sedex/ACBrLibSedex-change-log.txt",
+      "log/ACBrLibComum-change-log.txt": "Projetos/ACBrLib/Fontes/Comum/ACBrLibComum-change-log.txt",
+      "log/ACBrTCP-change-log.txt": "Fontes/ACBrTCP/ACBrTCP-change-log.txt"
+    },
+    "directories": {}
+  },
+  "ACBrLibeSocial": {
+    "files": {
+      "dep/ACBreSocialServicos.ini": "Fontes/ACBrDFe/ACBreSocial/ACBreSocialServicos.ini",
+      "log/ACBrDFe-change-log.txt": "Fontes/ACBrDFe/ACBrDFe-change-log.txt",
+      "log/ACBrLibeSocial-change-log.txt": "Projetos/ACBrLib/Fontes/eSocial/ACBrLibeSocial-change-log.txt",
+      "log/ACBrLibComum-change-log.txt": "Projetos/ACBrLib/Fontes/Comum/ACBrLibComum-change-log.txt",
+      "log/ACBrTCP-change-log.txt": "Fontes/ACBrTCP/ACBrTCP-change-log.txt",
+      "log/ACBreSocial-change-log.txt": "Fontes/ACBrDFe/ACBreSocial/ACBreSocial-change-log.txt"
+    },
+    "directories": {
+      "dep/Schemas/eSocial": "Exemplos/ACBrDFe/Schemas/eSocial"
+    }
+  }
+}

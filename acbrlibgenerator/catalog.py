@@ -3,6 +3,7 @@
 from dataclasses import asdict, dataclass
 from pathlib import Path, PureWindowsPath
 import xml.etree.ElementTree as ET
+import re
 
 
 @dataclass(frozen=True)
@@ -55,6 +56,11 @@ def project(path: Path, library: bool) -> Project:
 
         cpu = value("CodeGeneration/TargetCPU")
         os_name = value("CodeGeneration/TargetOS")
+        # Older GAV/LCB projects declare Windows calling conventions but omit OS.
+        legacy = re.fullmatch(r'x(86|64) - (CDECL|STDCALL)', name, flags=re.I)
+        if not os_name and legacy:
+            cpu = cpu or ('i386' if legacy[1] == '86' else 'x86_64')
+            os_name = 'win32' if cpu == 'i386' else 'win64'
         if cpu not in {"i386", "x86_64"} or os_name not in {"win32", "win64", "linux"}:
             continue
         target = value("Target/Filename").replace("\\", "/")

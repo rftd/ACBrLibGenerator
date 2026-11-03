@@ -6,10 +6,10 @@ Automação para compilar **ACBrLibs**, **ACBrMonitor** e gerar os instaladores 
 
 | Perfil | Saídas |
 |---|---|
-| `linux64` | Bibliotecas x86-64 ST/MT (`.so`) e ACBrMonitor |
+| `linux64` | Bibliotecas x86-64 ST/MT (`.so`); Monitor somente no perfil Windows |
 | `windows` | Bibliotecas x86/x64, Cdecl/StdCall, ST/MT (`.dll`), Monitor e instaladores x86/x64 |
 
-Os projetos e modos são lidos dos arquivos `.lpi`. A seleção `all` inclui as bibliotecas com modos compatíveis e informa as ignoradas; uma seleção explícita incompatível retorna erro. Demos e projetos ConsoleMT separados não fazem parte desta primeira versão.
+Os projetos e modos são lidos dos arquivos `.lpi`. A seleção `all` inclui as bibliotecas com modos compatíveis e informa as ignoradas; uma seleção explícita incompatível retorna erro. Demos e projetos ConsoleMT separados não fazem parte desta primeira versão. Os modos antigos de GAV/LCB também são compilados no Windows, com CPU e sistema explícitos.
 
 Cada execução cria uma pasta própria com binários, ZIPs, `build.log`, `manifest.json` e `SHA256SUMS`. O manifesto registra comandos, revisão SVN, arquivos gerados e falhas. O processo não executa `svn revert`, commits ou publicação Git.
 
@@ -82,7 +82,7 @@ python3 scripts/sync_mirror.py --repository https://github.com/rftd/ACBrLibGener
 python3 scripts/sync_mirror.py --repository https://github.com/rftd/ACBrLibGenerator.git --push
 ```
 
-No GitHub, **Sincronizar SVN** executa a cada seis horas ou manualmente. Pode receber uma revisão numérica e disparar explicitamente o workflow de build. O push com `GITHUB_TOKEN` não é usado como gatilho implícito de outro workflow.
+No GitHub, **Sincronizar SVN** executa somente por acionamento manual. Pode receber uma revisão numérica e disparar explicitamente o workflow de build. O push com `GITHUB_TOKEN` não é usado como gatilho implícito de outro workflow.
 
 Para preparar uma release:
 
@@ -103,9 +103,9 @@ O lock começa com `commit: null`: a primeira seleção deve ser feita após pub
 
 | Workflow | Gatilho | Responsabilidade |
 |---|---|---|
-| [ci.yml](.github/workflows/ci.yml) | Push em `main` e pull request | Testes, integração com SVN temporário e verificação Docker |
-| [mirror.yml](.github/workflows/mirror.yml) | Agendamento ou execução manual | Sincronizar `svn/trunk`; build opcional após a sincronização |
-| [image.yml](.github/workflows/image.yml) | Mudanças no ambiente em `main` ou execução manual | Publicar o toolchain Linux no GHCR |
+| [ci.yml](.github/workflows/ci.yml) | Manual | Testes, integração com SVN temporário e verificação Docker |
+| [mirror.yml](.github/workflows/mirror.yml) | Manual | Sincronizar `svn/trunk`; build opcional após a sincronização |
+| [image.yml](.github/workflows/image.yml) | Manual | Publicar o toolchain Linux no GHCR |
 | [build.yml](.github/workflows/build.yml) | Execução manual ou release publicada | Resolver o SHA do mirror, preparar pacotes, compilar e anexar os resultados |
 
 Publique primeiro os arquivos da automação em `main`. Execute **Sincronizar SVN** e **Imagem de compilação**. Depois execute **Gerar ACBrLib e Monitor** com `source_ref=svn/trunk` ou um SHA completo. Deixar a referência vazia usa o lock versionado. Para Linux, é possível informar uma imagem por digest.
@@ -127,7 +127,21 @@ Os testes usam projetos temporários e compiladores simulados para verificar sel
 
 Validação inicial concluída no Linux: ACBrLibCEP ST/MT e ACBrMonitor compilados tanto no ambiente local quanto dentro da imagem `acbrlibgenerator:local`. Os artefatos de verificação estão em `dist/validation-linux`, `dist/docker-validation` e `dist/docker-monitor-validation` (ignorados pelo Git). A geração dos instaladores Windows ainda precisa de validação no runner Windows.
 
-O gerador não baixa FastReport nem inclui integrações pagas por padrão. macOS, Linux i386 e bibliotecas ARM não fazem parte dos perfis iniciais. O ZIP do Monitor Linux contém o executável e seu changelog; ainda não é um instalador nem reúne todos os recursos de execução.
+## Pacotes e arquivos da release
+
+Os workflows executam somente manualmente; **Gerar ACBrLib e Monitor** também executa ao publicar uma release. Não há gatilhos de push, pull request ou agendamento.
+
+A pasta [ACBrLib](ACBrLib/README.md), versionada em `main`, contém os modelos de distribuição importados: PDFs, INIs, schemas, logos e dependências de terceiros. Binários ACBr antigos e logs não são versionados nessa pasta. Os mapeamentos de [config/distribution.json](config/distribution.json) regeneram os logs, schemas, logos e INIs a partir da revisão selecionada. Os binários usados nos pacotes são sempre os da execução atual. `Build.bat` é preservado como referência, mas excluído dos ZIPs, como no FinalBuilder.
+
+A publicação segue os nomes originais:
+
+- `ACBrLibCEP 1.0.2.362.zip`: um ZIP por biblioteca, contendo suas variantes Windows e Linux disponíveis em `bin/`, além de `dep/`, `log/` e `LEIA-ME.pdf`.
+- `ACBrMonitorPLUS-<versão>-x86-Instalador.exe` e `ACBrMonitorPLUS-<versão>-x64-Instalador.exe`: anexados individualmente; não há build nem publicação do Monitor Linux neste fluxo.
+- `source-lock.json`, `release-manifest.json` e `SHA256SUMS`: revisão dos fontes e integridade dos arquivos publicados.
+
+A versão de cada ZIP vem do recurso **FileVersion da DLL Windows compilada**, em quatro números, como no FinalBuilder; não usa `ProductVersion`, a versão do gerador ou a tag da release. Os ZIPs dos jobs são intermediários: a etapa final reúne as variantes por biblioteca e publica cada pacote diretamente, sem um ZIP geral por plataforma. Builds incompletos, versões Windows inconsistentes, arquivos ausentes ou checksums inválidos interrompem a publicação.
+
+O gerador não baixa FastReport nem inclui integrações pagas por padrão. macOS, Linux i386 e bibliotecas ARM não fazem parte dos perfis iniciais. O fluxo de distribuição do Monitor está limitado ao Windows.
 
 ## Créditos e licença
 

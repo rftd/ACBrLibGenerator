@@ -16,7 +16,7 @@ on:
         type: string
         default: all
       monitor:
-        description: Compilar ACBrMonitor
+        description: Compilar ACBrMonitor (somente Windows)
         type: boolean
         default: true
       installer:
@@ -180,15 +180,28 @@ jobs:
         with:
           name: source-lock
           path: .
-      - run: |
-          cd artifacts
-          zip -r ../ACBr-linux64.zip acbr-linux64
-          zip -r ../ACBr-windows.zip acbr-windows
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
+          path: generator
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.sources.outputs.commit }}
+          path: sources
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Montar ZIPs e instaladores no padrão FinalBuilder
+        run: python generator/scripts/package_release.py --artifacts artifacts --sources sources --lock source-lock.json --output publish
       - uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.event.release.tag_name }}
           files: |
-            ACBr-linux64.zip
-            ACBr-windows.zip
-            source-lock.json
+            publish/*.zip
+            publish/*-Instalador.exe
+            publish/source-lock.json
+            publish/release-manifest.json
+            publish/SHA256SUMS
           fail_on_unmatched_files: true

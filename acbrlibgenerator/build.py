@@ -15,6 +15,7 @@ from . import __version__, installer
 from .catalog import Catalog, Mode, Project, relative_binary_path
 from .common import Runner, lazbuild, primary_config, sha256, write_json
 from .mirror import metadata, git
+from .versioning import file_version, project_file_version
 
 
 @dataclass(frozen=True)
@@ -77,7 +78,7 @@ def command(tool, pcp: Path, job: Job, directory: Path, rebuild: bool):
     for path in (binary, units):
         if any(c in str(path) for c in '$"\r\n') or any(c.isspace() for c in str(path)):
             raise ValueError(f"Caminho não suportado pelas opções FPC: {path}")
-    args = [*tool, f"--pcp={pcp}", "--no-write-project", f"--bm={job.mode.name}"]
+    args = [*tool, f"--pcp={pcp}", "--no-write-project", f"--bm={job.mode.name}", f"--os={job.mode.os}", f"--cpu={job.mode.cpu}"]
     if rebuild:
         args.append("-B")
     # --opt follows the LPI options. A final -o overrides its original output path.
@@ -109,7 +110,8 @@ def source_info(root: Path):
 
 
 def archive(job: Job, binary: Path, directory: Path, sources: Path):
-    version = component(job.project.version or "unversioned")
+    version = file_version(binary) if job.mode.os.startswith("win") else project_file_version(job.project)
+    version = component(version)
     destination = directory / f"{component(job.project.name)}-{version}-{component(job.mode.name)}.zip"
     with zipfile.ZipFile(destination, "x", compression=zipfile.ZIP_DEFLATED) as output:
         target = relative_binary_path(job.project, job.mode) if job.project.library else Path(binary.name)
@@ -171,6 +173,10 @@ def execute(catalog, profile, environment: Path, output: Path, *, tool=None, pcp
             runner.run(entry["command"], cwd=job.project.path.parent)
             if not binary.is_file() or not binary.stat().st_size:
                 raise RuntimeError(f"Compilação terminou sem gerar {binary}")
+            version = file_version(binary) if job.mode.os.startswith("win") else project_file_version(job.project)
+            entry.update(library=job.project.library, file_version=version,
+                         version_source='binary' if job.mode.os.startswith('win') else 'project',
+                         archive_path=relative_binary_path(job.project, job.mode).as_posix() if job.project.library else binary.name)
             files = [binary, archive(job, binary, target, catalog.sources)]
             if job.installer:
                 files.extend(installer.build(runner, job.project, job.mode, binary, target, iscc))
