@@ -32,7 +32,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: sudo apt-get update && sudo apt-get install -y git-svn subversion
+      - name: Instalar Git e git-svn compatíveis
+        run: bash scripts/install_git_svn.sh
       - uses: actions/cache/restore@v4
         with:
           path: build/svn-mirror/.git

@@ -20,7 +20,7 @@ jobs:
           python-version: '3.12'
       - name: Dependências dos testes de integração SVN
         if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y git-svn subversion
+        run: bash scripts/install_git_svn.sh
       - run: python -m unittest discover -s tests -v
       - run: python scripts/acbrbuild.py --help
   docker:

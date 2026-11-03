@@ -117,7 +117,7 @@ São usadas as permissões `contents: write` para atualizar o mirror, `actions: 
 ## Desenvolvimento e validação
 
 ```bash
-sudo apt install git-svn subversion  # testes de integração no Linux
+bash scripts/install_git_svn.sh  # versões compatíveis no Ubuntu/CI
 python3 -m unittest discover -s tests -v
 python3 -m compileall -q acbrlibgenerator scripts
 docker build --check -f docker/Dockerfile .
