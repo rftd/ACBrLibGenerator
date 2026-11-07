@@ -28,7 +28,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.release.tag_name || github.sha }}
+          ref: ${{ github.sha }}
       - name: Ler versões
         id: config
         env:

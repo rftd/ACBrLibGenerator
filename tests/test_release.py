@@ -118,8 +118,8 @@ class ReleaseTests(unittest.TestCase):
 
 
 class WorkflowPolicyTests(unittest.TestCase):
-    def test_only_manual_and_release_triggers(self):
+    def test_only_manual_triggers(self):
         root=Path(__file__).resolve().parents[1]
         for path in (root/'.github/workflows').glob('*.yml'):
             triggers=path.read_text().split('permissions:',1)[0];self.assertIn('  workflow_dispatch:',triggers)
-            for event in ['push','pull_request','schedule']:self.assertNotIn(f'\n  {event}:',triggers,path.name)
+            for event in ['push','pull_request','schedule','release']:self.assertNotIn(f'\n  {event}:',triggers,path.name)

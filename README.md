@@ -9,7 +9,7 @@ Automação para compilar **ACBrLibs**, **ACBrMonitor** e gerar os instaladores 
 | `linux64` | Bibliotecas x86-64 ST/MT (`.so`); Monitor somente no perfil Windows |
 | `windows` | Bibliotecas x86/x64, Cdecl/StdCall, ST/MT (`.dll`), Monitor e instaladores x86/x64 |
 
-Os projetos e modos são lidos dos arquivos `.lpi`. A seleção `all` inclui somente as 19 bibliotecas ativas de [config/release-libraries.json](config/release-libraries.json), extraídas dos projetos `.lpi` do FinalBuilder original, e informa as demais como ignoradas; uma seleção explícita incompatível retorna erro. Demos e projetos ConsoleMT separados não fazem parte desta primeira versão. BPe, ConsultaCPF e DIS estão desativados no FinalBuilder original e ficam registrados como tal na configuração. GAV, LCB e outros projetos fora dessa lista não são compilados nem publicados, inclusive quando solicitados explicitamente. A release exige um pacote para cada uma das 19 bibliotecas ativas.
+Os projetos e modos são lidos dos arquivos `.lpi`. A seleção `all` inclui somente as 19 bibliotecas ativas de [config/release-libraries.json](config/release-libraries.json), extraídas dos projetos `.lpi` do FinalBuilder original, e informa as demais como ignoradas; uma seleção explícita incompatível retorna erro. Demos e projetos ConsoleMT separados não fazem parte desta primeira versão. BPe, ConsultaCPF e DIS estão desativados no FinalBuilder original e ficam registrados como tal na configuração. GAV, LCB e outros projetos fora dessa lista não são compilados nem publicados, inclusive quando solicitados explicitamente. O empacotamento exige um pacote para cada uma das 19 bibliotecas ativas.
 
 Cada execução cria uma pasta própria com binários, ZIPs, `build.log`, `manifest.json` e `SHA256SUMS`. O manifesto registra comandos, revisão SVN, arquivos gerados e falhas. O processo não executa `svn revert`, commits ou publicação Git.
 
@@ -70,7 +70,7 @@ A construção inicial instala FPC/Lazarus e compila as dependências ACBr. É a
 
 O ambiente contém os fontes ACBr na revisão configurada e as dependências resolvidas pelo catálogo OPM. O bootstrap do `fpclazup` e o catálogo OPM ainda são consultados pelos instaladores: fixar versões não torna duas reconstruções da imagem necessariamente idênticas. Para repetir um ambiente publicado, use a referência **por digest** da imagem, registrada pelo workflow.
 
-## Mirror SVN e releases
+## Mirror SVN e builds manuais
 
 A branch `main` contém a automação. A branch `svn/trunk` recebe os commits do ACBr via `git svn`, preservando autor, mensagem e `git-svn-id`. O fluxo é unidirecional: não faz `dcommit`, merge com `main` nem push forçado.
 
@@ -86,23 +86,16 @@ python3 scripts/sync_mirror.py --repository https://github.com/rftd/ACBrLibGener
 
 No GitHub, **Sincronizar SVN** executa somente por acionamento manual. Consulta automaticamente a revisão mais recente do SVN. O push com `GITHUB_TOKEN` não é usado como gatilho implícito de outro workflow.
 
-Para publicar uma release:
+Para gerar os arquivos:
 
-1. Envie a automação atualizada para `main`.
-2. No GitHub, abra **Releases → Draft a new release** e crie uma tag com **Target: main**.
-3. Preencha título e descrição e clique em **Publish release**.
-4. Acompanhe **Gerar ACBrLib e Monitor** na aba **Actions**. Os arquivos serão anexados ao concluir os builds.
+1. Abra **Actions → Gerar ACBrLib e Monitor → Run workflow**.
+2. Execute sem preencher parâmetros e aguarde os jobs terminarem.
+3. Em **Artifacts**, baixe **pacotes-acbr**, que contém os ZIPs finais das bibliotecas e os instaladores Windows do Monitor.
+4. Compartilhe o link da execução para outras pessoas baixarem os arquivos. O resumo do job de empacotamento também oferece um link direto ao artefato.
 
-A publicação executa os testes, sincroniza o SVN na revisão mais recente, atualiza `svn/trunk` e fixa o SHA importado em `source-lock.json` na própria release antes de compilar. Também cria a imagem Linux quando necessário, compila as bibliotecas nas duas plataformas e gera os instaladores Windows do Monitor. Não é necessário sincronizar o mirror, preparar a imagem ou fazer commit do lock manualmente.
+Cada execução consulta a revisão mais recente do SVN e seleciona um único SHA para os builds Linux e Windows. Não é necessário atualizar `main`, criar uma tag ou editar o lock a cada compilação. O mirror `svn/trunk` é atualizado automaticamente. O `source-lock.json` acompanha os pacotes para identificar os fontes usados.
 
-O SHA é selecionado uma única vez para os dois builds. Reexecutar uma release com `source-lock.json` já anexado reutiliza os mesmos fontes, mesmo que o SVN tenha avançado. Falhas ao consultar ou validar esse anexo interrompem o processo. A automação não altera `main` nem move a tag: ela deve apontar para o código do gerador, não para a branch pura dos fontes. Como a revisão é resolvida durante a execução, use uma tag própria para a publicação, como `build-2026-11-03`, sem presumir um número de revisão SVN.
-
-O lock versionado pode continuar com `commit: null` para releases automáticas. Para fixar fontes usados via CLI local, mantenha a opção local:
-
-```bash
-python3 scripts/resolve_sources.py --repository https://github.com/rftd/ACBrLibGenerator.git \
-  --ref svn/trunk --pin
-```
+Os downloads de artefatos exigem login no GitHub e acesso de leitura ao repositório. Os arquivos expiram conforme a retenção configurada no repositório; consulte a [documentação de downloads do GitHub](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/download-workflow-artifacts).
 
 ## GitHub Actions
 
@@ -111,9 +104,9 @@ python3 scripts/resolve_sources.py --repository https://github.com/rftd/ACBrLibG
 | [ci.yml](.github/workflows/ci.yml) | Manual ou chamado pelo build | Testes, integração com SVN temporário e verificação Docker |
 | [mirror.yml](.github/workflows/mirror.yml) | Manual | Sincronizar `svn/trunk` na revisão mais recente |
 | [image.yml](.github/workflows/image.yml) | Manual ou chamado pelo build | Reutilizar ou publicar o toolchain Linux no GHCR |
-| [build.yml](.github/workflows/build.yml) | Execução manual ou release publicada | Validar, preparar fontes e ambiente, compilar e anexar os resultados |
+| [build.yml](.github/workflows/build.yml) | Manual | Validar, preparar fontes e ambiente, compilar e disponibilizar os pacotes nos artefatos |
 
-Para testar sem publicar, abra **Actions → Gerar ACBrLib e Monitor → Run workflow** e execute sem preencher parâmetros. O workflow sincroniza o SVN, fixa o SHA importado para a execução, prepara a imagem automaticamente e compila as bibliotecas selecionadas no FinalBuilder nas duas plataformas, junto do Monitor e seus instaladores Windows. Os resultados ficam nos artefatos da execução. A publicação na release continua sendo disparada por **Publish release**. Para seleções personalizadas, use a CLI local.
+Todos os workflows são iniciados manualmente, sem parâmetros. O build completo prepara a imagem, compila as bibliotecas selecionadas no FinalBuilder nas duas plataformas, gera o Monitor e seus instaladores Windows e reúne os arquivos em **pacotes-acbr**. Os outros artefatos contêm resultados intermediários e logs de diagnóstico. Não há disparo nem publicação por release. Para seleções personalizadas, use a CLI local.
 
 A imagem é identificada por um hash dos arquivos do ambiente e reutilizada quando disponível. Uma construção nova também publica as tags `sha-<commit>` e `toolchain-v1`. O build recebe a referência por digest e o resumo registra esse valor. Ela fornece os compiladores e dependências de terceiros. Os scripts atuais e os fontes selecionados são montados no contêiner; a seleção ACBr é recompilada para evitar reutilizar PPUs de outra revisão. No Windows, o mesmo commit espelhado é preparado antes do build e do Inno Setup.
 
@@ -136,19 +129,19 @@ Os testes usam projetos temporários e compiladores simulados para verificar sel
 
 Validação inicial concluída no Linux: ACBrLibCEP ST/MT e ACBrMonitor compilados tanto no ambiente local quanto dentro da imagem `acbrlibgenerator:local`. Os artefatos de verificação estão em `dist/validation-linux`, `dist/docker-validation` e `dist/docker-monitor-validation` (ignorados pelo Git). A geração dos instaladores Windows ainda precisa de validação no runner Windows.
 
-## Pacotes e arquivos da release
+## Pacotes para download
 
-Os gatilhos externos são manuais ou por publicação de release. O build chama os workflows de verificação e imagem internamente. Não há gatilhos de push, pull request ou agendamento.
+Os gatilhos externos são exclusivamente manuais. O build chama os workflows de verificação e imagem internamente. Não há gatilhos de push, pull request ou agendamento.
 
 A pasta [ACBrLib](ACBrLib/README.md), versionada em `main`, contém os modelos de distribuição importados: PDFs, INIs, schemas, logos e dependências de terceiros. Binários ACBr antigos e logs não são versionados nessa pasta. Os mapeamentos de [config/distribution.json](config/distribution.json) regeneram os logs, schemas, logos e INIs a partir da revisão selecionada. Os binários usados nos pacotes são sempre os da execução atual. `Build.bat` é preservado como referência, mas excluído dos ZIPs, como no FinalBuilder.
 
-A publicação segue os nomes originais:
+O artefato **pacotes-acbr** reúne os arquivos finais com os nomes originais:
 
 - `ACBrLibCEP 1.0.2.362.zip`: um ZIP por biblioteca, contendo suas variantes Windows e Linux disponíveis em `bin/`, além de `dep/`, `log/` e `LEIA-ME.pdf`.
-- `ACBrMonitorPLUS-<versão>-x86-Instalador.exe` e `ACBrMonitorPLUS-<versão>-x64-Instalador.exe`: anexados individualmente; não há build nem publicação do Monitor Linux neste fluxo.
-- `source-lock.json`, `release-manifest.json` e `SHA256SUMS`: revisão dos fontes e integridade dos arquivos publicados.
+- `ACBrMonitorPLUS-<versão>-x86-Instalador.exe` e `ACBrMonitorPLUS-<versão>-x64-Instalador.exe`: incluídos no artefato; não há build nem publicação do Monitor Linux neste fluxo.
+- `source-lock.json`, `release-manifest.json` e `SHA256SUMS`: revisão dos fontes e integridade dos arquivos disponibilizados.
 
-A versão de cada ZIP vem do recurso **FileVersion da DLL Windows compilada**, em quatro números, como no FinalBuilder; não usa `ProductVersion`, a versão do gerador ou a tag da release. Os ZIPs dos jobs são intermediários: a etapa final reúne as variantes por biblioteca e publica cada pacote diretamente, sem um ZIP geral por plataforma. Builds incompletos, versões Windows inconsistentes, arquivos ausentes ou checksums inválidos interrompem a publicação.
+A versão de cada ZIP vem do recurso **FileVersion da DLL Windows compilada**, em quatro números, como no FinalBuilder; não usa `ProductVersion`, a versão do gerador ou a tag da release. Os ZIPs dos jobs são intermediários: a etapa final reúne as variantes por biblioteca e disponibiliza os arquivos completos no artefato **pacotes-acbr**. Builds incompletos, versões Windows inconsistentes, arquivos ausentes ou checksums inválidos interrompem o empacotamento.
 
 O gerador não baixa FastReport nem inclui integrações pagas por padrão. macOS, Linux i386 e bibliotecas ARM não fazem parte dos perfis iniciais. O fluxo de distribuição do Monitor está limitado ao Windows.
 

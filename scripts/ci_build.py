@@ -6,10 +6,9 @@ import subprocess
 import sys
 
 root = Path(__file__).resolve().parents[1]
-release = os.environ.get('GITHUB_EVENT_NAME') == 'release'
-libraries = 'all' if release else os.environ.get('LIBRARIES', 'all')
-monitor = (os.name == 'nt') and (release or os.environ.get('MONITOR', 'true') == 'true')
-installer = release or os.environ.get('INSTALLER', 'true') == 'true'
+libraries = os.environ.get('LIBRARIES', 'all')
+monitor = (os.name == 'nt') and (os.environ.get('MONITOR', 'true') == 'true')
+installer = os.environ.get('INSTALLER', 'true') == 'true'
 commit = os.environ['SOURCE_COMMIT']
 revision = os.environ['SOURCE_REVISION']
 sources = root / 'build/acbr'

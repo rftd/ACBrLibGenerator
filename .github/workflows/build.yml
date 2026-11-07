@@ -1,8 +1,6 @@
 name: Gerar ACBrLib e Monitor
 on:
   workflow_dispatch:
-  release:
-    types: [published]
 permissions:
   contents: read
 jobs:
@@ -29,52 +27,33 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.release.tag_name || github.sha }}
+          ref: ${{ github.sha }}
           persist-credentials: false
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
-      - name: Recuperar fontes já fixados nesta release
-        if: github.event_name == 'release'
-        id: snapshot
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_ID: ${{ github.event.release.id }}
-          RELEASE_TAG: ${{ github.event.release.tag_name }}
-        run: python scripts/release_snapshot.py restore --repository "$GITHUB_REPOSITORY" --release-id "$RELEASE_ID" --tag "$RELEASE_TAG"
       - name: Instalar Git e git-svn compatíveis
-        if: steps.snapshot.outputs.restored != 'true'
         run: bash scripts/install_git_svn.sh
       - uses: actions/cache/restore@v6
-        if: steps.snapshot.outputs.restored != 'true'
         with:
           path: build/svn-mirror/.git
           key: svn-${{ hashFiles('config/mirror.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: svn-${{ hashFiles('config/mirror.json') }}-
       - name: Sincronizar SVN e publicar o mirror
         id: mirror
-        if: steps.snapshot.outputs.restored != 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python scripts/sync_mirror.py --repository "https://github.com/$GITHUB_REPOSITORY.git" --push
       - uses: actions/cache/save@v6
-        if: steps.snapshot.outputs.restored != 'true'
         with:
           path: build/svn-mirror/.git
           key: svn-${{ hashFiles('config/mirror.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
-      - name: Fixar revisão na própria release antes dos builds
-        if: github.event_name == 'release' && steps.snapshot.outputs.restored != 'true'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_ID: ${{ github.event.release.id }}
-          RELEASE_TAG: ${{ github.event.release.tag_name }}
-        run: python scripts/release_snapshot.py freeze --repository "$GITHUB_REPOSITORY" --release-id "$RELEASE_ID" --tag "$RELEASE_TAG"
       - name: Resolver fontes imutáveis
         id: source
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SOURCE_REF: ${{ github.event_name != 'release' && steps.mirror.outputs.commit || '' }}
-          SOURCE_LOCK: ${{ github.event_name == 'release' && 'dist/source-lock.json' || 'config/sources.lock.json' }}
+          SOURCE_REF: ${{ steps.mirror.outputs.commit }}
+          SOURCE_LOCK: config/sources.lock.json
         run: python scripts/resolve_sources.py --repository "https://github.com/$GITHUB_REPOSITORY.git" --ref "$SOURCE_REF" --lock "$SOURCE_LOCK"
       - name: Registrar revisão usada
         shell: python
@@ -98,7 +77,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.release.tag_name || github.sha }}
+          ref: ${{ github.sha }}
       - uses: actions/checkout@v7
         with:
           ref: ${{ needs.sources.outputs.commit }}
@@ -133,7 +112,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.release.tag_name || github.sha }}
+          ref: ${{ github.sha }}
       - uses: actions/checkout@v7
         with:
           ref: ${{ needs.sources.outputs.commit }}
@@ -195,12 +174,10 @@ jobs:
             dist/**/*.zip
             dist/**/installer/*.exe
           if-no-files-found: warn
-  release:
+  packages:
+    name: Preparar pacotes para download
     needs: [sources, linux, windows]
-    if: github.event_name == 'release'
     runs-on: ubuntu-22.04
-    permissions:
-      contents: write
     steps:
       - uses: actions/download-artifact@v7
         with:
@@ -212,7 +189,7 @@ jobs:
           path: .
       - uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.release.tag_name }}
+          ref: ${{ github.sha }}
           path: generator
           persist-credentials: false
       - uses: actions/checkout@v7
@@ -225,12 +202,18 @@ jobs:
           python-version: '3.12'
       - name: Montar ZIPs e instaladores no padrão FinalBuilder
         run: python generator/scripts/package_release.py --artifacts artifacts --sources sources --lock source-lock.json --output publish
-      - uses: softprops/action-gh-release@v3
+      - uses: actions/upload-artifact@v7
+        id: packages
         with:
-          tag_name: ${{ github.event.release.tag_name }}
-          files: |
-            publish/*.zip
-            publish/*-Instalador.exe
-            publish/release-manifest.json
-            publish/SHA256SUMS
-          fail_on_unmatched_files: true
+          name: pacotes-acbr
+          path: publish/
+          if-no-files-found: error
+          overwrite: true
+      - name: Link para download
+        env:
+          DOWNLOAD_URL: ${{ steps.packages.outputs.artifact-url }}
+        shell: python
+        run: |
+          import os
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as out:
+              print(f"[Baixar pacotes ACBr]({os.environ['DOWNLOAD_URL']})", file=out)
