@@ -69,6 +69,19 @@ class GeneratorTests(unittest.TestCase):
         cfg=profile();cfg['libraries']=[]
         with self.assertRaises(ValueError):plan(self.catalog,cfg)
 
+    def test_all_selects_finalbuilder_libraries_and_reports_other_projects(self):
+        for name in ['GAV', 'LCB', 'ExtratoAPI']:
+            path=self.catalog.sources/f'Projetos/ACBrLib/Fontes/{name}/ACBrLib{name}.lpi'
+            path.parent.mkdir(parents=True)
+            path.write_text(LPI)
+        catalog=Catalog.load(self.catalog.sources)
+        jobs,skipped=plan(catalog,profile())
+        self.assertEqual({job.project.name for job in jobs},{'ACBrLibCEP'})
+        self.assertEqual(len(skipped),3)
+        for name in ['GAV','LCB','ExtratoAPI']:
+            cfg=profile();cfg['libraries']=[f'ACBrLib{name}']
+            with self.assertRaisesRegex(ValueError,'FinalBuilder'):plan(catalog,cfg)
+
     def test_installer_requires_windows_monitor(self):
         cfg=profile();cfg['installer']=True
         with self.assertRaises(ValueError):plan(self.catalog,cfg)

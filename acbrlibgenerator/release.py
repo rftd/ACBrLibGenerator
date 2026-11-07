@@ -7,9 +7,9 @@ import shutil
 import zipfile
 from collections import defaultdict
 
-from .catalog import Catalog
 from .common import sha256, write_json
 from .sources import verify
+from .distribution import release_libraries
 
 ROOT = Path(__file__).resolve().parents[1]
 VERSION = re.compile(r'^\d+\.\d+\.\d+\.\d+$')
@@ -60,7 +60,7 @@ def collect(artifacts, sources, lock, output, templates=ROOT/'ACBrLib', recipes=
                 if target in monitor_targets:raise ValueError(f'Instalador duplicado: {target}')
                 monitor_targets.add(target)
                 installers[found[0].name]=found[0]
-    expected={p.name for p in Catalog.load(sources).libraries}
+    expected=set(release_libraries())
     if set(groups)!=expected:
         raise ValueError(f'Bibliotecas ausentes ou inesperadas: {sorted(expected-set(groups))} / {sorted(set(groups)-expected)}')
     if monitor_targets!={'i386-win32','x86_64-win64'}:

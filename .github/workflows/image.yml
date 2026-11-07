@@ -32,7 +32,7 @@ jobs:
       - name: Ler versões
         id: config
         env:
-          TOOLCHAIN_HASH: ${{ hashFiles('docker/**', '.dockerignore', 'config/toolchain.json', 'config/builds.json', 'acbrlibgenerator/**/*.py', 'scripts/**/*.py') }}
+          TOOLCHAIN_HASH: ${{ hashFiles('docker/**', '.dockerignore', 'config/toolchain.json', 'config/builds.json', 'config/release-libraries.json', 'acbrlibgenerator/**/*.py', 'scripts/**/*.py') }}
           REQUESTED_IMAGE: ${{ inputs.image }}
         shell: python
         run: |

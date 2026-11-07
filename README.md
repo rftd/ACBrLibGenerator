@@ -9,7 +9,7 @@ Automação para compilar **ACBrLibs**, **ACBrMonitor** e gerar os instaladores 
 | `linux64` | Bibliotecas x86-64 ST/MT (`.so`); Monitor somente no perfil Windows |
 | `windows` | Bibliotecas x86/x64, Cdecl/StdCall, ST/MT (`.dll`), Monitor e instaladores x86/x64 |
 
-Os projetos e modos são lidos dos arquivos `.lpi`. A seleção `all` inclui as bibliotecas com modos compatíveis e informa as ignoradas; uma seleção explícita incompatível retorna erro. Demos e projetos ConsoleMT separados não fazem parte desta primeira versão. Os modos antigos de GAV/LCB também são compilados no Windows, com CPU e sistema explícitos.
+Os projetos e modos são lidos dos arquivos `.lpi`. A seleção `all` inclui somente as 19 bibliotecas ativas de [config/release-libraries.json](config/release-libraries.json), extraídas dos projetos `.lpi` do FinalBuilder original, e informa as demais como ignoradas; uma seleção explícita incompatível retorna erro. Demos e projetos ConsoleMT separados não fazem parte desta primeira versão. BPe, ConsultaCPF e DIS estão desativados no FinalBuilder original e ficam registrados como tal na configuração. GAV, LCB e outros projetos fora dessa lista não são compilados nem publicados, inclusive quando solicitados explicitamente. A release exige um pacote para cada uma das 19 bibliotecas ativas.
 
 Cada execução cria uma pasta própria com binários, ZIPs, `build.log`, `manifest.json` e `SHA256SUMS`. O manifesto registra comandos, revisão SVN, arquivos gerados e falhas. O processo não executa `svn revert`, commits ou publicação Git.
 

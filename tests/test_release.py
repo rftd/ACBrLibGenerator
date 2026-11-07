@@ -9,7 +9,7 @@ from acbrlibgenerator.common import sha256
 from acbrlibgenerator.release import collect
 from acbrlibgenerator.versioning import file_version,project_file_version
 from acbrlibgenerator.catalog import Catalog
-from acbrlibgenerator.build import plan, describe
+from acbrlibgenerator.build import plan, describe, Job
 
 
 def pe(wide=False):
@@ -41,7 +41,8 @@ class VersionTests(unittest.TestCase):
             (folder/'ACBrLibGAV.lpi').write_text('<CONFIG><ProjectOptions><BuildModes><Item1 Name="x86 - CDECL"/></BuildModes></ProjectOptions><CompilerOptions><Target><Filename Value="bin/Cdecl/ACBrGAV32"/></Target><CodeGeneration><TargetCPU Value="i386"/></CodeGeneration></CompilerOptions></CONFIG>')
             catalog=Catalog.load(source)
             cfg={'libraries':'all','library_modes':['x86 - CDECL'],'monitor':False,'monitor_modes':[],'installer':False}
-            jobs,_=plan(catalog,cfg)
+            project=catalog.libraries[0]
+            jobs=[Job(project, project.modes[0], False)]
             args=describe(jobs,source/'out',['lazbuild'],source/'config')[0]['command']
             self.assertIn('--os=win32',args)
             self.assertIn('--cpu=i386',args)
@@ -73,7 +74,7 @@ class ReleaseTests(unittest.TestCase):
             report={'status':'success','source':{'commit':'a'*40,'revision':'123'},'jobs':jobs};p=directory/'manifest.json';p.write_text(json.dumps(report));self.reports.append((p,report))
 
     def collect(self):
-        with patch('acbrlibgenerator.release.verify'):
+        with patch('acbrlibgenerator.release.verify'), patch('acbrlibgenerator.release.release_libraries',return_value=('ACBrLibCEP',)):
             return collect(self.artifacts,self.sources,self.lock,self.output,self.templates,self.recipes)
 
     def test_finalbuilder_bundle_name_layout_and_fresh_standard_files(self):
@@ -91,6 +92,17 @@ class ReleaseTests(unittest.TestCase):
     def test_revisions_cannot_be_mixed(self):
         p,r=self.reports[1];r['source']['commit']='b'*40;p.write_text(json.dumps(r))
         with self.assertRaisesRegex(ValueError,'revisões diferentes'):self.collect()
+
+    def test_release_rejects_libraries_outside_finalbuilder(self):
+        path,report=self.reports[0]
+        report['jobs'].append({**report['jobs'][0],'project':'ACBrLibGAV'})
+        path.write_text(json.dumps(report))
+        with self.assertRaisesRegex(ValueError,'inesperadas'):self.collect()
+
+    def test_release_requires_the_entire_finalbuilder_selection(self):
+        with patch('acbrlibgenerator.release.verify'):
+            with self.assertRaisesRegex(ValueError,'Bibliotecas ausentes'):
+                collect(self.artifacts,self.sources,self.lock,self.output,self.templates,self.recipes)
 
     def test_both_monitor_installers_are_required(self):
         p,r=self.reports[0];r['jobs'].pop();p.write_text(json.dumps(r))

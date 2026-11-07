@@ -16,6 +16,7 @@ from .catalog import Catalog, Mode, Project, relative_binary_path
 from .common import Runner, lazbuild, primary_config, sha256, write_json
 from .mirror import metadata, git
 from .versioning import file_version, project_file_version
+from .distribution import release_libraries
 
 
 @dataclass(frozen=True)
@@ -32,9 +33,14 @@ def plan(catalog: Catalog, profile: dict):
     if not all_libraries and not isinstance(names, list):
         raise ValueError("libraries deve ser 'all' ou uma lista")
     lookup = {p.name.casefold(): p for p in catalog.libraries}
-    selected = list(catalog.libraries) if all_libraries else []
+    allowed = {name.casefold() for name in release_libraries()}
+    selected = [p for p in catalog.libraries if p.name.casefold() in allowed] if all_libraries else []
+    if all_libraries:
+        skipped.extend(f'{p.name}: fora da seleção do FinalBuilder' for p in catalog.libraries if p.name.casefold() not in allowed)
     if not all_libraries:
         for name in dict.fromkeys(n.casefold() for n in names):
+            if name not in allowed:
+                raise ValueError(f'Biblioteca fora da seleção do FinalBuilder: {name}')
             if name not in lookup:
                 raise ValueError(f"Biblioteca desconhecida: {name}")
             selected.append(lookup[name])

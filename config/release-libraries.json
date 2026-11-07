@@ -1,0 +1,30 @@
+{
+  "source": "ACbr Builder.fbp8",
+  "libraries": [
+    "ACBrLibAbecsPinpad",
+    "ACBrLibBAL",
+    "ACBrLibBoleto",
+    "ACBrLibCEP",
+    "ACBrLibCHQ",
+    "ACBrLibConsultaCNPJ",
+    "ACBrLibCTe",
+    "ACBrLibCupomVerde",
+    "ACBrLibeSocial",
+    "ACBrLibETQ",
+    "ACBrLibGNRe",
+    "ACBrLibMail",
+    "ACBrLibMDFe",
+    "ACBrLibNFe",
+    "ACBrLibNFSe",
+    "ACBrLibPIXCD",
+    "ACBrLibPosPrinter",
+    "ACBrLibReinf",
+    "ACBrLibSedex"
+  ],
+  "disabled": {
+    "ACBrLibBPe": "enabled = false no FinalBuilder original",
+    "ACBrLibConsultaCPF": "enabled = false no FinalBuilder original",
+    "ACBrLibDIS": "enabled = false no FinalBuilder original"
+  },
+  "source_sha256": "ef011d15b649c61daeda2ad50e8f2d4e8219ba68474dba0609c55a03b5611c41"
+}

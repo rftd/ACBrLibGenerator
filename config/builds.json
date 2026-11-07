@@ -19,11 +19,7 @@
       "Win32-i386-CDECL-MT",
       "Win64-x86_64-CDECL-MT",
       "Win32-i386-STDCALL-MT",
-      "Win64-x86_64-STDCALL-MT",
-      "x86 - CDECL",
-      "x64 - CDECL",
-      "x86 - STDCALL",
-      "x64 - STDCALL"
+      "Win64-x86_64-STDCALL-MT"
     ],
     "monitor": true,
     "monitor_modes": [
