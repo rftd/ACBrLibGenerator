@@ -17,7 +17,7 @@ Cada execução cria uma pasta própria com binários, ZIPs, `build.log`, `manif
 
 - [config/toolchain.json](config/toolchain.json): commit dos instaladores, versões FPC/Lazarus, revisão SVN ACBr, cross-compilers e Inno Setup com SHA256.
 - [config/mirror.json](config/mirror.json): origem SVN, branch `svn/trunk` e primeira revisão importada.
-- [config/sources.lock.json](config/sources.lock.json): seleção opcional de SHA Git e revisão SVN para builds manuais. Releases fixam os fontes automaticamente no anexo `source-lock.json`.
+- [config/sources.lock.json](config/sources.lock.json): seleção opcional de SHA Git e revisão SVN para uso avançado via CLI. Os workflows fixam os fontes automaticamente por execução.
 - [config/builds.json](config/builds.json): bibliotecas, modos, Monitor e instaladores por perfil.
 
 A imagem inicial usa FPC 3.2.2, Lazarus 4.6 e revisão ACBr 48919 como base de preparação. Nos builds do CI, os fontes são substituídos pelo commit Git selecionado do mirror em `/opt/acbr`; os pacotes são registrados e recompilados antes dos produtos. Atualizar os fontes não exige reconstruir o toolchain. Alterações no FPC/Lazarus ou cross-compilers exigem uma nova imagem.
@@ -84,7 +84,7 @@ python3 scripts/sync_mirror.py --repository https://github.com/rftd/ACBrLibGener
 python3 scripts/sync_mirror.py --repository https://github.com/rftd/ACBrLibGenerator.git --push
 ```
 
-No GitHub, **Sincronizar SVN** executa somente por acionamento manual. Pode receber uma revisão numérica e disparar explicitamente o workflow de build. O push com `GITHUB_TOKEN` não é usado como gatilho implícito de outro workflow.
+No GitHub, **Sincronizar SVN** executa somente por acionamento manual. Consulta automaticamente a revisão mais recente do SVN. O push com `GITHUB_TOKEN` não é usado como gatilho implícito de outro workflow.
 
 Para publicar uma release:
 
@@ -97,7 +97,7 @@ A publicação executa os testes, sincroniza o SVN na revisão mais recente, atu
 
 O SHA é selecionado uma única vez para os dois builds. Reexecutar uma release com `source-lock.json` já anexado reutiliza os mesmos fontes, mesmo que o SVN tenha avançado. Falhas ao consultar ou validar esse anexo interrompem o processo. A automação não altera `main` nem move a tag: ela deve apontar para o código do gerador, não para a branch pura dos fontes. Como a revisão é resolvida durante a execução, use uma tag própria para a publicação, como `build-2026-11-03`, sem presumir um número de revisão SVN.
 
-O lock versionado pode continuar com `commit: null` para releases automáticas. Para fixar fontes usados em builds manuais, mantenha a opção local:
+O lock versionado pode continuar com `commit: null` para releases automáticas. Para fixar fontes usados via CLI local, mantenha a opção local:
 
 ```bash
 python3 scripts/resolve_sources.py --repository https://github.com/rftd/ACBrLibGenerator.git \
@@ -109,11 +109,11 @@ python3 scripts/resolve_sources.py --repository https://github.com/rftd/ACBrLibG
 | Workflow | Gatilho | Responsabilidade |
 |---|---|---|
 | [ci.yml](.github/workflows/ci.yml) | Manual ou chamado pelo build | Testes, integração com SVN temporário e verificação Docker |
-| [mirror.yml](.github/workflows/mirror.yml) | Manual | Sincronizar `svn/trunk`; build opcional após a sincronização |
+| [mirror.yml](.github/workflows/mirror.yml) | Manual | Sincronizar `svn/trunk` na revisão mais recente |
 | [image.yml](.github/workflows/image.yml) | Manual ou chamado pelo build | Reutilizar ou publicar o toolchain Linux no GHCR |
 | [build.yml](.github/workflows/build.yml) | Execução manual ou release publicada | Validar, preparar fontes e ambiente, compilar e anexar os resultados |
 
-Para testar sem publicar, execute **Gerar ACBrLib e Monitor** com `source_ref=svn/trunk` ou um SHA completo após sincronizar o mirror. Nesse modo, deixar a referência vazia usa o lock versionado e não sincroniza o SVN automaticamente. A imagem Linux é preparada automaticamente; é possível selecionar uma imagem existente por digest. Execuções manuais não publicam arquivos em releases.
+Para testar sem publicar, abra **Actions → Gerar ACBrLib e Monitor → Run workflow** e execute sem preencher parâmetros. O workflow sincroniza o SVN, fixa o SHA importado para a execução, prepara a imagem automaticamente e compila as bibliotecas selecionadas no FinalBuilder nas duas plataformas, junto do Monitor e seus instaladores Windows. Os resultados ficam nos artefatos da execução. A publicação na release continua sendo disparada por **Publish release**. Para seleções personalizadas, use a CLI local.
 
 A imagem é identificada por um hash dos arquivos do ambiente e reutilizada quando disponível. Uma construção nova também publica as tags `sha-<commit>` e `toolchain-v1`. O build recebe a referência por digest e o resumo registra esse valor. Ela fornece os compiladores e dependências de terceiros. Os scripts atuais e os fontes selecionados são montados no contêiner; a seleção ACBr é recompilada para evitar reutilizar PPUs de outra revisão. No Windows, o mesmo commit espelhado é preparado antes do build e do Inno Setup.
 
@@ -121,7 +121,7 @@ O checkout verificado recebe uma adaptação de compatibilidade para revisões e
 
 Ao encerrar o contêiner, mesmo com falha de compilação, o gerador devolve a propriedade dos artefatos ao usuário do runner. Isso permite anexar manifestos e logs privados ao workflow para diagnóstico.
 
-São usadas as permissões `contents: write` para atualizar o mirror, `actions: write` para disparar builds e `packages: write` para publicar a imagem. Credenciais não são gravadas no cache SVN/Git. A primeira publicação dos arquivos locais e a autorização de acesso ao repositório privado, se houver, são necessárias antes de executar os workflows.
+São usadas as permissões `contents: write` para atualizar o mirror e `packages: write` para publicar a imagem. Credenciais não são gravadas no cache SVN/Git. A primeira publicação dos arquivos locais e a autorização de acesso ao repositório privado, se houver, são necessárias antes de executar os workflows.
 
 ## Desenvolvimento e validação
 

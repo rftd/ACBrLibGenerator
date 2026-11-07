@@ -1,32 +1,6 @@
 name: Gerar ACBrLib e Monitor
 on:
   workflow_dispatch:
-    inputs:
-      source_ref:
-        description: SHA do mirror ou svn/trunk; vazio usa sources.lock.json
-        type: string
-        default: ''
-      platform:
-        description: Plataforma
-        type: choice
-        options: [all, linux64, windows]
-        default: all
-      libraries:
-        description: Bibliotecas separadas por vírgula; all ou vazio para nenhuma
-        type: string
-        default: all
-      monitor:
-        description: Compilar ACBrMonitor (somente Windows)
-        type: boolean
-        default: true
-      installer:
-        description: Gerar instalador Windows
-        type: boolean
-        default: true
-      image:
-        description: Imagem Linux por tag ou digest; vazio prepara automaticamente
-        type: string
-        default: ''
   release:
     types: [published]
 permissions:
@@ -36,13 +10,10 @@ jobs:
     uses: ./.github/workflows/ci.yml
   image:
     needs: checks
-    if: github.event_name == 'release' || inputs.platform == 'all' || inputs.platform == 'linux64'
     permissions:
       contents: read
       packages: write
     uses: ./.github/workflows/image.yml
-    with:
-      image: ${{ inputs.image || '' }}
   sources:
     needs: checks
     runs-on: ubuntu-22.04
@@ -72,21 +43,22 @@ jobs:
           RELEASE_TAG: ${{ github.event.release.tag_name }}
         run: python scripts/release_snapshot.py restore --repository "$GITHUB_REPOSITORY" --release-id "$RELEASE_ID" --tag "$RELEASE_TAG"
       - name: Instalar Git e git-svn compatíveis
-        if: github.event_name == 'release' && steps.snapshot.outputs.restored != 'true'
+        if: steps.snapshot.outputs.restored != 'true'
         run: bash scripts/install_git_svn.sh
       - uses: actions/cache/restore@v6
-        if: github.event_name == 'release' && steps.snapshot.outputs.restored != 'true'
+        if: steps.snapshot.outputs.restored != 'true'
         with:
           path: build/svn-mirror/.git
           key: svn-${{ hashFiles('config/mirror.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: svn-${{ hashFiles('config/mirror.json') }}-
       - name: Sincronizar SVN e publicar o mirror
-        if: github.event_name == 'release' && steps.snapshot.outputs.restored != 'true'
+        id: mirror
+        if: steps.snapshot.outputs.restored != 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python scripts/sync_mirror.py --repository "https://github.com/$GITHUB_REPOSITORY.git" --push
       - uses: actions/cache/save@v6
-        if: github.event_name == 'release' && steps.snapshot.outputs.restored != 'true'
+        if: steps.snapshot.outputs.restored != 'true'
         with:
           path: build/svn-mirror/.git
           key: svn-${{ hashFiles('config/mirror.json') }}-${{ github.run_id }}-${{ github.run_attempt }}
@@ -101,7 +73,7 @@ jobs:
         id: source
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SOURCE_REF: ${{ inputs.source_ref }}
+          SOURCE_REF: ${{ github.event_name != 'release' && steps.mirror.outputs.commit || '' }}
           SOURCE_LOCK: ${{ github.event_name == 'release' && 'dist/source-lock.json' || 'config/sources.lock.json' }}
         run: python scripts/resolve_sources.py --repository "https://github.com/$GITHUB_REPOSITORY.git" --ref "$SOURCE_REF" --lock "$SOURCE_LOCK"
       - name: Registrar revisão usada
@@ -118,7 +90,6 @@ jobs:
           overwrite: true
   linux:
     needs: [sources, image]
-    if: github.event_name == 'release' || inputs.platform == 'all' || inputs.platform == 'linux64'
     runs-on: ubuntu-22.04
     timeout-minutes: 180
     permissions:
@@ -143,8 +114,6 @@ jobs:
           SOURCE_COMMIT: ${{ needs.sources.outputs.commit }}
           SOURCE_REVISION: ${{ needs.sources.outputs.revision }}
           REQUESTED_IMAGE: ${{ needs.image.outputs.image }}
-          LIBRARIES: ${{ inputs.libraries }}
-          MONITOR: ${{ inputs.monitor }}
         run: python3 scripts/ci_build.py
       - uses: actions/upload-artifact@v7
         if: always()
@@ -159,7 +128,6 @@ jobs:
           if-no-files-found: warn
   windows:
     needs: sources
-    if: github.event_name == 'release' || inputs.platform == 'all' || inputs.platform == 'windows'
     runs-on: windows-latest
     timeout-minutes: 180
     steps:
@@ -207,16 +175,12 @@ jobs:
         shell: pwsh
         run: python scripts/bootstrap.py --profile windows --environment C:/acbr-env --sources build/acbr --installers build/installers/target/release --state dist/bootstrap --existing-sources --expected-commit $env:SOURCE_COMMIT --expected-revision $env:SOURCE_REVISION
       - name: Instalar Inno Setup verificado
-        if: github.event_name == 'release' || (inputs.monitor && inputs.installer)
         shell: pwsh
         run: ./scripts/install_inno.ps1
       - name: Compilar projetos e instaladores
         env:
           SOURCE_COMMIT: ${{ needs.sources.outputs.commit }}
           SOURCE_REVISION: ${{ needs.sources.outputs.revision }}
-          LIBRARIES: ${{ inputs.libraries }}
-          MONITOR: ${{ inputs.monitor }}
-          INSTALLER: ${{ inputs.installer }}
         run: python scripts/ci_build.py
       - uses: actions/upload-artifact@v7
         if: always()

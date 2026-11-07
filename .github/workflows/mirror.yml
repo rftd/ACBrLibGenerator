@@ -1,15 +1,6 @@
 name: Sincronizar SVN
 on:
   workflow_dispatch:
-    inputs:
-      revision:
-        description: Revisão SVN; vazio consulta HEAD
-        type: string
-        default: ''
-      build_after_sync:
-        description: Compilar a revisão após sincronizar
-        type: boolean
-        default: false
 permissions:
   contents: read
 concurrency:
@@ -21,7 +12,6 @@ jobs:
     timeout-minutes: 180
     permissions:
       contents: write
-      actions: write
     steps:
       - uses: actions/checkout@v7
         with:
@@ -41,8 +31,7 @@ jobs:
         id: mirror
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SVN_REVISION: ${{ inputs.revision }}
-        run: python scripts/sync_mirror.py --repository "https://github.com/$GITHUB_REPOSITORY.git" --revision "$SVN_REVISION" --push
+        run: python scripts/sync_mirror.py --repository "https://github.com/$GITHUB_REPOSITORY.git" --push
       - uses: actions/cache/save@v6
         with:
           path: build/svn-mirror/.git
@@ -51,9 +40,3 @@ jobs:
         with:
           name: mirror-state
           path: dist/mirror-state.json
-      - name: Disparar build explicitamente
-        if: inputs.build_after_sync
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SOURCE_COMMIT: ${{ steps.mirror.outputs.commit }}
-        run: gh workflow run build.yml --ref main -f platform=all -f source_ref="$SOURCE_COMMIT"
