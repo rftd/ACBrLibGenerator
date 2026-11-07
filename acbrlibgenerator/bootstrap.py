@@ -36,8 +36,9 @@ def install_pascal(environment, pascal, cfg, cross, build_options, runner):
     for name in dict.fromkeys(cross):
         cpu, target_os = TARGETS[name]
         runner.say(f'Instalando cross-compiler {name} com os fontes FPC/Lazarus já preparados.')
+        # CleanModule initializes cross tools/libs before BuildModule checks them.
         runner.run([bootstrap, f'--installdir={environment}', f'--cputarget={cpu}', f'--ostarget={target_os}',
-                    '--only=FPCBuildOnly,LazarusBuildOnly', '--noconfirm', '--verbose'])
+                    '--only=FPCCleanOnly,FPCBuildOnly,LazarusBuildOnly', '--noconfirm', '--verbose'])
 
 
 def read_toolchain(path):

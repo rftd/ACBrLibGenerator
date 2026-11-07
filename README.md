@@ -24,7 +24,7 @@ A imagem inicial usa FPC 3.2.2, Lazarus 4.6 e revisão ACBr 48919 como base de p
 
 A imagem usa as CLIs dos instaladores. Quando `--build-only` estiver disponível, dispensa adicionar OPM/designer e componentes à IDE; versões anteriores também configuram a IDE. Os compiladores são verificados com um programa de teste, incluindo cada alvo cross configurado.
 
-O PascalInstall prepara o ambiente nativo. Os compiladores cross são construídos pelo `fpclazup` a partir desses mesmos fontes, sem repetir as opções de download que ele rejeita no modo cross. Qualquer falha interrompe a preparação antes de compilar os produtos.
+O PascalInstall prepara o ambiente nativo. Os compiladores cross são construídos pelo `fpclazup` a partir desses mesmos fontes, sem repetir as opções de download que ele rejeita no modo cross. A sequência `FPCCleanOnly,FPCBuildOnly,LazarusBuildOnly` inicializa a detecção das ferramentas cross antes de compilar. Qualquer falha interrompe a preparação antes de compilar os produtos.
 
 ## Uso local
 

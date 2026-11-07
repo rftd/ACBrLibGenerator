@@ -30,7 +30,12 @@ class CrossCompilerTests(unittest.TestCase):
         self.assertIn('--build-only', native)
         self.assertIn('--cputarget=i386', cross)
         self.assertIn('--ostarget=win32', cross)
-        self.assertIn('--only=FPCBuildOnly,LazarusBuildOnly', cross)
+        modules = next(str(option).removeprefix('--only=') for option in cross if str(option).startswith('--only='))
+        sequence = modules.split(',')
+        self.assertIn('FPCCleanOnly', sequence)
+        self.assertLess(sequence.index('FPCCleanOnly'), sequence.index('FPCBuildOnly'))
+        self.assertIn('LazarusBuildOnly', sequence)
+        self.assertNotIn('FPCGetOnly', sequence)
         self.assertFalse(any('URL=' in str(option) or 'Version=' in str(option) for option in cross))
 
     def test_cross_failure_stops_before_continuing(self):
